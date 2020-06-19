@@ -25,6 +25,7 @@
 #ifdef _WINDOWS
 #include <windows.h>
 
+#ifdef _MSC_VER
 #if _MSC_VER >= 1400 // VC80 and later
 #define strcasecmp		_stricmp
 #define strncasecmp		_strnicmp
@@ -35,6 +36,7 @@
 
 #define snprintf		_snprintf
 #define swprintf		_snwprintf
+#endif // _MSC_VER
 
 #else
 #define OutputDebugString(string)	fputs (string, stdout)

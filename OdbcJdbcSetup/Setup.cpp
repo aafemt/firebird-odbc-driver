@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -18,8 +18,8 @@
  *  All Rights Reserved.
  *
  *	2002-06-08	Setup.cpp
- *				Added changes suggested by C. G. Alvarez to 
- *				correctly locate the driver if already 
+ *				Added changes suggested by C. G. Alvarez to
+ *				correctly locate the driver if already
  *				installed and to correctly report any errors.
  *
  *  2002-04-30	Added 'role' fix from Paul Schmidt		(PCR)
@@ -68,16 +68,16 @@ static const char *fileNames [] = {
 	};
 
 static const char *drivers [] = { DEFAULT_DRIVER, NULL };
-static const char *charsets []= 
-{ 
+static const char *charsets []=
+{
 	"NONE", "ASCII", "BIG_5", "CYRL", "DOS437", "DOS850", "DOS852", "DOS857", "DOS860",
-	"DOS861", "DOS863", "DOS865", "DOS866", "EUCJ_0208", "GB_2312", "ISO8859_1", 
-	"ISO8859_2", "KSC_5601", "OCTETS", "SJIS_0208", "UNICODE_FSS", "UTF8", 
+	"DOS861", "DOS863", "DOS865", "DOS866", "EUCJ_0208", "GB_2312", "ISO8859_1",
+	"ISO8859_2", "KSC_5601", "OCTETS", "SJIS_0208", "UNICODE_FSS", "UTF8",
 	"WIN1250", "WIN1251", "WIN1252", "WIN1253", "WIN1254", NULL
 };
 
-static const char *useshemas []= 
-{ 
+static const char *useshemas []=
+{
 	"Set null field SCHEMA",
 	"Remove SCHEMA from SQL query",
 	"Use full SCHEMA",
@@ -125,7 +125,7 @@ void getParamFromCommandLine()
 	}
 }
 /*
- *	To debug the control panel applet 
+ *	To debug the control panel applet
  *	1/ set the active project to OdbcJdbcSetup
  *	2/ set the executable to { full path to } rundll32.exe
  *	3/ Pass this command as the program argument:
@@ -198,7 +198,7 @@ HRESULT INSTAPI DllInstall( BOOL install, LPCWSTR commandLine )
 	msg.Format( "DllInstall cmdline %S %s\n", commandLine, fileName );
 	OutputDebugString( msg );
 
-	if ( !SQLInstallDriverEx( 
+	if ( !SQLInstallDriverEx(
 			DRIVER_FULL_NAME"\0" INSTALL_DRIVER "=" DRIVER_NAME ".DLL\0\0",
 			NULL,
 			pathOut,
@@ -233,7 +233,7 @@ HRESULT INSTAPI DllInstall( BOOL install, LPCWSTR commandLine )
  *	To debug registration the project settings to call regsvr32.exe
  *  with the full path.
  *
- *  Use 
+ *  Use
  *		..\debug\OdbcFb.dll
  *
  *  as the program argument
@@ -246,7 +246,7 @@ extern "C" STDAPI DllRegisterServer (void)
 	WORD length = sizeof (pathOut) - 1;
 	DWORD useCount;
 
-	if ( !SQLInstallDriverEx( 
+	if ( !SQLInstallDriverEx(
 			DRIVER_FULL_NAME"\0" INSTALL_DRIVER "=" DRIVER_NAME ".DLL\0\0",
 			NULL,
 			pathOut,
@@ -319,7 +319,7 @@ bool installDriver( void )
 			MessageBoxInstallerError( _TR( IDS_ERROR_MESSAGE_07, "Config Install" ), pathOut );
 			return false;
 		}
-	} 	
+	}
 
 	return true;
 }
@@ -350,7 +350,7 @@ bool checkedVersion( char *fullPath, char *endPath )
 				{
 					char *version;
 					UINT len;
-                                        
+
 					if ( VerQueryValueA( buffer, "\\StringFileInfo\\080904b0\\FileVersion", (void **)&version, &len ) && len )
 					{
 						if ( strcmp( FILE_VERSION_STR, version ) )
@@ -409,7 +409,7 @@ bool copyFilesDriver( char *pathDestination, char *endPathDestination,
 	{
 		DelayRegisterOdbcJdbc( pathDestination, endPathDestination,
 							   pathSource, endPathSource );
-		MessageBox( NULL, 
+		MessageBox( NULL,
 					(const char*)"Please, reboot for use",
 					DRIVER_NAME,
 					MB_ICONINFORMATION|MB_OK );
@@ -419,7 +419,7 @@ bool copyFilesDriver( char *pathDestination, char *endPathDestination,
 
 	return true;
 }
-						  
+
 extern "C" STDAPI DllUnregisterServer( void )
 {
 	return removeVersionDriver() ? S_OK : S_FALSE;
@@ -483,12 +483,12 @@ bool removeVersionDriver( void )
 	return ret;
 }
 
-extern "C" __declspec( dllexport ) BOOL INSTAPI ConfigDriver( HWND hwndParent, 
-						   WORD fRequest, 
+extern "C" __declspec( dllexport ) BOOL INSTAPI ConfigDriver( HWND hwndParent,
+						   WORD fRequest,
                            LPCSTR lpszDriver,
-				           LPCSTR lpszArgs, 
-                           LPSTR  lpszMsg, 
-                           WORD   cbMsgMax, 
+				           LPCSTR lpszArgs,
+                           LPSTR  lpszMsg,
+                           WORD   cbMsgMax,
                            WORD 	*pcbMsgOut )
 {
 #ifdef _DEBUG
@@ -512,7 +512,7 @@ void MessageBoxError(const char * stageExecuted, char * pathFile)
 		return;
 	}
 
-	msg.Format( _TR( IDS_ERROR_MESSAGE_13, "%s (%s, %s) failed with %d\n%s\n" ), 
+	msg.Format( _TR( IDS_ERROR_MESSAGE_13, "%s (%s, %s) failed with %d\n%s\n" ),
 				stageExecuted, DRIVER_FULL_NAME, pathFile, messageId, temp );
 	MessageBox(NULL, (const char*)msg,DRIVER_NAME, MB_ICONSTOP|MB_OK);
 }
@@ -539,7 +539,7 @@ bool MessageBoxInstallerError(const char * stageExecuted, char * pathOut)
 		if ( pathOut && *pathOut )
 			msg.Format( _TR( IDS_ERROR_MESSAGE_13, "%s (%s, %s) failed with %d\n%s\n" ),
 							stageExecuted, DRIVER_FULL_NAME, pathOut, errCodeOut, (const char*)msgTemp );
-		else	
+		else
 			msg.Format( _TR( IDS_ERROR_MESSAGE_14, "%s (%s) failed with %d\n%s\n" ),
 							stageExecuted, DRIVER_FULL_NAME, errCodeOut, (const char*)msgTemp );
 	    MessageBox(NULL, (const char*)msg,DRIVER_NAME, MB_ICONSTOP|MB_OK);
@@ -556,7 +556,7 @@ bool IsWinNT()
 	osVersionInfo.dwOSVersionInfoSize = sizeof ( osVersionInfo );
 	GetVersionEx( &osVersionInfo );
 
-	return osVersionInfo.dwPlatformId == VER_PLATFORM_WIN32_NT; 
+	return osVersionInfo.dwPlatformId == VER_PLATFORM_WIN32_NT;
 }
 
 bool MoveFileDelayUntilReboot(char * sourceFile, char * destFile)
@@ -841,7 +841,7 @@ void Setup::getParameters()
 		jdbcDriver = drivers [0];
 
 	role = getAttribute( SETUP_ROLE );
-	
+
 	charset = getAttribute( SETUP_CHARSET );
 	if ( charset.IsEmpty() )
 		charset = getAttribute( KEY_DSN_CHARSET );
@@ -863,32 +863,32 @@ void Setup::getParameters()
 		autoQuoted = getAttribute( KEY_DSN_AUTOQUOTED );
 
 	char chCheck = UPPER( *(const char*)readonlyTpb );
-	
+
 	if ( !IS_CHECK_YES( chCheck ) && !IS_CHECK_NO( chCheck ) )
 		readonlyTpb = "N";
 
 	chCheck = UPPER( *(const char*)nowaitTpb );
-	
+
 	if ( !IS_CHECK_YES( chCheck ) && !IS_CHECK_NO( chCheck ) )
 		nowaitTpb = "N";
 
 	chCheck = *(const char*)dialect;
-	
+
 	if ( chCheck != '1' && chCheck != '3' )
 		dialect = "3";
 
 	chCheck = UPPER( *(const char*)quoted );
-	
+
 	if ( !IS_CHECK_YES( chCheck ) && !IS_CHECK_NO( chCheck ) )
 		quoted = "Y";
 
 	chCheck = UPPER( *(const char*)sensitive );
-	
+
 	if ( !IS_CHECK_YES( chCheck ) && !IS_CHECK_NO( chCheck ) )
 		sensitive = "N";
 
 	chCheck = UPPER( *(const char*)autoQuoted );
-	
+
 	if ( !IS_CHECK_YES( chCheck ) && !IS_CHECK_NO( chCheck ) )
 		autoQuoted = "N";
 
@@ -904,7 +904,7 @@ bool Setup::addDsn()
 		dbName = getAttribute( SETUP_DBNAME );
 		if ( !dbName.IsEmpty() )
 			break;
-		
+
 		dbName = getAttribute( KEY_DSN_DATABASE );
 		if ( !dbName.IsEmpty() )
 			break;
@@ -1041,7 +1041,7 @@ bool Setup::addDsn()
 					services.openSemaphore( "OdbcJdbcBackup" );
 					serviceParameters = 0; // default
 					services.startBackupDatabase( serviceParameters );
-					
+
 					while ( services.nextQuery( buffer, sizeof ( buffer ), lengthOut, countError ) )
 					{
 						char *pt = buffer;
@@ -1311,7 +1311,7 @@ bool Setup::removeDsn()
 					services.openSemaphore( "OdbcJdbcBackup" );
 					serviceParameters = 0; // default
 					services.startBackupDatabase( serviceParameters );
-					
+
 					while ( services.nextQuery( buffer, sizeof ( buffer ), lengthOut, countError ) )
 					{
 						char *pt = buffer;
@@ -1506,37 +1506,37 @@ bool Setup::configureDialog()
 
 	if ( IS_CHECK_YES(*(const char*)readonlyTpb) )
 		dialog.m_readonly = TRUE;
-	else 
+	else
 		dialog.m_readonly=FALSE;
 
 	if ( IS_CHECK_YES(*(const char*)nowaitTpb) )
 		dialog.m_nowait = TRUE;
-	else 
+	else
 		dialog.m_nowait=FALSE;
 
 	if ( *(const char*)dialect == '1' )
 		dialog.m_dialect3 = FALSE;
-	else 
+	else
 		dialog.m_dialect3 = TRUE;
 
 	if ( IS_CHECK_YES(*(const char*)quoted) )
 		dialog.m_quoted = TRUE;
-	else 
+	else
 		dialog.m_quoted = FALSE;
 
 	if ( IS_CHECK_YES ( *(const char*)sensitive ) )
 		dialog.m_sensitive = TRUE;
-	else 
+	else
 		dialog.m_sensitive = FALSE;
 
 	if ( IS_CHECK_YES ( *(const char*)autoQuoted ) )
 		dialog.m_autoQuoted = TRUE;
-	else 
+	else
 		dialog.m_autoQuoted = FALSE;
 
 	if ( IS_CHECK_YES ( *(const char*)safeThread ) )
 		dialog.m_safeThread = TRUE;
-	else 
+	else
 		dialog.m_safeThread = FALSE;
 
 	do
@@ -1550,10 +1550,10 @@ bool Setup::configureDialog()
 
 		if ( !MessageBoxInstallerError( _TR( IDS_ERROR_MESSAGE_17, "Config DSN" ), NULL ) )
 		{
-		    MessageBox( NULL, (const char*)_TR( IDS_ERROR_MESSAGE_18, 
+		    MessageBox( NULL, (const char*)_TR( IDS_ERROR_MESSAGE_18,
 						"Invalid characters are included \
 						in the data source name: []{}(),;?*=!@\\" ),
-						DRIVER_NAME, 
+						DRIVER_NAME,
 						MB_ICONSTOP | MB_OK );
 		}
 
