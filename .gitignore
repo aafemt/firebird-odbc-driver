@@ -1,9 +1,11 @@
-Builds/*/Win32/
-Builds/*/x64/
+Builds/temp/
+Builds/output/
 Install/Win32/install_image/
 *.suo
 *.ncb
 *.user
 *.chm
+*.layout
+*.depend
 build_*.log
 OdbcJdbcSetup_*.iss

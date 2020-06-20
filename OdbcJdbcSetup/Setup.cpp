@@ -39,6 +39,7 @@
 #include "ServiceClient.h"
 #ifdef _WINDOWS
 #include <regstr.h>
+#include <olectl.h>
 #endif
 
 namespace OdbcJdbcSetupLibrary {
@@ -242,7 +243,7 @@ HRESULT INSTAPI DllInstall( BOOL install, LPCWSTR commandLine )
 
 extern "C" STDAPI DllRegisterServer (void)
 {
-	char pathOut [MAX_PATH];
+	char pathOut [MAX_PATH] = "XX";
 	WORD length = sizeof (pathOut) - 1;
 	DWORD useCount;
 
@@ -259,7 +260,7 @@ extern "C" STDAPI DllRegisterServer (void)
         return S_FALSE;
 	}
 
-	return installDriver() ? S_OK : S_FALSE;
+	return installDriver() ? S_OK : SELFREG_E_CLASS;
 }
 
 bool installDriver( void )

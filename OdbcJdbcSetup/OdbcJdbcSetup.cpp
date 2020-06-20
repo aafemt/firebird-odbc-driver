@@ -46,9 +46,9 @@ BOOL APIENTRY DllMainSetup( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID )
 	if ( fdwReason == DLL_PROCESS_ATTACH )
 	{
 		m_hInstance = hinstDLL;
-		InitCommonControls();
-		initCodePageTranslate( GetUserDefaultLCID() );
-		getParamFromCommandLine();
+		//InitCommonControls(); Must not be called from DllMain because of deadlock.
+		//initCodePageTranslate( GetUserDefaultLCID() ); Good libraries never change global settings.
+		//getParamFromCommandLine(); Must not be called from DllMain because no command line available
 	}
 
     return TRUE;

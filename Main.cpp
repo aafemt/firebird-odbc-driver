@@ -111,7 +111,7 @@ namespace OdbcJdbcLibrary {
 #if _MSC_VER > 1000
 void clearAtlResource();
 #endif // _MSC_VER > 1000
-void initCodePageTranslate(  int userLCID );
+//void initCodePageTranslate(  int userLCID );
 
 };
 
@@ -122,9 +122,10 @@ BOOL APIENTRY DllMain(  HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved 
 	if ( fdwReason == DLL_PROCESS_ATTACH )
 	{
 		m_hInstance = hinstDLL;
-		codePage = GetACP();
-		initCodePageTranslate( GetUserDefaultLCID() );
-		setlocale( LC_ALL, ".ACP" );
+		// Good libraries don't change global settings
+		//codePage = GetACP();
+		//initCodePageTranslate( GetUserDefaultLCID() );
+		//setlocale( LC_ALL, ".ACP" );
 	}
 	else if ( fdwReason == DLL_PROCESS_DETACH )
 	{
@@ -133,9 +134,7 @@ BOOL APIENTRY DllMain(  HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved 
 #endif // _MSC_VER > 1000
 	}
 
-	//This function crash installation and doesn't do anything useful.
-	//To be properly cleaned later.
-	//DllMainSetup( hinstDLL, fdwReason, lpvReserved );
+	DllMainSetup( hinstDLL, fdwReason, lpvReserved );
 
     return TRUE;
 }

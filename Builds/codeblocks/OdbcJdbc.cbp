@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="OdbcFb" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Win64 Release">
+				<Option platforms="Windows;" />
+				<Option output="../output/Win64/Release/OdbcFb" prefix_auto="0" extension_auto="1" />
+				<Option object_output="../temp/Win64/Release/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-mthreads" />
+					<Add option="-m64" />
+					<Add option="-O3" />
+					<Add option="-DNDEBUG" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add option="-F pe-x86-64" />
+				</ResourceCompiler>
+				<Linker>
+					<Add option="-mthreads" />
+					<Add option="-m64" />
+					<Add option="-s" />
+				</Linker>
+			</Target>
+			<Target title="Win32 Release">
+				<Option platforms="Windows;" />
+				<Option output="../output/Win32/Release/OdbcFb" prefix_auto="0" extension_auto="1" />
+				<Option object_output="../temp/Win32/Release/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-mthreads" />
+					<Add option="-m32" />
+					<Add option="-O3" />
+					<Add option="-DNDEBUG" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add option="-F pe-i386" />
+				</ResourceCompiler>
+				<Linker>
+					<Add option="-mthreads" />
+					<Add option="-m32" />
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-DNDEBUG -D_WINDOWS" />
+			<Add directory="$(#FIREBIRD.include)" />
+			<Add directory="../../IscDbc" />
+		</Compiler>
+		<Linker>
+			<Add option="..\..\OdbcJdbcMinGw.def" />
+			<Add library="version" />
+			<Add library="gdi32" />
+			<Add library="shell32" />
+			<Add library="advapi32" />
+			<Add library="user32" />
+			<Add library="comdlg32" />
+			<Add library="comctl32" />
+			<Add library="odbccp32" />
+		</Linker>
+		<Unit filename="../../ConnectDialog.cpp" />
+		<Unit filename="../../ConnectDialog.h" />
+		<Unit filename="../../DescRecord.cpp" />
+		<Unit filename="../../DescRecord.h" />
+		<Unit filename="../../InfoItems.h" />
+		<Unit filename="../../IscDbc/Attachment.cpp" />
+		<Unit filename="../../IscDbc/Attachment.h" />
+		<Unit filename="../../IscDbc/BinToHexStr.h" />
+		<Unit filename="../../IscDbc/BinaryBlob.cpp" />
+		<Unit filename="../../IscDbc/BinaryBlob.h" />
+		<Unit filename="../../IscDbc/Blob.cpp" />
+		<Unit filename="../../IscDbc/Blob.h" />
+		<Unit filename="../../IscDbc/Connection.h" />
+		<Unit filename="../../IscDbc/DateTime.cpp" />
+		<Unit filename="../../IscDbc/DateTime.h" />
+		<Unit filename="../../IscDbc/Engine.h" />
+		<Unit filename="../../IscDbc/EnvShare.cpp" />
+		<Unit filename="../../IscDbc/EnvShare.h" />
+		<Unit filename="../../IscDbc/IscArray.cpp" />
+		<Unit filename="../../IscDbc/IscArray.h" />
+		<Unit filename="../../IscDbc/IscBlob.cpp" />
+		<Unit filename="../../IscDbc/IscBlob.h" />
+		<Unit filename="../../IscDbc/IscCallableStatement.cpp" />
+		<Unit filename="../../IscDbc/IscCallableStatement.h" />
+		<Unit filename="../../IscDbc/IscColumnKeyInfo.cpp" />
+		<Unit filename="../../IscDbc/IscColumnKeyInfo.h" />
+		<Unit filename="../../IscDbc/IscColumnPrivilegesResultSet.cpp" />
+		<Unit filename="../../IscDbc/IscColumnPrivilegesResultSet.h" />
+		<Unit filename="../../IscDbc/IscColumnsResultSet.cpp" />
+		<Unit filename="../../IscDbc/IscColumnsResultSet.h" />
+		<Unit filename="../../IscDbc/IscConnection.cpp" />
+		<Unit filename="../../IscDbc/IscConnection.h" />
+		<Unit filename="../../IscDbc/IscCrossReferenceResultSet.cpp" />
+		<Unit filename="../../IscDbc/IscCrossReferenceResultSet.h" />
+		<Unit filename="../../IscDbc/IscDatabaseMetaData.cpp" />
+		<Unit filename="../../IscDbc/IscDatabaseMetaData.h" />
+		<Unit filename="../../IscDbc/IscDbc.h" />
+		<Unit filename="../../IscDbc/IscHeadSqlVar.h" />
+		<Unit filename="../../IscDbc/IscIndexInfoResultSet.cpp" />
+		<Unit filename="../../IscDbc/IscIndexInfoResultSet.h" />
+		<Unit filename="../../IscDbc/IscMetaDataResultSet.cpp" />
+		<Unit filename="../../IscDbc/IscMetaDataResultSet.h" />
+		<Unit filename="../../IscDbc/IscOdbcStatement.cpp" />
+		<Unit filename="../../IscDbc/IscOdbcStatement.h" />
+		<Unit filename="../../IscDbc/IscPreparedStatement.cpp" />
+		<Unit filename="../../IscDbc/IscPreparedStatement.h" />
+		<Unit filename="../../IscDbc/IscPrimaryKeysResultSet.cpp" />
+		<Unit filename="../../IscDbc/IscPrimaryKeysResultSet.h" />
+		<Unit filename="../../IscDbc/IscProcedureColumnsResultSet.cpp" />
+		<Unit filename="../../IscDbc/IscProcedureColumnsResultSet.h" />
+		<Unit filename="../../IscDbc/IscProceduresResultSet.cpp" />
+		<Unit filename="../../IscDbc/IscProceduresResultSet.h" />
+		<Unit filename="../../IscDbc/IscResultSet.cpp" />
+		<Unit filename="../../IscDbc/IscResultSet.h" />
+		<Unit filename="../../IscDbc/IscResultSetMetaData.cpp" />
+		<Unit filename="../../IscDbc/IscResultSetMetaData.h" />
+		<Unit filename="../../IscDbc/IscSpecialColumnsResultSet.cpp" />
+		<Unit filename="../../IscDbc/IscSpecialColumnsResultSet.h" />
+		<Unit filename="../../IscDbc/IscSqlType.cpp" />
+		<Unit filename="../../IscDbc/IscSqlType.h" />
+		<Unit filename="../../IscDbc/IscStatement.cpp" />
+		<Unit filename="../../IscDbc/IscStatement.h" />
+		<Unit filename="../../IscDbc/IscStatementMetaData.cpp" />
+		<Unit filename="../../IscDbc/IscStatementMetaData.h" />
+		<Unit filename="../../IscDbc/IscTablePrivilegesResultSet.cpp" />
+		<Unit filename="../../IscDbc/IscTablePrivilegesResultSet.h" />
+		<Unit filename="../../IscDbc/IscTablesResultSet.cpp" />
+		<Unit filename="../../IscDbc/IscTablesResultSet.h" />
+		<Unit filename="../../IscDbc/IscUserEvents.cpp" />
+		<Unit filename="../../IscDbc/IscUserEvents.h" />
+		<Unit filename="../../IscDbc/JString.cpp" />
+		<Unit filename="../../IscDbc/JString.h" />
+		<Unit filename="../../IscDbc/JavaType.h" />
+		<Unit filename="../../IscDbc/LinkedList.cpp" />
+		<Unit filename="../../IscDbc/LinkedList.h" />
+		<Unit filename="../../IscDbc/ListParamTransaction.h" />
+		<Unit filename="../../IscDbc/LoadFbClientDll.cpp" />
+		<Unit filename="../../IscDbc/LoadFbClientDll.h" />
+		<Unit filename="../../IscDbc/Lock.cpp" />
+		<Unit filename="../../IscDbc/Lock.h" />
+		<Unit filename="../../IscDbc/Mlist.h" />
+		<Unit filename="../../IscDbc/MultibyteConvert.cpp" />
+		<Unit filename="../../IscDbc/MultibyteConvert.h" />
+		<Unit filename="../../IscDbc/Mutex.cpp" />
+		<Unit filename="../../IscDbc/Mutex.h" />
+		<Unit filename="../../IscDbc/Parameter.cpp" />
+		<Unit filename="../../IscDbc/Parameter.h" />
+		<Unit filename="../../IscDbc/ParameterEvent.cpp" />
+		<Unit filename="../../IscDbc/ParameterEvent.h" />
+		<Unit filename="../../IscDbc/Parameters.cpp" />
+		<Unit filename="../../IscDbc/Parameters.h" />
+		<Unit filename="../../IscDbc/ParametersEvents.cpp" />
+		<Unit filename="../../IscDbc/ParametersEvents.h" />
+		<Unit filename="../../IscDbc/Properties.h" />
+		<Unit filename="../../IscDbc/SQLError.cpp" />
+		<Unit filename="../../IscDbc/SQLError.h" />
+		<Unit filename="../../IscDbc/SQLException.h" />
+		<Unit filename="../../IscDbc/ServiceManager.cpp" />
+		<Unit filename="../../IscDbc/ServiceManager.h" />
+		<Unit filename="../../IscDbc/SqlTime.cpp" />
+		<Unit filename="../../IscDbc/SqlTime.h" />
+		<Unit filename="../../IscDbc/Sqlda.cpp" />
+		<Unit filename="../../IscDbc/Sqlda.h" />
+		<Unit filename="../../IscDbc/Stream.cpp" />
+		<Unit filename="../../IscDbc/Stream.h" />
+		<Unit filename="../../IscDbc/SupportFunctions.cpp" />
+		<Unit filename="../../IscDbc/SupportFunctions.h" />
+		<Unit filename="../../IscDbc/TimeStamp.cpp" />
+		<Unit filename="../../IscDbc/TimeStamp.h" />
+		<Unit filename="../../IscDbc/Types.h" />
+		<Unit filename="../../IscDbc/TypesResultSet.cpp" />
+		<Unit filename="../../IscDbc/TypesResultSet.h" />
+		<Unit filename="../../IscDbc/Value.cpp" />
+		<Unit filename="../../IscDbc/Value.h" />
+		<Unit filename="../../IscDbc/Values.cpp" />
+		<Unit filename="../../IscDbc/Values.h" />
+		<Unit filename="../../IscDbc/extodbc.cpp" />
+		<Unit filename="../../IscDbc/resource.h" />
+		<Unit filename="../../Main.cpp" />
+		<Unit filename="../../MainUnicode.cpp" />
+		<Unit filename="../../MbsAndWcs.cpp" />
+		<Unit filename="../../OdbcConnection.cpp" />
+		<Unit filename="../../OdbcConnection.h" />
+		<Unit filename="../../OdbcConvert.cpp" />
+		<Unit filename="../../OdbcConvert.h" />
+		<Unit filename="../../OdbcDateTime.cpp" />
+		<Unit filename="../../OdbcDateTime.h" />
+		<Unit filename="../../OdbcDesc.cpp" />
+		<Unit filename="../../OdbcDesc.h" />
+		<Unit filename="../../OdbcEnv.cpp" />
+		<Unit filename="../../OdbcEnv.h" />
+		<Unit filename="../../OdbcError.cpp" />
+		<Unit filename="../../OdbcError.h" />
+		<Unit filename="../../OdbcInstGetProp.cpp" />
+		<Unit filename="../../OdbcJdbc.h" />
+		<Unit filename="../../OdbcJdbc.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="../../OdbcJdbcMinGW.def">
+			<Option compilerVar="LD" />
+			<Option link="1" />
+		</Unit>
+		<Unit filename="../../OdbcJdbcSetup/CommonUtil.cpp" />
+		<Unit filename="../../OdbcJdbcSetup/CommonUtil.h" />
+		<Unit filename="../../OdbcJdbcSetup/DsnDialog.cpp" />
+		<Unit filename="../../OdbcJdbcSetup/DsnDialog.h" />
+		<Unit filename="../../OdbcJdbcSetup/OdbcJdbcSetup.cpp" />
+		<Unit filename="../../OdbcJdbcSetup/OdbcJdbcSetup.h" />
+		<Unit filename="../../OdbcJdbcSetup/ServiceClient.cpp" />
+		<Unit filename="../../OdbcJdbcSetup/ServiceClient.h" />
+		<Unit filename="../../OdbcJdbcSetup/ServiceTabBackup.cpp" />
+		<Unit filename="../../OdbcJdbcSetup/ServiceTabBackup.h" />
+		<Unit filename="../../OdbcJdbcSetup/ServiceTabChild.cpp" />
+		<Unit filename="../../OdbcJdbcSetup/ServiceTabChild.h" />
+		<Unit filename="../../OdbcJdbcSetup/ServiceTabCtrl.cpp" />
+		<Unit filename="../../OdbcJdbcSetup/ServiceTabCtrl.h" />
+		<Unit filename="../../OdbcJdbcSetup/ServiceTabRepair.cpp" />
+		<Unit filename="../../OdbcJdbcSetup/ServiceTabRepair.h" />
+		<Unit filename="../../OdbcJdbcSetup/ServiceTabRestore.cpp" />
+		<Unit filename="../../OdbcJdbcSetup/ServiceTabRestore.h" />
+		<Unit filename="../../OdbcJdbcSetup/ServiceTabStatistics.cpp" />
+		<Unit filename="../../OdbcJdbcSetup/ServiceTabStatistics.h" />
+		<Unit filename="../../OdbcJdbcSetup/ServiceTabUsers.cpp" />
+		<Unit filename="../../OdbcJdbcSetup/ServiceTabUsers.h" />
+		<Unit filename="../../OdbcJdbcSetup/Setup.cpp" />
+		<Unit filename="../../OdbcJdbcSetup/Setup.h" />
+		<Unit filename="../../OdbcJdbcSetup/UserDialog.cpp" />
+		<Unit filename="../../OdbcJdbcSetup/UserDialog.h" />
+		<Unit filename="../../OdbcJdbcSetup/UsersTabChild.cpp" />
+		<Unit filename="../../OdbcJdbcSetup/UsersTabChild.h" />
+		<Unit filename="../../OdbcJdbcSetup/UsersTabMemberShips.cpp" />
+		<Unit filename="../../OdbcJdbcSetup/UsersTabMemberShips.h" />
+		<Unit filename="../../OdbcJdbcSetup/UsersTabRoles.cpp" />
+		<Unit filename="../../OdbcJdbcSetup/UsersTabRoles.h" />
+		<Unit filename="../../OdbcJdbcSetup/UsersTabUsers.cpp" />
+		<Unit filename="../../OdbcJdbcSetup/UsersTabUsers.h" />
+		<Unit filename="../../OdbcJdbcSetup/resource.h" />
+		<Unit filename="../../OdbcObject.cpp" />
+		<Unit filename="../../OdbcObject.h" />
+		<Unit filename="../../OdbcStatement.cpp" />
+		<Unit filename="../../OdbcStatement.h" />
+		<Unit filename="../../SafeEnvThread.cpp" />
+		<Unit filename="../../SafeEnvThread.h" />
+		<Unit filename="../../SetupAttributes.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
