@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -19,7 +19,7 @@
  *
  *  2002-11-25	Sqlda.cpp
  *				Contributed by C. G. Alvarez
- *				Changes to support better handling of 
+ *				Changes to support better handling of
  *				NUMERIC and DECIMAL
  *
  *  2002-10-11	Sqlda.cpp
@@ -34,9 +34,9 @@
  *
  *  2002-08-02	Sqlda.cpp
  *				Contributed by C. G. Alvarez
- *				Change getColumnType to pass var->sqlscale to getSQLType.   
- *				Change getSQLTypeName to keep in sync with this. 
- *				The purpose is to allow return of DECIMAL as JDBC_DECIMAL 
+ *				Change getColumnType to pass var->sqlscale to getSQLType.
+ *				Change getSQLTypeName to keep in sync with this.
+ *				The purpose is to allow return of DECIMAL as JDBC_DECIMAL
  *				instead of JDBC_BIGINT.
  *
  *	2002-06-04	Sqlda.cpp
@@ -104,7 +104,7 @@ public:
 		lenRow = lnRow;
 		indicatorsOffset = lenRow - ptSqlda->sqld * sizeof(SQLLEN);
 		nMAXROWBLOCK = 65535l/lnRow;
-		
+
 		if ( nMAXROWBLOCK < 40 )
 			nMAXROWBLOCK = 40;
 
@@ -158,7 +158,7 @@ public:
 			for ( i = 0; i < countColumnBlob; ++i )
 			{
 				XSQLVAR * var = sqlvar + numColumnBlob[i];
-				int nRow = 0; 
+				int nRow = 0;
 
 				if ( (var->sqltype & ~1) == SQL_ARRAY )
 				{
@@ -268,8 +268,8 @@ public:
 
 		if( !(nRow >= minRow && nRow < maxRow) )
 		{
-			for ( i = 0, n = countRowsInBlock[i]; 
-						nRow > n && i < countBlocks; 
+			for ( i = 0, n = countRowsInBlock[i];
+						nRow > n && i < countBlocks;
 						n += countRowsInBlock[++i]);
 			curBlock = i;
 			maxRow = n;
@@ -304,7 +304,7 @@ public:
 				memset(&countRowsInBlock[countBlocks],0,10*sizeof(*countRowsInBlock));
 				countBlocks = newCount;
 			}
-			
+
 			if ( !listBlocks[curBlock] )
 			{
 				listBlocks[curBlock] = (char *)malloc(lenRow*nMAXROWBLOCK);
@@ -651,7 +651,7 @@ void Sqlda::print()
 
 // Warning!
 // It's hack, for exclude system filed description
-// Return SQLDA for all system field has 31 length 
+// Return SQLDA for all system field has 31 length
 // and charsetId 3 (UNICODE_FSS) it's error!
 //
 //	if ( !(var->sqllen % getCharsetSize( var->sqlsubtype )) )
@@ -677,14 +677,14 @@ int Sqlda::getColumnDisplaySize(int index)
 		return SET_INFO_FROM_SUBTYPE(	MAX_NUMERIC_SHORT_LENGTH + 2,
 										MAX_DECIMAL_SHORT_LENGTH + 2,
 										MAX_SMALLINT_LENGTH + 1);
-		
+
 	case SQL_LONG:
 		return SET_INFO_FROM_SUBTYPE(	MAX_NUMERIC_LONG_LENGTH + 2,
 										MAX_DECIMAL_LONG_LENGTH + 2,
 										MAX_INT_LENGTH + 1);
 
 	case SQL_FLOAT:
-		return MAX_FLOAT_LENGTH + 4;			
+		return MAX_FLOAT_LENGTH + 4;
 
 	case SQL_D_FLOAT:
 	case SQL_DOUBLE:
@@ -697,7 +697,7 @@ int Sqlda::getColumnDisplaySize(int index)
 		return SET_INFO_FROM_SUBTYPE(	MAX_NUMERIC_LENGTH + 2,
 										MAX_DECIMAL_LENGTH + 2,
 										MAX_QUAD_LENGTH + 1);
-		
+
 	case SQL_ARRAY:
 		return var->array->arrOctetLength;
 //		return MAX_ARRAY_LENGTH;
@@ -779,11 +779,11 @@ int Sqlda::getPrecision(int index)
 										MAX_DECIMAL_LENGTH,
 										MAX_QUAD_LENGTH);
 
-	case SQL_ARRAY:	
+	case SQL_ARRAY:
 		return var->array->arrOctetLength;
 //		return MAX_ARRAY_LENGTH;
-	
-	case SQL_BLOB:		
+
+	case SQL_BLOB:
 		return MAX_BLOB_LENGTH;
 
 	case SQL_TYPE_TIME:
@@ -1000,10 +1000,10 @@ void Sqlda::setValue(int slot, Value * value, IscStatement	*stmt)
 
 	switch (var->sqltype & ~1)
 		{
-		case SQL_BLOB:	
+		case SQL_BLOB:
 			setBlob (var, value, stmt);
 			return;
-		case SQL_ARRAY:	
+		case SQL_ARRAY:
 			setArray (var, value, stmt);
 			return;
 		}
@@ -1060,22 +1060,22 @@ void Sqlda::setValue(int slot, Value * value, IscStatement	*stmt)
 			var->sqllen = sizeof (ISC_DATE);
 			*(ISC_DATE*)var->sqldata = IscStatement::getIscDate (value->data.date);
 			break;
-									
+
 		case TimeType:
 			var->sqltype = SQL_TYPE_TIME;
 			var->sqllen = sizeof (ISC_TIME);
 			*(ISC_TIME*)var->sqldata = IscStatement::getIscTime (value->data.time);
 			break;
-									
+
 		case Timestamp:
 			var->sqltype = SQL_TIMESTAMP;
 			var->sqllen = sizeof (ISC_TIMESTAMP);
 			*(ISC_TIMESTAMP*)var->sqldata = IscStatement::getIscTimeStamp (value->data.timestamp);
 			break;
-									
+
 		default:
 			NOT_YET_IMPLEMENTED;
-		}			
+		}
 
 }
 
@@ -1092,9 +1092,9 @@ void Sqlda::setBlob(XSQLVAR * var, Value * value, IscStatement *stmt)
 	ISC_STATUS statusVector [20];
 	IscConnection * connection = stmt->connection;
 	CFbDll * GDS = connection->GDS;
-	isc_blob_handle blobHandle = NULL;
+	isc_blob_handle blobHandle = 0;
 	isc_tr_handle transactionHandle = stmt->startTransaction();
-	GDS->_create_blob2 (statusVector, 
+	GDS->_create_blob2 (statusVector,
 					  &connection->databaseHandle,
 					  &transactionHandle,
 					  &blobHandle,
@@ -1148,10 +1148,10 @@ void Sqlda::setBlob(XSQLVAR * var, Value * value, IscStatement *stmt)
 		break;
 
 	case Date:
-								
+
 	default:
 		NOT_YET_IMPLEMENTED;
-	}			
+	}
 
 	if ( length )
 	{
@@ -1191,7 +1191,7 @@ void Sqlda::setArray(XSQLVAR * var, Value * value, IscStatement *stmt)
 	}
 
 	var->sqltype &= ~1;
-	
+
 	IscArray arr(stmt,var);
 	arr.writeArray(value);
 	*(ISC_QUAD*)var->sqldata = *arr.arrayId;
@@ -1273,9 +1273,11 @@ char * Sqlda::getText (int index, int &len)
 	if( isNull ( index) )
 	{
 		len = 0;
-		return "";
+		*var->sqldata = '\0';
 	}
-	len = var->sqllen;
+	else
+		len = var->sqllen;
+
 	return var->sqldata;
 }
 
@@ -1286,9 +1288,11 @@ char * Sqlda::getVarying (int index, int &len)
 	if( isNull ( index) )
 	{
 		len = 0;
-		return "";
+		var->sqldata[2] = '\0';
 	}
-	len = *(short*)var->sqldata;
+	else
+		len = *(short*)var->sqldata;
+
 	return var->sqldata+2;
 }
 

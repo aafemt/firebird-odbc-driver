@@ -51,11 +51,15 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-mthreads" />
+			<Add option="-std=c++11" />
+			<Add option="-Wall" />
 			<Add option="-DNDEBUG -D_WINDOWS" />
 			<Add directory="$(#FIREBIRD.include)" />
 			<Add directory="../../IscDbc" />
 		</Compiler>
 		<Linker>
+			<Add option="-mthreads" />
 			<Add option="..\..\OdbcJdbcMinGw.def" />
 			<Add library="version" />
 			<Add library="gdi32" />

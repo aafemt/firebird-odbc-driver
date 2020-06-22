@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -126,10 +126,10 @@ BOOL CALLBACK wndproCServiceTabRestoreChild( HWND hWndChildTab, UINT message, WP
 		{
 			RECT rcTabHdr;
 
-			SetRectEmpty( &rcTabHdr ); 
+			SetRectEmpty( &rcTabHdr );
 			TabCtrl_AdjustRect( hWndParent, TRUE, &rcTabHdr );
 			tabData->hWndChildTab = hWndChildTab;
-			SetWindowPos( tabData->hWndChildTab, NULL, -rcTabHdr.left, -rcTabHdr.top, 0, 0, 
+			SetWindowPos( tabData->hWndChildTab, NULL, -rcTabHdr.left, -rcTabHdr.top, 0, 0,
 						  SWP_NOSIZE | SWP_NOZORDER );
 			{
 				char buffer[10];
@@ -162,7 +162,7 @@ bool CServiceTabRestore::onCommand( HWND hWnd, int nCommand )
 	if ( CServiceTabChild::onCommand( hWnd, nCommand ) )
 		return true;
 
-	switch ( nCommand ) 
+	switch ( nCommand )
 	{
 	case IDC_FIND_FILE_BACKUP:
 		updateData( hWnd );
@@ -198,7 +198,7 @@ void CServiceTabRestore::onStartRestore()
 {
 	CServiceClient services;
 
-	if ( backupPathFile.IsEmpty() || database.IsEmpty() 
+	if ( backupPathFile.IsEmpty() || database.IsEmpty()
 		|| user.IsEmpty() || password.IsEmpty() )
 	{
 		// add error message
@@ -252,7 +252,7 @@ void CServiceTabRestore::onStartRestore()
 
 			if ( !noReadOnly )
 			{
-				char *pt = "<UL><B>Database is Read Only</UL></B>";
+				const char *pt = "<UL><B>Database is Read Only</UL></B>";
 				WriteFile( hTmpFile, pt, (DWORD)strlen( pt ), &dwWritten, NULL );
 			}
 
@@ -281,11 +281,11 @@ void CServiceTabRestore::onStartRestore()
 
 bool CServiceTabRestore::OnFindFileBackup()
 {
-	char * szCaption    = "Select Firebird backup file";
-	char * szOpenFilter = "Firebird Backup Files (*.fbk;*.gbk)\0*.fbk;*.gbk\0"
+	const char * szCaption    = "Select Firebird backup file";
+	const char * szOpenFilter = "Firebird Backup Files (*.fbk;*.gbk)\0*.fbk;*.gbk\0"
                           "All files (*.*)\0*.*\0"
                           "\0";
-	char * szDefExt     = "*.fbk";
+	const char * szDefExt     = "*.fbk";
 
 	return CServiceTabChild::OnFindFile( szCaption, szOpenFilter, szDefExt, backupPathFile );
 }
@@ -315,7 +315,7 @@ bool CServiceTabRestore::buildDlgChild( HWND hWndParent )
 	p = (PWORD)resource;
 
 	lStyle = DS_SETFONT | WS_CHILD | WS_VISIBLE;
-	
+
 	*p++ = LOWORD (lStyle);
 	*p++ = HIWORD (lStyle);
 	*p++ = 0;          // LOWORD (lExtendedStyle)

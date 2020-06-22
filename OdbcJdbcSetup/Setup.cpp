@@ -265,16 +265,13 @@ extern "C" STDAPI DllRegisterServer (void)
 
 bool installDriver( void )
 {
-	char temp [80];
-	char *fullDriverName = temp;
+	const char *fullDriverName = DRIVER_FULL_NAME;
 	char pathIn[MAX_PATH];
 	char pathOut [MAX_PATH];
 	WORD length = sizeof (pathOut) - 1;
 	DWORD useCount;
 	BOOL fRemoveDSN = FALSE;
 	char strDriverInfo [512];
-
-	fullDriverName = DRIVER_FULL_NAME;
 
 	initVersionDriver( strDriverInfo );
 
@@ -300,7 +297,9 @@ bool installDriver( void )
 	}
 
 	if ( useCount > 1 ) // On a case update
+	{
 		SQLRemoveDriver( fullDriverName, fRemoveDSN, &useCount );
+	}
 
 	if ( !SQLConfigDriver(
 			NULL,
@@ -431,10 +430,7 @@ bool removeVersionDriver( void )
 	bool ret = true;
 	DWORD useCount = 0;
 	BOOL fRemoveDSN = FALSE;
-	char temp [80];
-	char * fullDriverName = temp;
-
-	fullDriverName = DRIVER_FULL_NAME;
+	const char * fullDriverName = DRIVER_FULL_NAME;
 
 	if ( !SQLConfigDriver( NULL,
 						   ODBC_REMOVE_DRIVER,
@@ -581,14 +577,11 @@ bool MoveFileDelayUntilReboot(char * sourceFile, char * destFile)
 
 bool IsFileInUse(const char * checkFile)
 {
-	HFILE	chk;
-	OFSTRUCT reopenBuff;
-	UINT uStyle = OF_WRITE | OF_SHARE_EXCLUSIVE;
-	chk = OpenFile( checkFile, &reopenBuff, uStyle );
-	if ( chk == HFILE_ERROR )
+	HANDLE chk = CreateFile(checkFile, GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+	if ( chk == INVALID_HANDLE_VALUE )
 		return true;
 
-	CloseHandle( (HANDLE)chk );
+	CloseHandle( chk );
 	return false;
 }
 

@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -47,7 +47,7 @@ IscBlob::IscBlob()
 {
 	statement = NULL;
 	memset(&blobId,0,sizeof(ISC_QUAD));
-	directBlobHandle = NULL;
+	directBlobHandle = 0;
 	fetched = false;
 	directBlob = false;
 	offset = 0;
@@ -119,7 +119,7 @@ void IscBlob::fetchBlob()
 	ISC_STATUS statusVector [20];
 	IscConnection * connection = statement->connection;
 	isc_tr_handle transactionHandle = statement->startTransaction();
-	isc_blob_handle blobHandle = NULL;
+	isc_blob_handle blobHandle = 0;
 
 	ISC_STATUS ret = connection->GDS->_open_blob2 (statusVector, &connection->databaseHandle, &transactionHandle,
 							  &blobHandle, &blobId, 0, NULL);
@@ -142,7 +142,7 @@ void IscBlob::fetchBlob()
 		}
 
 	connection->GDS->_close_blob (statusVector, &blobHandle);
-	blobHandle = NULL;
+	blobHandle = 0;
 	fetched = true;
 }
 
@@ -175,9 +175,9 @@ void IscBlob::writeBlob(char * sqldata)
 	ISC_STATUS statusVector [20];
 	IscConnection * connection = statement->connection;
 	CFbDll * GDS = connection->GDS;
-	isc_blob_handle blobHandle = NULL;
+	isc_blob_handle blobHandle = 0;
 	isc_tr_handle transactionHandle = statement->startTransaction();
-	GDS->_create_blob2 ( statusVector, 
+	GDS->_create_blob2 ( statusVector,
 					  &connection->databaseHandle,
 					  &transactionHandle,
 					  &blobHandle,
@@ -204,9 +204,9 @@ void IscBlob::writeStreamHexToBlob(char * sqldata)
 	ISC_STATUS statusVector [20];
 	IscConnection * connection = statement->connection;
 	CFbDll * GDS = connection->GDS;
-	isc_blob_handle blobHandle = NULL;
+	isc_blob_handle blobHandle = 0;
 	isc_tr_handle transactionHandle = statement->startTransaction();
-	GDS->_create_blob2 ( statusVector, 
+	GDS->_create_blob2 ( statusVector,
 					  &connection->databaseHandle,
 					  &transactionHandle,
 					  &blobHandle,
@@ -233,9 +233,9 @@ void IscBlob::writeBlob(char * sqldata, char *data, int length)
 	ISC_STATUS statusVector [20];
 	IscConnection * connection = statement->connection;
 	CFbDll * GDS = connection->GDS;
-	isc_blob_handle blobHandle = NULL;
+	isc_blob_handle blobHandle = 0;
 	isc_tr_handle transactionHandle = statement->startTransaction();
-	GDS->_create_blob2 ( statusVector, 
+	GDS->_create_blob2 ( statusVector,
 					  &connection->databaseHandle,
 					  &transactionHandle,
 					  &blobHandle,
@@ -302,7 +302,7 @@ void IscBlob::directOpenBlob( char * sqldata )
 							  &directBlobHandle, (ISC_QUAD*) sqldata, 0, NULL);
 	if (ret)
 		THROW_ISC_EXCEPTION (connection, statusVector);
-	
+
 	const char blob_info[] = { isc_info_blob_total_length };
 	unsigned char buffer[64];
 
@@ -386,7 +386,7 @@ bool IscBlob::directGetSegmentToHexStr( char * bufData, int lenData, int &lenRea
 				else if (ret != isc_segment)
 					THROW_ISC_EXCEPTION (connection, statusVector);
 			}
-			
+
 			short *address = (short*)data + length - 1;
 			unsigned char *end = (unsigned char *)data + length - 1;
 
@@ -411,14 +411,14 @@ void IscBlob::directCloseBlob()
 	{
 		ISC_STATUS statusVector [20];
 		statement->connection->GDS->_close_blob (statusVector, &directBlobHandle);
-		directBlobHandle = NULL;
+		directBlobHandle = 0;
 	}
 	fetched = true;
 	directBlob = false;
 }
 
 //
-// Block direct operations at record SQLPutData 
+// Block direct operations at record SQLPutData
 //
 void IscBlob::directCreateBlob( char * sqldata )
 {
@@ -430,7 +430,7 @@ void IscBlob::directCreateBlob( char * sqldata )
 		GDS->_close_blob (statusVector, &directBlobHandle);
 
 	isc_tr_handle transactionHandle = statement->startTransaction();
-	GDS->_create_blob2 ( statusVector, 
+	GDS->_create_blob2 ( statusVector,
 					  &connection->databaseHandle,
 					  &transactionHandle,
 					  &directBlobHandle,

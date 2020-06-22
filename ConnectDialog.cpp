@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -35,26 +35,26 @@ int currentCP;
 
 #define _TR( id, msg ) ( currentCP == -1 ? msg : translate[currentCP].table[id].string )
 
-struct TranslateString 
+struct TranslateString
 {
 	int		userLCID;
-	struct 
+	struct
 	{
 		int		id;
-		char	*string;
+		const char	*string;
 	} table[6];
 };
 
-TranslateString translate[] = 
+TranslateString translate[] =
 {
 	#include "Res/resource.en"
-,	
+,
 	#include "Res/resource.ru"
-,	
+,
 	#include "Res/resource.uk"
-,	
+,
 	#include "Res/resource.es"
-,	
+,
 	#include "Res/resource.it"
 };
 
@@ -150,14 +150,14 @@ intptr_t CConnectDialog::DoModal()
 	return DialogBoxDynamicConnect();
 }
 
-BOOL CConnectDialog::OnInitDialog(HWND hDlg) 
+BOOL CConnectDialog::OnInitDialog(HWND hDlg)
 {
 	return TRUE;
 }
 
 BOOL CALLBACK wndprocConnectDialog(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	switch (message) 
+	switch (message)
 	{
     case WM_INITDIALOG:
 
@@ -169,7 +169,7 @@ BOOL CALLBACK wndprocConnectDialog(HWND hDlg, UINT message, WPARAM wParam, LPARA
 		return TRUE;
 
 	case WM_COMMAND:
-        switch (LOWORD(wParam)) 
+        switch (LOWORD(wParam))
 		{
         case IDCANCEL:
 			EndDialog(hDlg, FALSE);

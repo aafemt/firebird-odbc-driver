@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -52,8 +52,8 @@ void IscTablesResultSet::getTables(const char * catalog, const char * schemaPatt
 {
 	const char *sqlAll =  "%";
 	char sql[2048] = "";
-	char * ptSql = sql;
-	char * pt = ptSql;
+	const char * ptSql = sql;
+	char * pt = sql;
 
 	addString(pt, "select cast( '");
 	if (catalog && *catalog)
@@ -80,8 +80,8 @@ void IscTablesResultSet::getTables(const char * catalog, const char * schemaPatt
 			&& !(schemaPattern && *schemaPattern)
 			&& !(tableNamePattern && *tableNamePattern) )
 		{
-			*ptSql = '\0';
-			pt = ptSql;
+			ptSql = pt = sql;
+			*pt = '\0';
 			addString(pt, "select cast( '");
 			addString(pt, metaData->getDSN());
 			addString(pt, "' as varchar(31)) as table_cat,\n"	        // 1
@@ -91,7 +91,7 @@ void IscTablesResultSet::getTables(const char * catalog, const char * schemaPatt
 					"cast (NULL as varchar(255)) as remarks\n"			// 5
 					"from rdb$database tbl\n");
 			*pt = '\0';
-			sqlAllParam = 2; 
+			sqlAllParam = 2;
 			break;
 		}
 
@@ -141,7 +141,7 @@ void IscTablesResultSet::getTables(const char * catalog, const char * schemaPatt
 		}
 
 		pt = ptFirst;
-			
+
 		for (int n = 0; n < typeCount; ++n)
 			if (!strcmp (types [n], "TABLE"))
 				{
@@ -200,7 +200,7 @@ bool IscTablesResultSet::nextFetch()
 			++curentRowAllParam;
 			return true;
 		}
- 			
+
 		if (!IscResultSet::nextFetch())
 			return false;
 

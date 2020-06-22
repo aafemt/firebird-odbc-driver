@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -22,7 +22,7 @@
  *
  *	2003-03-24	IscConnection.cpp
  *				Contributed by Norbert Meyer
- *				o If ++attachment means attachment->addRef() 
+ *				o If ++attachment means attachment->addRef()
  *				  then let's say so.
  *				o In close() set statement->connection to NULL.
  *				  This prevents connection->deleteStatement(this)
@@ -34,7 +34,7 @@
  *				to better support different transaction options.
  *
  *	2002-05-20	IscConnection.cpp
- *		
+ *
  *				Contributed by Robert Milharcic
  *				o better management of statements variable
  *
@@ -85,7 +85,7 @@ extern "C" Connection* createConnection()
 
 InfoTransaction::InfoTransaction()
 {
-	transactionHandle = NULL;
+	transactionHandle = 0;
 	transactionIsolation = 0;
 	transactionPending = false;
 	autoCommit = true;
@@ -249,7 +249,7 @@ bool IscConnection::getTransactionPending()
 }
 
 isc_db_handle IscConnection::getHandleDb()
-{	
+{
 	return attachment->databaseHandle;
 }
 
@@ -309,7 +309,7 @@ isc_tr_handle IscConnection::startTransaction()
             break;
     }
 
-	if ( !(tr.transactionExtInit & TRA_nw) 
+	if ( !(tr.transactionExtInit & TRA_nw)
 		&& attachment->isFirebirdVer2_0()
 		&& attachment->getUseLockTimeoutWaitTransactions() )
 	{
@@ -504,7 +504,7 @@ int IscConnection::buildParamProcedure ( char *& string, int numInputParam )
 		memmove(ptSrc, ptCh, strlen(ptCh) + 1 );
 		string = ptSrc + 1;
 
-		return 1; 
+		return 1;
 	}
 
 	SKIP_WHITE(ptSrc);
@@ -537,9 +537,9 @@ bool IscConnection::paramTransactionModes( char *& string, short &transFlags, bo
 {
 	char *& ptOut = string;
 
-	if ( IS_MATCH_EXT( "READ" ) ) 
+	if ( IS_MATCH_EXT( "READ" ) )
 	{
-		if ( IS_MATCH_EXT( "ONLY" ) ) 
+		if ( IS_MATCH_EXT( "ONLY" ) )
 		{
 			if ( expectIsolation )
 				throw SQLEXCEPTION( SYNTAX_ERROR, "after SNAPSHOT not ONLY" );
@@ -547,7 +547,7 @@ bool IscConnection::paramTransactionModes( char *& string, short &transFlags, bo
 			transFlags |= TRA_ro;
 			return true;
 		}
-		else if ( IS_MATCH_EXT( "WRITE" ) ) 
+		else if ( IS_MATCH_EXT( "WRITE" ) )
 		{
 			if ( expectIsolation )
 				throw SQLEXCEPTION( SYNTAX_ERROR, "after SNAPSHOT not WRITE" );
@@ -557,17 +557,17 @@ bool IscConnection::paramTransactionModes( char *& string, short &transFlags, bo
 
 		if ( !( IS_MATCH_EXT( "COMMITTED" ) || IS_MATCH_EXT( "UNCOMMITTED" ) ) )
 			throw SQLEXCEPTION( SYNTAX_ERROR, "should be keyword COMMITTED or UNCOMMITTED" );
-	
+
 		transFlags |= TRA_read_committed;
 
-		if ( IS_MATCH_EXT( "NO" ) ) 
+		if ( IS_MATCH_EXT( "NO" ) )
 		{
 			if ( IS_MATCH_EXT( "RECORD_VERSION" ) )
 			{
 				transFlags |= TRA_no_rec_version;
 				return true;
 			}
-			else if ( IS_MATCH_EXT( "WAIT" ) ) 
+			else if ( IS_MATCH_EXT( "WAIT" ) )
 			{
 				transFlags |= TRA_nw;
 				return true;
@@ -579,9 +579,9 @@ bool IscConnection::paramTransactionModes( char *& string, short &transFlags, bo
 		IS_MATCH_EXT( "RECORD_VERSION" );
 		return true;
 	}
-	else if ( IS_MATCH_EXT( "SNAPSHOT" ) ) 
+	else if ( IS_MATCH_EXT( "SNAPSHOT" ) )
 	{
-		if ( IS_MATCH_EXT( "TABLE" ) ) 
+		if ( IS_MATCH_EXT( "TABLE" ) )
 		{
 			transFlags |= TRA_con;
 
@@ -591,7 +591,7 @@ bool IscConnection::paramTransactionModes( char *& string, short &transFlags, bo
 	}
 	else if ( IS_MATCH_EXT( "REPEATABLE" ) )
 	{
-		if ( IS_MATCH_EXT( "READ" ) ) 
+		if ( IS_MATCH_EXT( "READ" ) )
 		{
 			transFlags |= TRA_con;
 			return true;
@@ -702,7 +702,7 @@ void IscConnection::parseReservingTable( char *& string, char *& tpbBuffer, shor
 
 				lockMode = isc_tpb_lock_write;
 			}
-			else 
+			else
 				IS_MATCH_EXT( "READ" );
 
 			if ( countTable )
@@ -819,7 +819,7 @@ int IscConnection::buildParamTransaction( char *& string, char boolDeclare )
 				transFlags |= TRA_nw;
 				continue;
 			}
-			
+
 			if ( IS_MATCH_EXT( "RECORD_VERSION" ) )
 				throw SQLEXCEPTION( SYNTAX_ERROR, "NO RECORD_VERSION use only with READ COMMITTED" );
 
@@ -856,7 +856,7 @@ int IscConnection::buildParamTransaction( char *& string, char boolDeclare )
 			}
 			continue;
 		}
-                                          
+
 		if ( IS_MATCH_EXT( "AUTOCOMMIT" ) )
 		{
 			transFlags |= TRA_autocommit;
@@ -910,7 +910,7 @@ int IscConnection::buildParamTransaction( char *& string, char boolDeclare )
 		transFlags |= TRA_rrl;
 		parseReservingTable( ptOut, text, transFlags );
 	}
-	
+
 	if ( IS_MATCH_EXT( "USING" ) )
 	{
 		transFlags |= TRA_inc;
@@ -992,7 +992,7 @@ public:
 		remove();
 	}
 	void remove()
-	{ 
+	{
 		stringSql = NULL;
 		deleteNode = false;
 		quotedNode = false;
@@ -1000,7 +1000,7 @@ public:
 		lengthNameNode = 0;
 	}
 	CSchemaIdentifier & operator =(const CSchemaIdentifier & src)
-	{ 
+	{
 		stringSql = src.stringSql;
 		deleteNode = src.deleteNode;
 		quotedNode = src.quotedNode;
@@ -1218,10 +1218,10 @@ bool IscConnection::removeSchemaFromSQL( char *strSql, int lenSql, char *strSqlO
 			memcpy( &ptOut[offset], &beg[offsetNode], length );
 			offset += length;
 			offsetNode += length;
-			
+
 			if ( node->deleteNode )
 				itsDdelete = true;
-			else 
+			else
 			{
 				int countTbl = countTblNodesShema;
 
@@ -1229,7 +1229,7 @@ bool IscConnection::removeSchemaFromSQL( char *strSql, int lenSql, char *strSqlO
 
 				while( countTbl-- )
 				{
-					if ( node->lengthNameNode == nodeTbl->lengthNameNode 
+					if ( node->lengthNameNode == nodeTbl->lengthNameNode
 						&& !strncasecmp( &beg[node->begNameNode],
 										 &beg[nodeTbl->begNameNode],
 										 node->lengthNameNode ) )
@@ -1320,7 +1320,7 @@ int IscConnection::getNativeSql (const char * inStatementText, int textLength1,
 			{
 				bool mixed = false;
 				char * pt = ptIn;
-				
+
 				if ( ISUPPER ( *ptIn ) )
 				{
 					while ( IS_IDENT ( *pt ) )
@@ -1349,7 +1349,7 @@ int IscConnection::getNativeSql (const char * inStatementText, int textLength1,
 				if ( mixed )
 				{
 					*ptOut++ = delimiter;
-					 
+
 					while ( IS_IDENT ( *ptIn ) )
 						*ptOut++ = *ptIn++;
 
@@ -1493,7 +1493,7 @@ int IscConnection::getNativeSql (const char * inStatementText, int textLength1,
 							memcpy(ptOut, nameTinyint, lenNameTinyint);
 							ptOut += lenNameTinyint;
 						}
-						else 
+						else
 							SKIP_NO_WHITE ( ptOut );
 					}
 				}
@@ -1514,7 +1514,7 @@ int IscConnection::getNativeSql (const char * inStatementText, int textLength1,
 
 //	On a note		++ignoreBracket; // ignored { }
 			if ( *ptIn == '?' || IS_MATCH( ptIn, "CALL" ) )
-			{	
+			{
 				if ( *ptIn == '?' )
 				{
 					ptIn++;
@@ -1543,7 +1543,7 @@ int IscConnection::getNativeSql (const char * inStatementText, int textLength1,
 				memmove(ptOut + offset, ptOut, strlen(ptOut) + 1 );
 				memset(ptOut, ' ', lenSpase);
 				savePtOut = ptOut;
-				ptIn += offset; 
+				ptIn += offset;
 				ptOut += lenSpase;
 
 				char procedureName[256];
@@ -1574,7 +1574,7 @@ int IscConnection::getNativeSql (const char * inStatementText, int textLength1,
 							{
 								if ( quote == *ptIn )
 									break;
-	
+
 								*end++ = *ptIn++;
 							}
 							else
@@ -1617,7 +1617,7 @@ int IscConnection::getNativeSql (const char * inStatementText, int textLength1,
 							*end++ = UPPER(*ptIn), ++ptIn;
 
 				} while ( repeatWhile );
-				
+
 				*end = '\0';
 
 				int numIn, numOut;
@@ -1849,8 +1849,8 @@ void IscConnection::ping()
 
 void IscConnection::sqlExecuteCreateDatabase(const char * sqlString)
 {
-	isc_db_handle   newdb = NULL;
-	isc_tr_handle   trans = NULL;
+	isc_db_handle   newdb = 0;
+	isc_tr_handle   trans = 0;
 	ISC_STATUS      statusVector[20];
 
 	if ( GDS->_dsql_execute_immediate( statusVector, &newdb, &trans, 0, (char*)sqlString, 3, NULL ) )
@@ -1858,7 +1858,7 @@ void IscConnection::sqlExecuteCreateDatabase(const char * sqlString)
 		if ( statusVector[1] )
 			THROW_ISC_EXCEPTION ( this, statusVector );
 	}
-	
+
 	GDS->_commit_transaction( statusVector, &trans );
 	GDS->_detach_database( statusVector, &newdb );
 }
@@ -1907,17 +1907,11 @@ void IscConnection::openDatabase(const char * dbName, Properties * properties)
 			{
 				int len1 = (int)strlen( attachment->userName );
 				int len2;
-				char *beg = resultSet.sqlda->getVarying( 5, len2 );
-				char *end = beg + len2;
-				char *save = end;
+				const char *beg = resultSet.sqlda->getVarying( 5, len2 );
+				const char *end = beg + len2;
+				const char *save = end;
 
-				while ( end > beg && *(--end) == ' ');
-
-				if ( save != end )
-				{
-					len2 = end - beg + 1;
-					*(end+1) = '\0';
-				}
+				while ( end > beg && *(--end) == ' ') len2--;
 
 				if( len1 == len2 && !strncmp( attachment->userName, beg, len1 ) )
 					attachment->admin = true;
@@ -1966,7 +1960,7 @@ int IscConnection::getInfoItem(char * buffer, int infoItem, int defaultValue)
 		p += length;
 		}
 
-	return defaultValue;			
+	return defaultValue;
 }
 
 JString IscConnection::getInfoString(char * buffer, int infoItem, const char * defaultString)
@@ -1981,7 +1975,7 @@ JString IscConnection::getInfoString(char * buffer, int infoItem, const char * d
 		p += length;
 		}
 
-	return defaultString;			
+	return defaultString;
 }
 
 Properties* IscConnection::allocProperties()

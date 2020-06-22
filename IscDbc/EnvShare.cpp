@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -18,7 +18,7 @@
  *  All Rights Reserved.
  */
 
-//  
+//
 // EnvShare.cpp: EnvShare class.
 //
 //////////////////////////////////////////////////////////////////////
@@ -53,14 +53,14 @@ void EnvShare::clear()
 {
 	memset( connections, 0, sizeof (connections) );
 	countConnection = 0;
-	transactionHandle = NULL;
+	transactionHandle = 0;
 }
 
 bool EnvShare::addConnection (IscConnection * connect)
 {
 	if ( countConnection >= MAX_COUNT_DBC_SHARE )
 		return false;
-	
+
 	int n = countConnection;
 
 	while ( n-- )
@@ -93,7 +93,7 @@ void EnvShare::startTransaction()
 		int i;
 		ISC_STATUS statusVector [20];
 		CFbDll *GDS = connections[0]->GDS;
-		struct 
+		struct
 		{
 			isc_db_handle db;
 			char *opt;
@@ -105,7 +105,7 @@ void EnvShare::startTransaction()
 			shDb[i].db = connections[i]->databaseHandle;
 		}
 
-		GDS->_start_transaction(statusVector, &transactionHandle, countConnection, 
+		GDS->_start_transaction(statusVector, &transactionHandle, countConnection,
 			&shDb[0].db, shDb[0].countOpt, shDb[0].opt,
 			&shDb[1].db, shDb[1].countOpt, shDb[1].opt,
 			&shDb[2].db, shDb[2].countOpt, shDb[2].opt,

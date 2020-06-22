@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -49,7 +49,7 @@ CServiceManager::CServiceManager()
 	useCount = 1;
 	GDS = NULL;
 	properties = NULL;
-	svcHandle = NULL;
+	svcHandle = 0;
 }
 
 CServiceManager::~CServiceManager()
@@ -227,7 +227,7 @@ void CServiceManager::startRestoreDatabase( Properties *prop, ULONG options )
 void CServiceManager::exitRestoreDatabase()
 {
 	ISC_STATUS status[20];
-	isc_db_handle databaseHandle = NULL;
+	isc_db_handle databaseHandle = 0;
 	char dpbBuffer[RESPONSE_BUFFER/2];
 	int dpbLength;
 	const char *pt;
@@ -592,7 +592,7 @@ bool CServiceManager::nextQuery( char *outBuffer, int lengthOut, int &lengthReal
 
 	do
 	{
-		GDS->_service_query( status, &svcHandle, NULL, 0, NULL, 
+		GDS->_service_query( status, &svcHandle, NULL, 0, NULL,
 							sizeof( sendBuffer ), sendBuffer, RESPONSE_BUFFER, respBuffer );
 		char *p = respBuffer;
 
@@ -630,7 +630,7 @@ bool CServiceManager::nextQuery( char *outBuffer, int lengthOut, int &lengthReal
 				break;
 			}
 		}
-		
+
 		length = snprintf( &outBuffer[offset], lengthOut, "%.*s", len, p );
 		lengthOut -= length;
 		offset += length;
@@ -646,7 +646,7 @@ bool CServiceManager::nextQuery( char *outBuffer, int lengthOut, int &lengthReal
 		}
 
 	} while ( false );
-	
+
 	lengthRealOut = offset;
 	return nextQuery;
 }
@@ -663,7 +663,7 @@ bool CServiceManager::nextQueryLimboTransactionInfo( char *outBuffer, int length
 
 	do
 	{
-		GDS->_service_query( status, &svcHandle, NULL, 0, NULL, 
+		GDS->_service_query( status, &svcHandle, NULL, 0, NULL,
 							sizeof( sendBuffer ), sendBuffer, RESPONSE_BUFFER, respBuffer );
 		if ( status[1] )
 			throw SQLEXCEPTION( GDS->_sqlcode( status ), status[1], getIscStatusText( status ) );
@@ -696,7 +696,7 @@ bool CServiceManager::nextQueryLimboTransactionInfo( char *outBuffer, int length
 				break;
 			}
 		}
-		
+
 		length = snprintf( &outBuffer[offset], lengthOut, "%.*s", len, p );
 		lengthOut -= length;
 		offset += length;
@@ -711,7 +711,7 @@ bool CServiceManager::nextQueryLimboTransactionInfo( char *outBuffer, int length
 		}
 
 	} while ( false );
-	
+
 	lengthRealOut = offset;
 	return nextQuery;
 }
@@ -730,7 +730,7 @@ bool CServiceManager::nextQueryUserInfo( char *outBuffer, int lengthOut, int &le
 
 	do
 	{
-		GDS->_service_query( status, &svcHandle, NULL, 0, NULL, 
+		GDS->_service_query( status, &svcHandle, NULL, 0, NULL,
 							sizeof( sendBuffer ), sendBuffer, RESPONSE_BUFFER, respBuffer );
 		if ( status[1] )
 			throw SQLEXCEPTION( GDS->_sqlcode( status ), status[1], getIscStatusText( status ) );
@@ -763,7 +763,7 @@ bool CServiceManager::nextQueryUserInfo( char *outBuffer, int lengthOut, int &le
 				break;
 			}
 		}
-		
+
         while ( *p != isc_info_end )
         {
 			switch ( *p++ )
@@ -792,7 +792,7 @@ bool CServiceManager::nextQueryUserInfo( char *outBuffer, int lengthOut, int &le
 				*out++ = '\0';
 				lengthOut -= len + 1;
 				break;
-            
+
 			case isc_spb_sec_firstname:
 				len = (ISC_USHORT)GDS->_vax_integer( p, sizeof ( ISC_USHORT ) );
 				p += sizeof ( ISC_USHORT );
@@ -803,7 +803,7 @@ bool CServiceManager::nextQueryUserInfo( char *outBuffer, int lengthOut, int &le
 				*out++ = '\0';
 				lengthOut -= len + 1;
 				break;
-            
+
 			case isc_spb_sec_middlename:
 				len = (ISC_USHORT)GDS->_vax_integer( p, sizeof ( ISC_USHORT ) );
 				p += sizeof( ISC_USHORT );
@@ -814,7 +814,7 @@ bool CServiceManager::nextQueryUserInfo( char *outBuffer, int lengthOut, int &le
 				*out++ = '\0';
 				lengthOut -= len + 1;
 				break;
-            
+
 			case isc_spb_sec_lastname:
 				len = (ISC_USHORT)GDS->_vax_integer( p, sizeof ( ISC_USHORT ) );
 				p += sizeof ( ISC_USHORT );
@@ -825,12 +825,12 @@ bool CServiceManager::nextQueryUserInfo( char *outBuffer, int lengthOut, int &le
 				*out++ = '\0';
 				lengthOut -= len + 1;
 				break;
-            
+
 			case isc_spb_sec_groupid:
 				info->groupId = GDS->_vax_integer( p, sizeof ( ISC_ULONG ) );
 				p += sizeof ( ISC_ULONG );
 				break;
-            
+
 			case isc_spb_sec_userid:
 				info->userId = GDS->_vax_integer( p, sizeof ( ISC_ULONG ) );
 				p += sizeof ( ISC_ULONG );
@@ -848,7 +848,7 @@ bool CServiceManager::nextQueryUserInfo( char *outBuffer, int lengthOut, int &le
 		}
 
 	} while ( false );
-	
+
 	lengthRealOut = offset;
 	return nextQuery;
 }

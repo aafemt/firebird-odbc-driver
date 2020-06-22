@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -39,7 +39,7 @@ namespace IscDbcLibrary {
 
 struct IntlCharsets
 {
-	char	*name;
+	const char	*name;
 	short	lengthName;
 	short	code;
 	short	size;
@@ -180,16 +180,16 @@ MBSTOWCS adressMbsToWcs( int charsetCode )
 }
 
 typedef struct
-{ 
-	int		cmask; 
-	int		cval; 
-	int		shift; 
-	int		lmask; 
-	int		lval; 
+{
+	int		cmask;
+	int		cval;
+	int		shift;
+	int		lmask;
+	int		lval;
 
-} Tab; 
+} Tab;
 
-static Tab tab[] = 
+static Tab tab[] =
 {
 	0x80, 0x00, 0*6, 0x7F,               0, // 1 byte sequence
 	0xE0, 0xC0, 1*6, 0x7FF,           0x80, // 2 byte sequence
@@ -198,17 +198,17 @@ static Tab tab[] =
 	0xFC, 0xF8, 4*6, 0x3FFFFFF,   0x200000, // 5 byte sequence
 	0xFE, 0xFC, 5*6, 0x7FFFFFFF, 0x4000000, // 6 byte sequence
 	0,
-}; 
+};
 
 unsigned int fss_mbstowcs( wchar_t *wcs, const char *mbs, unsigned int lengthForMBS )
 {
 	int l, c0, c;
 	bool bContinue = true;
-	Tab *t; 
+	Tab *t;
 	unsigned int length = 0;
 
 	if ( !mbs || !*mbs )
-		return 0; 
+		return 0;
 
 	const char *mbsEnd = mbs + lengthForMBS;
 
@@ -219,7 +219,7 @@ unsigned int fss_mbstowcs( wchar_t *wcs, const char *mbs, unsigned int lengthFor
 			l = c0 = *mbs & 0xff;
 
 			for ( t = tab; t->cmask; t++)
-			{ 
+			{
 				++mbs;
 				if ( mbs > mbsEnd )
 				{
@@ -228,15 +228,15 @@ unsigned int fss_mbstowcs( wchar_t *wcs, const char *mbs, unsigned int lengthFor
 				}
 
 				if ( ( c0 & t->cmask ) == t->cval )
-				{ 
-					l &= t->lmask; 
+				{
+					l &= t->lmask;
 
 					if ( l < t->lval )
 					{
 						bContinue = false;
 						break;
 					}
-					
+
 					*wcs++ = (wchar_t)l;
 
 					if ( (wchar_t)l == L'\0' )
@@ -244,7 +244,7 @@ unsigned int fss_mbstowcs( wchar_t *wcs, const char *mbs, unsigned int lengthFor
 
 					length++;
 					break;
-				} 
+				}
 
 				if ( !*mbs )
 				{
@@ -252,14 +252,14 @@ unsigned int fss_mbstowcs( wchar_t *wcs, const char *mbs, unsigned int lengthFor
 					break;
 				}
 
-				c = ( *mbs ^ 0x80 ) & 0xFF; 
+				c = ( *mbs ^ 0x80 ) & 0xFF;
 
 				if ( c & 0xC0 )
 				{
 					break;
 				}
 
-				l = ( l << 6 ) | c; 
+				l = ( l << 6 ) | c;
 			}
 
 		} while ( bContinue );
@@ -271,7 +271,7 @@ unsigned int fss_mbstowcs( wchar_t *wcs, const char *mbs, unsigned int lengthFor
 			l = c0 = *mbs & 0xff;
 
 			for ( t = tab; t->cmask; t++)
-			{ 
+			{
 				++mbs;
 				if ( mbs > mbsEnd )
 				{
@@ -279,21 +279,21 @@ unsigned int fss_mbstowcs( wchar_t *wcs, const char *mbs, unsigned int lengthFor
 				}
 
 				if ( ( c0 & t->cmask ) == t->cval )
-				{ 
-					l &= t->lmask; 
+				{
+					l &= t->lmask;
 
 					if ( l < t->lval )
 					{
 						bContinue = false;
 						break;
 					}
-					
+
 					if ( (wchar_t)l == L'\0' )
 						return length;
 
 					length++;
 					break;
-				} 
+				}
 
 				if ( !*mbs )
 				{
@@ -301,14 +301,14 @@ unsigned int fss_mbstowcs( wchar_t *wcs, const char *mbs, unsigned int lengthFor
 					break;
 				}
 
-				c = ( *mbs ^ 0x80 ) & 0xFF; 
+				c = ( *mbs ^ 0x80 ) & 0xFF;
 
 				if ( c & 0xC0 )
 				{
 					break;
 				}
 
-				l = ( l << 6 ) | c; 
+				l = ( l << 6 ) | c;
 			}
 
 		} while ( bContinue );
@@ -318,37 +318,37 @@ unsigned int fss_mbstowcs( wchar_t *wcs, const char *mbs, unsigned int lengthFor
 }
 
 unsigned int fss_wcstombs( char *mbs, const wchar_t *wcs, unsigned int lengthForMBS )
-{ 
-	int l; 
+{
+	int l;
 	int c;
-	Tab *t; 
+	Tab *t;
 	unsigned int length = 0;
 
 	if ( !wcs || !*wcs )
-		return 0; 
+		return 0;
 
 	if ( mbs != NULL )
 	{
 		do
 		{
-			l = *wcs; 
+			l = *wcs;
 
 			for ( t = tab; t->cmask; t++ )
-			{ 
+			{
 				if ( l <= t->lmask )
-				{ 
-					c = t->shift; 
-					*mbs++ = (char)(t->cval | ( l >> c )); 
+				{
+					c = t->shift;
+					*mbs++ = (char)(t->cval | ( l >> c ));
 					++length;
 					while ( c > 0 )
-					{ 
-						c -= 6; 
+					{
+						c -= 6;
 						*(mbs++) = (char)(0x80 | ( ( l >> c ) & 0x3F ));
 						++length;
-					} 
+					}
 					break;
-				} 
-			} 
+				}
+			}
 
 		} while ( *(++wcs) != L'\0' );
 	}
@@ -356,22 +356,22 @@ unsigned int fss_wcstombs( char *mbs, const wchar_t *wcs, unsigned int lengthFor
 	{
 		do
 		{
-			l = *wcs; 
+			l = *wcs;
 
 			for ( t = tab; t->cmask; t++ )
-			{ 
+			{
 				if ( l <= t->lmask )
-				{ 
-					c = t->shift; 
+				{
+					c = t->shift;
 					++length;
 					while ( c > 0 )
-					{ 
-						c -= 6; 
+					{
+						c -= 6;
 						++length;
-					} 
+					}
 					break;
-				} 
-			} 
+				}
+			}
 
 		} while ( *(++wcs) != L'\0' );
 	}
@@ -490,7 +490,7 @@ utf8_minLegal[4]={ 0, 0x80, 0x800, 0x10000 };
 #define UTF_ERROR_VALUE 0xffff
 #define U_SENTINEL (-1)
 
-static const UChar32 utf8_errorValue[6] = 
+static const UChar32 utf8_errorValue[6] =
 {
     UTF8_ERROR_VALUE_1,
 	UTF8_ERROR_VALUE_2,
@@ -558,7 +558,7 @@ unsigned int utf8_wcstombs( char *mbs, const wchar_t *wcs, unsigned int lengthFo
 	ULONG wcsLen = (ULONG)wcslen( wcs );
 
 	if ( !wcs || !*wcs )
-		return 0; 
+		return 0;
 
 	if ( !mbs )
 		return wcsLen * 4;
@@ -594,7 +594,7 @@ unsigned int utf8_wcstombs( char *mbs, const wchar_t *wcs, unsigned int lengthFo
 			{
 				UChar32 c2;
 
-				if ( U_IS_SURROGATE_LEAD( c ) 
+				if ( U_IS_SURROGATE_LEAD( c )
 					&& wcsOrg + i < wcsEnd
 					&& U16_IS_TRAIL( c2 = wcsOrg[i] ) )
 				{
@@ -660,7 +660,7 @@ UChar32  utf8_nextCharSafeBody( const uint8_t *s,
         // count==0 for illegally leading trail bytes and the illegal bytes 0xfe and 0xff
         switch ( count )
 		{
-		// each branch falls through to the next one 
+		// each branch falls through to the next one
         case 5:
         case 4:
             // count>=4 is always illegal: no more than 3 trail bytes in Unicode's UTF-8
@@ -698,16 +698,16 @@ UChar32  utf8_nextCharSafeBody( const uint8_t *s,
 
          // All the error handling should return a value
          // that needs count bytes so that UTF8_GET_CHAR_SAFE() works right.
-         // 
+         //
          // Starting with Unicode 3.0.1, non-shortest forms are illegal.
          // Starting with Unicode 3.2, surrogate code points must not be
          // encoded in UTF-8, and there are no irregular sequences any more.
-         // 
+         //
          // U8_ macros (new in ICU 2.4) return negative values for error conditions.
 
         //  correct sequence - all trail bytes have (b7..b6)==(10)?
         //  illegal is also set if count>=4
-		// 
+		//
         if ( illegal || c < utf8_minLegal[count] || U_IS_SURROGATE( c ) )
 		{
             //  error handling
@@ -720,10 +720,10 @@ UChar32  utf8_nextCharSafeBody( const uint8_t *s,
                 ++i;
                 --count;
             }
-            
+
 			if ( strict >= 0 )
                 c = utf8_errorValue[ errorCount - count ];
-			else 
+			else
                 c = U_SENTINEL;
         }
 		else if ( strict > 0 && U_IS_UNICODE_NONCHAR( c ) )

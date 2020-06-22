@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -35,16 +35,16 @@ namespace OdbcJdbcSetupLibrary {
 extern HINSTANCE m_hInstance;
 int currentCP;
 
-TranslateString translate[] = 
+TranslateString translate[] =
 {
 	#include "res/resource.en"
-,	
+,
 	#include "res/resource.ru"
-,	
+,
 	#include "res/resource.uk"
-,	
+,
 	#include "res/resource.es"
-,	
+,
 	#include "res/resource.it"
 };
 
@@ -102,7 +102,7 @@ HINSTANCE instanceHtmlHelp = NULL;
 BOOL CALLBACK wndprocDsnDialog( HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 void ProcessCDError(DWORD dwErrorCode, HWND hWnd);
 
-CDsnDialog::CDsnDialog( HWND hDlgParent, 
+CDsnDialog::CDsnDialog( HWND hDlgParent,
 					    const char **jdbcDrivers,
 						const char **jdbcCharsets,
 						const char **useShemasIdentifier )
@@ -165,7 +165,7 @@ void CDsnDialog::UpdateData(HWND hDlg, BOOL bSaveAndValidate)
 		GetDlgItemText(hDlg, IDC_USER, m_user.getBuffer(256), 256);
 
 		hWnd = GetDlgItem(hDlg, IDC_DRIVER);
-		
+
 		int nLen = GetWindowTextLength(hWnd);
 		if (nLen > 0)
 			GetWindowText(hWnd, m_driver.getBuffer(nLen), nLen+1);
@@ -175,7 +175,7 @@ void CDsnDialog::UpdateData(HWND hDlg, BOOL bSaveAndValidate)
 		GetDlgItemText(hDlg, IDC_ROLE, m_role.getBuffer(256), 256);
 
 		hWnd = GetDlgItem(hDlg, IDC_CHARSET);
-		
+
 		nLen = GetWindowTextLength(hWnd);
 		if (nLen > 0)
 			GetWindowText(hWnd, m_charset.getBuffer(nLen), nLen+1);
@@ -183,7 +183,7 @@ void CDsnDialog::UpdateData(HWND hDlg, BOOL bSaveAndValidate)
 			GetWindowText(hWnd, m_charset.getBuffer(256), 256+1);
 
 		hWnd = GetDlgItem(hDlg, IDC_COMBOBOX_USE_SCHEMA);
-		
+
 		intptr_t selectUse = SendMessage( hWnd, CB_GETCURSEL, (WPARAM)0, (LPARAM)0 );
 
 		if ( selectUse == CB_ERR )
@@ -237,7 +237,7 @@ void CDsnDialog::UpdateData(HWND hDlg, BOOL bSaveAndValidate)
 		int selectUse = *m_useschema.getString() - '0';
 
 		selectUse = SendMessage( hWnd, CB_SETCURSEL, (WPARAM)selectUse, (LPARAM)0 );
-		
+
 		if ( selectUse == CB_ERR )
 			selectUse = 0;
 
@@ -333,7 +333,7 @@ void CDsnDialog::CheckRemotehost(char * fullPathFileName)
 	if ( *(short*)ptCh == 0x5c5c ) // if '\\'
 	{	// after "Browse"
 		ptCh+=2;
-		// name server	
+		// name server
 		while( *ptCh && *ptCh != '\\' )
 			*ptStr++ = *ptCh++;
 
@@ -372,7 +372,7 @@ void CDsnDialog::CheckRemotehost(char * fullPathFileName)
 
 			while( *ptNext )
 			{
-				if ( *ptNext == '/' ) 
+				if ( *ptNext == '/' )
 					*ptCh++ = '\\', ++ptNext;
 				else if ( *ptNext == ':' )
 					++ptNext;
@@ -392,7 +392,7 @@ BOOL CDsnDialog::OnFindFile()
     OPENFILENAME ofn;
     char strFullPathFileName[256];
     char achPathFileName[256];
-	char * szOpenFilter =	"Firebird Database Files (*.fdb;*.gdb)\0*.fdb;*.gdb\0"
+	const char * szOpenFilter =	"Firebird Database Files (*.fdb;*.gdb)\0*.fdb;*.gdb\0"
 							"All files (*.*)\0*.*\0"
 							"\0";
 
@@ -408,7 +408,7 @@ BOOL CDsnDialog::OnFindFile()
     ofn.lStructSize = sizeof(OPENFILENAME);
     ofn.hwndOwner = NULL;
     ofn.hInstance = NULL;
-    ofn.lpstrFilter = szOpenFilter; 
+    ofn.lpstrFilter = szOpenFilter;
     ofn.lpstrCustomFilter = (LPSTR)NULL;
     ofn.nMaxCustFilter = 0L;
     ofn.nFilterIndex = 1L;              // first filter pair in list
@@ -462,7 +462,7 @@ BOOL CDsnDialog::OnFindFileClient()
     OPENFILENAME ofn;
     char strFullPathFileName[256];
     char achPathFileName[256];
-	char * szOpenFilter =	"Firebird Client Files (*.dll)\0*.dll\0"
+	const char * szOpenFilter =	"Firebird Client Files (*.dll)\0*.dll\0"
 							"All files (*.*)\0*.*\0"
 							"\0";
 
@@ -471,7 +471,7 @@ BOOL CDsnDialog::OnFindFileClient()
     ofn.lStructSize = sizeof(OPENFILENAME);
     ofn.hwndOwner = NULL;
     ofn.hInstance = NULL;
-    ofn.lpstrFilter = szOpenFilter; 
+    ofn.lpstrFilter = szOpenFilter;
     ofn.lpstrCustomFilter = (LPSTR)NULL;
     ofn.nMaxCustFilter = 0L;
     ofn.nFilterIndex = 1L;              // first filter pair in list
@@ -540,7 +540,7 @@ void CDsnDialog::WinHtmlHelp( HWND hDlg )
 	if ( !instanceHtmlHelp )
 	{
 		instanceHtmlHelp = LoadLibrary("hhctrl.ocx");
-	
+
 		if ( !instanceHtmlHelp )
 			return;
 	}
@@ -576,14 +576,14 @@ BOOL CALLBACK wndprocDsnDialog( HWND hDlg, UINT message, WPARAM wParam, LPARAM l
 	{
     case WM_INITDIALOG:
 
-	    SetWindowLongPtr( hDlg, GW_USERDATA, lParam ); 
+	    SetWindowLongPtr( hDlg, GW_USERDATA, lParam );
 		if ( !((CDsnDialog*)lParam)->OnInitDialog( hDlg ) )
 			return FALSE;
 		((CDsnDialog*)lParam)->UpdateData( hDlg, FALSE );
 		return TRUE;
 
 	case WM_COMMAND:
-        switch ( LOWORD( wParam ) ) 
+        switch ( LOWORD( wParam ) )
 		{
         case IDCANCEL:
 			EndDialog( hDlg, FALSE );
@@ -740,7 +740,7 @@ void CDsnDialog::OnTestConnection( HWND hDlg )
 			services.putParameterValue( KEY_DSN_CHARSET, m_charset );
 		if ( !m_client.IsEmpty() )
 			services.putParameterValue( SETUP_CLIENT, m_client );
-		
+
 		services.putParameterValue( SETUP_DIALECT, m_dialect3 ? "3" : "1" );
 		services.putParameterValue( SETUP_DBNAME, m_database );
 

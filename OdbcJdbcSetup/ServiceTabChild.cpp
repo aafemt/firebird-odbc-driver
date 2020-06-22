@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -113,7 +113,7 @@ void CServiceTabChild::SetDisabledDlgItem( HWND hDlg, int ID, BOOL bDisabled )
 	int style = GetWindowLong( hWnd, GWL_STYLE );
 	if ( bDisabled )
 		style |= WS_DISABLED;
-	else			
+	else
 		style &= ~WS_DISABLED;
 	SetWindowLong( hWnd, GWL_STYLE, style );
 	InvalidateRect( hWnd, NULL, TRUE );
@@ -202,7 +202,7 @@ void CServiceTabChild::CheckRemotehost( char *fullPathFileName )
 	if ( *(short*)ptCh == 0x5c5c ) // if '\\'
 	{	// after "Browse"
 		ptCh+=2;
-		// name server	
+		// name server
 		while( *ptCh && *ptCh != '\\' )
 			*ptStr++ = *ptCh++;
 
@@ -241,7 +241,7 @@ void CServiceTabChild::CheckRemotehost( char *fullPathFileName )
 
 			while( *ptNext )
 			{
-				if ( *ptNext == '/' ) 
+				if ( *ptNext == '/' )
 					*ptCh++ = '\\', ++ptNext;
 				else if ( *ptNext == ':' )
 					++ptNext;
@@ -261,7 +261,7 @@ bool CServiceTabChild::OnFindFileDatabase()
     OPENFILENAME ofn;
     char strFullPathFileName[256];
     char achPathFileName[256];
-	char * szOpenFilter =	"Firebird Database Files (*.fdb;*.gdb)\0*.fdb;*.gdb\0"
+	const char * szOpenFilter =	"Firebird Database Files (*.fdb;*.gdb)\0*.fdb;*.gdb\0"
 							"All files (*.*)\0*.*\0"
 							"\0";
 
@@ -277,7 +277,7 @@ bool CServiceTabChild::OnFindFileDatabase()
     ofn.lStructSize = sizeof ( OPENFILENAME );
     ofn.hwndOwner = NULL;
     ofn.hInstance = NULL;
-    ofn.lpstrFilter = szOpenFilter; 
+    ofn.lpstrFilter = szOpenFilter;
     ofn.lpstrCustomFilter = (LPSTR)NULL;
     ofn.nMaxCustFilter = 0L;
     ofn.nFilterIndex = 1L;              // first filter pair in list
@@ -313,18 +313,18 @@ bool CServiceTabChild::OnFindFileDatabase()
 	return true;
 }
 
-bool CServiceTabChild::OnFindFile( char *szCaption, char *szOpenFilter, char *szDefExt, JString &pathFile )
+bool CServiceTabChild::OnFindFile(const char *szCaption, const char *szOpenFilter, const char *szDefExt, JString &pathFile )
 {
     OPENFILENAME ofn;
     char strFullPathFileName[256];
     char achPathFileName[256];
 
-	strcpy( strFullPathFileName, (const char*)pathFile );
+	strcpy( strFullPathFileName, pathFile );
 
     ofn.lStructSize = sizeof ( OPENFILENAME );
     ofn.hwndOwner = NULL;
     ofn.hInstance = NULL;
-    ofn.lpstrFilter = szOpenFilter; 
+    ofn.lpstrFilter = szOpenFilter;
     ofn.lpstrCustomFilter = (LPSTR)NULL;
     ofn.nMaxCustFilter = 0L;
     ofn.nFilterIndex = 1L;              // first filter pair in list
@@ -350,7 +350,7 @@ bool CServiceTabChild::OnFindFile( char *szCaption, char *szOpenFilter, char *sz
 	return true;
 }
 
-bool CServiceTabChild::setDefaultName( char *szDefExt, JString &pathFile )
+bool CServiceTabChild::setDefaultName(const char *szDefExt, JString &pathFile )
 {
 	if ( database.IsEmpty() )
 		return false;
@@ -395,7 +395,7 @@ bool CServiceTabChild::buildDlgChild( HWND hWndParent )
 
 bool CServiceTabChild::onCommand( HWND hWnd, int nCommand )
 {
-	switch ( nCommand ) 
+	switch ( nCommand )
 	{
 	case IDC_FIND_FILE:
 		updateData( hWnd );
@@ -445,7 +445,7 @@ void CServiceTabChild::writeHeadToLogFile()
 {
 	if ( hTmpFile )
 	{
-		char *head =
+		const char *head =
 			"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2 Final//EN\">"
 			"<HTML>"
 			"<HEAD>"
@@ -463,7 +463,7 @@ void CServiceTabChild::writeFooterToLogFile()
 {
 	if ( hTmpFile )
 	{
-		char *footer = "</BODY></HTML>";
+		const char *footer = "</BODY></HTML>";
 		DWORD dwWritten = 0;
 		WriteFile( hTmpFile, footer, (DWORD)strlen( footer ), &dwWritten, NULL );
 		FlushFileBuffers( hTmpFile );

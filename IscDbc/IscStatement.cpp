@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -20,16 +20,16 @@
  *
  *	2003-03-24	IscStatement.cpp
  *				Contributed by Norbert Meyer
- *				use value->setString (length, data, true); if not, 
+ *				use value->setString (length, data, true); if not,
  *				the String is not nullterminated, but used as
  *				nullterminated String in ODBCStatement::setValue()
- *				(case SQL_C_CHAR: ...). You can also check the 
+ *				(case SQL_C_CHAR: ...). You can also check the
  *				length in ODBCStatement::setValue, but there is no
  *				function getStringLength...
  *
  *	2003-03-24	IscStatement.cpp
  *				Contributed by Carlos Guzman Alvarez
- *				Remove updatePreparedResultSet from OdbStatement 
+ *				Remove updatePreparedResultSet from OdbStatement
  *				and achieve the same goal in another way.
  *
  *	2003-03-24	IscStatement.cpp
@@ -43,30 +43,30 @@
  *	2002-08-12	IscStatement.cpp
  *				Contributed by Roger Gammans
  *				Close the cursor when releasing a result set.
- *				
+ *
  *	2002-08-12	IscStatement.cpp
  *				Contributed by C. G. Alvarez
  *				Added more graceful detection of statements that do
- *				not return a result set.	
- *	
+ *				not return a result set.
+ *
  *	2002-06-04	IscStatement.cpp
  *				Amended setValue() again. (RM)
- *				Hopefully this means that we finally 
+ *				Hopefully this means that we finally
  *				have got SQL_CHAR and SQL_VARYING right.
  *
  *	2002-05-20	Added suggestion from Bernhard Schulte
- *				o	IscStatement::setValue() amended to 
+ *				o	IscStatement::setValue() amended to
  *					fix problem with trailing blanks.
  *
- *				o	Update setValue() to support changes to the 
+ *				o	Update setValue() to support changes to the
  *					OdbcStatement datetime routines.
- *				
- *				o	Update getIscTimeStamp() to support changes to the 
+ *
+ *				o	Update getIscTimeStamp() to support changes to the
  *					OdbcStatement datetime routines.
  *
  *	2002-04-30	Added suggestions from LiWeimin
  *				o	IscStatement::setValue
- *					When writing a varchar decrement the sqllen by 2 
+ *					When writing a varchar decrement the sqllen by 2
  *					before the test.
  *
  *				o	IscStatement::getIscDate
@@ -108,7 +108,7 @@ IscStatement::IscStatement(IscConnection *connect)
 	connection = connect;
 	useCount = 1;
 	numberColumns = 0;
-	statementHandle = NULL;
+	statementHandle = 0;
 	transactionLocal = false;
 	transactionStatusChange = false;
 	transactionStatusChangingToLocal = false;
@@ -181,7 +181,7 @@ void IscStatement::setReadOnlyTransaction()
 {
 	transactionLocal = true;
 
-	transactionInfo.transactionHandle = NULL;
+	transactionInfo.transactionHandle = 0;
 	transactionInfo.transactionIsolation = 0x00000002L; // SQL_TXN_READ_COMMITTED
 	transactionInfo.transactionPending = false;
 	transactionInfo.autoCommit = true;
@@ -347,7 +347,7 @@ isc_tr_handle IscStatement::startTransaction()
 			break;
 		}
 
-		if ( !(tr->transactionExtInit & TRA_nw) 
+		if ( !(tr->transactionExtInit & TRA_nw)
 			&& connection->attachment->isFirebirdVer2_0()
 			&& connection->attachment->getUseLockTimeoutWaitTransactions() )
 		{
@@ -476,7 +476,7 @@ ResultSet* IscStatement::getResultSet()
 
     if ( !isActiveSelect() && outputSqlda.sqlda->sqld < 1)
 		throw SQLEXCEPTION (NO_RECORDS_FOR_FETCH, "current statement doesn't return results");
-	
+
 	return createResultSet();
 }
 
@@ -557,8 +557,8 @@ void IscStatement::deleteResultSet(IscResultSet * resultSet)
 				// Cursor already closed or not assigned
 				if ( statusVector[1] && statusVector[1] != 335544569)
 					THROW_ISC_EXCEPTION (connection, statusVector);
-			}			
-			
+			}
+
 			if ( transactionLocal )
 			{
 				if ( transactionInfo.autoCommit )
@@ -602,7 +602,7 @@ void IscStatement::prepareStatement(const char * sqlString)
 		if (statusVector [1])
 			THROW_ISC_EXCEPTION (connection, statusVector);
 	}
-	
+
 	outputSqlda.allocBuffer ( this );
 
 	openCursor			= false;
@@ -610,7 +610,7 @@ void IscStatement::prepareStatement(const char * sqlString)
 	resultsCount		= 1;
 	resultsSequence		= 0;
 	int statementType	= getUpdateCounts();
-	
+
 	switch ( statementType )
 	{
 	case isc_info_sql_stmt_ddl:
@@ -643,7 +643,7 @@ bool IscStatement::execute()
 	isc_tr_handle transHandle = startTransaction();
 
 	int dialect = connection->getDatabaseDialect ();
-	if (connection->GDS->_dsql_execute2 (statusVector, &transHandle, &statementHandle, 
+	if (connection->GDS->_dsql_execute2 (statusVector, &transHandle, &statementHandle,
 			dialect, inputSqlda, NULL))
 	{
 		if ( connection->transactionInfo.autoCommit )
@@ -739,7 +739,7 @@ int IscStatement::getUpdateCounts()
 	ISC_STATUS	statusVector [20];
 	CFbDll * GDS = connection->GDS;
 
-	GDS->_dsql_sql_info (statusVector, &statementHandle, 
+	GDS->_dsql_sql_info (statusVector, &statementHandle,
 						sizeof (requestInfo), requestInfo,
 						sizeof (buffer), buffer);
 
@@ -805,7 +805,7 @@ void IscStatement::setValue(Value *value, XSQLVAR *var)
 			case SQL_TEXT:
 				{
 				char *data = (char*) var->sqldata;
-				data [ var->sqllen ] = 0;    
+				data [ var->sqllen ] = 0;
 				value->setString (data, false);
 				}
 				break;
@@ -943,7 +943,7 @@ void IscStatement::freeStatementHandle()
 	{
 		ISC_STATUS statusVector [20];
 		connection->GDS->_dsql_free_statement (statusVector, &statementHandle, DSQL_drop);
-		statementHandle = NULL;
+		statementHandle = 0;
 	}
 }
 

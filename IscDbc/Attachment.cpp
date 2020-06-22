@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -38,16 +38,16 @@
 #include "Parameters.h"
 #include "IscConnection.h"
 
-static char databaseInfoItems [] = { 
+static char databaseInfoItems [] = {
 	isc_info_db_id,
 	isc_info_db_sql_dialect,
 	isc_info_base_level,
 	isc_info_user_names,
 	isc_info_ods_version,
 	isc_info_firebird_version,
-	isc_info_version, 
+	isc_info_version,
 	isc_info_page_size,
-	isc_info_end 
+	isc_info_end
 	};
 
 
@@ -61,9 +61,9 @@ Attachment::Attachment()
 {
 	useCount = 1;
 	GDS = NULL;
-	databaseHandle = NULL;
+	databaseHandle = 0;
 	databaseAccess = OPEN_DB;
-	transactionHandle = NULL;
+	transactionHandle = 0;
 	admin = true;
 	isRoles = false;
 	userType = 8;
@@ -157,7 +157,7 @@ void Attachment::createDatabase(const char *dbName, Properties *properties)
 
 	*p = '\0';
 
-	isc_tr_handle   trans = NULL;
+	isc_tr_handle   trans = 0;
 	ISC_STATUS      statusVector[20];
 
 	if ( GDS->_dsql_execute_immediate( statusVector, &databaseHandle, &trans, 0, (char*)sql, databaseDialect, NULL ) )
@@ -165,7 +165,7 @@ void Attachment::createDatabase(const char *dbName, Properties *properties)
 		if ( statusVector[1] )
 			throw SQLEXCEPTION ( GDS->_sqlcode( statusVector ), statusVector [1], getIscStatusText( statusVector ) );
 	}
-	
+
 	if ( trans && GDS->_commit_transaction( statusVector, &trans ) )
     {
 		if ( statusVector[1] )
@@ -274,7 +274,7 @@ void Attachment::openDatabase(const char *dbName, Properties *properties)
 	int dpbLength = p - dpb;
 	ISC_STATUS statusVector [20];
 
-	if (GDS->_attach_database (statusVector, (short)strlen (dbName), (char*) dbName, &databaseHandle, 
+	if (GDS->_attach_database (statusVector, (short)strlen (dbName), (char*) dbName, &databaseHandle,
 							 dpbLength, dpb))
 	{
 		if ( statusVector [1] == 335544344l )
@@ -284,7 +284,7 @@ void Attachment::openDatabase(const char *dbName, Properties *properties)
 			else
 			{
 				JString text;
-				
+
 				switch ( statusVector [7] )
 				{
 				case isc_io_access_err:
@@ -337,7 +337,7 @@ void Attachment::openDatabase(const char *dbName, Properties *properties)
 			case isc_info_db_sql_dialect:
 				databaseDialect = GDS->_vax_integer (p, length);
 				break;
-			
+
 			case isc_info_base_level:
 				serverBaseLevel = GDS->_vax_integer (p, length);
 				break;
@@ -357,7 +357,7 @@ void Attachment::openDatabase(const char *dbName, Properties *properties)
 					char * start = p + 2;
 					char * beg = start;
 					char * end = beg + p [1];
-					
+
 					while ( beg < end )
 					{
 						if ( *beg >= '0' && *beg <= '9' )
@@ -398,7 +398,7 @@ void Attachment::openDatabase(const char *dbName, Properties *properties)
 					char * beg = start;
 					char * end = beg + p [1];
 					char * tmp = NULL;
-					
+
 					while ( beg < end )
 					{
 						if ( *beg >= '0' && *beg <= '9' )
@@ -449,7 +449,7 @@ void Attachment::openDatabase(const char *dbName, Properties *properties)
 			p += length;
 		}
 	}
-	
+
 	if ( dialect && *dialect == '1')
 		databaseDialect = SQL_DIALECT_V5;
 	else
