@@ -146,7 +146,7 @@ void IscTablesResultSet::getTables(const char * catalog, const char * schemaPatt
 			if (!strcmp (types [n], "TABLE"))
 				{
 				addString(pt, sep);
-				addString(pt, "(tbl.rdb$view_blr is null and tbl.rdb$system_flag = 0)");
+				addString(pt, "(tbl.rdb$view_blr is null and (tbl.rdb$system_flag = 0 or tbl.rdb$system_flag is null))");
 				sep = " or ";
 				}
 			else if (!strcmp (types [n], "VIEW"))

@@ -58,7 +58,7 @@ BEGIN
             VALUE "OriginalFilename", ORIGINAL_FILENAME_STR
             VALUE "ProductName", "Firebird Odbc Dynamic Link Library\0"
             VALUE "ProductVersion", PRODUCT_VERSION_STR
-            VALUE "SpecialBuild", "v2-1\0"
+            VALUE "SpecialBuild", "SD edition\0"
         END
     END
     BLOCK "VarFileInfo"

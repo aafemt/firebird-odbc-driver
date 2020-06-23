@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -48,7 +48,7 @@ enum OdbcObjectType {
 class OdbcError;
 class OdbcConnection;
 
-class OdbcObject  
+class OdbcObject
 {
 public:
 	void setCursorRowCount (int count);
@@ -74,16 +74,16 @@ public:
 	int sqlReturn (int code, const char *state, const char *text, int nativeCode = 0);
 	SQLRETURN returnStringInfo (SQLPOINTER ptr, SQLSMALLINT maxLength, SQLSMALLINT* returnLength, const char * value);
 	OdbcObject();
-	~OdbcObject();
+	virtual ~OdbcObject();
 
 	OdbcError	*errors;
 	bool		infoPosted;
 	OdbcObject	*next;
 	// Header Fields
-	SQLINTEGER	sqlDiagCursorRowCount;			// SQL_DIAG_CURSOR_ROW_COUNT 
-	SQLCHAR *	sqlDiagDynamicFunction;			// SQL_DIAG_DYNAMIC_FUNCTION 
+	SQLINTEGER	sqlDiagCursorRowCount;			// SQL_DIAG_CURSOR_ROW_COUNT
+	SQLCHAR *	sqlDiagDynamicFunction;			// SQL_DIAG_DYNAMIC_FUNCTION
 	SQLINTEGER	sqlDiagDynamicFunctionCode;		// SQL_DIAG_DYNAMIC_FUNCTION_CODE
-	SQLINTEGER	sqlDiagNumber;					// SQL_DIAG_NUMBER 
+	SQLINTEGER	sqlDiagNumber;					// SQL_DIAG_NUMBER
 	SQLRETURN	sqlDiagReturnCode;				// SQL_DIAG_RETURNCODE
 	SQLINTEGER	sqlDiagRowCount;				// SQL_DIAG_ROW_COUNT
 };

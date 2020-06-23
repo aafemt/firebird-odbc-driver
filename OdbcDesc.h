@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -59,13 +59,13 @@ public:
 		appRecord = app;
 	}
 	void remove()
-	{ 
-		column = 0; 
+	{
+		column = 0;
 		impRecord = NULL;
 		appRecord = NULL;
 	}
 	CBindColumn & operator =(const CBindColumn & src)
-	{ 
+	{
 		column = src.column;
 		impRecord = src.impRecord;
 		appRecord = src.appRecord;
@@ -76,24 +76,24 @@ public:
 class CBindColumnComparator
 {
 public:
-	static int compare(const CBindColumn *a, const CBindColumn *b) 
+	static int compare(const CBindColumn *a, const CBindColumn *b)
 	{
 	    return a->column - b->column;
 	}
 };
 typedef MList<CBindColumn,CBindColumnComparator> ListBindColumn;
 
-class OdbcDesc : public OdbcObject  
+class OdbcDesc : public OdbcObject
 {
 public:
 	inline DescRecord*	getDescRecord(int number, bool bCashe = true);
 	SQLRETURN sqlGetDescField(int recNumber, int fieldId, SQLPOINTER value, int length, SQLINTEGER *lengthPtr);
 	SQLRETURN sqlSetDescField (int recNumber, int fieldId, SQLPOINTER value, int length);
-	SQLRETURN sqlGetDescRec(SQLSMALLINT recNumber, SQLCHAR *Name, SQLSMALLINT BufferLength, SQLSMALLINT *StringLengthPtr, 
-							SQLSMALLINT *TypePtr, SQLSMALLINT *SubTypePtr, SQLLEN *LengthPtr, SQLSMALLINT *PrecisionPtr, 
+	SQLRETURN sqlGetDescRec(SQLSMALLINT recNumber, SQLCHAR *Name, SQLSMALLINT BufferLength, SQLSMALLINT *StringLengthPtr,
+							SQLSMALLINT *TypePtr, SQLSMALLINT *SubTypePtr, SQLLEN *LengthPtr, SQLSMALLINT *PrecisionPtr,
 							SQLSMALLINT *ScalePtr, SQLSMALLINT *NullablePtr);
 	SQLRETURN sqlSetDescRec( SQLSMALLINT recNumber, SQLSMALLINT type, SQLSMALLINT subType, SQLINTEGER length,
-							SQLSMALLINT	precision, SQLSMALLINT scale, SQLPOINTER dataPtr, 
+							SQLSMALLINT	precision, SQLSMALLINT scale, SQLPOINTER dataPtr,
 							SQLLEN *stringLengthPtr, SQLLEN *indicatorPtr);
 
 	virtual OdbcConnection* getConnection();
@@ -121,9 +121,9 @@ public:
 //Head
 	SQLSMALLINT			headAllocType;
 	SQLUINTEGER			headArraySize;
-	SQLUSMALLINT		*headArrayStatusPtr;	
+	SQLUSMALLINT		*headArrayStatusPtr;
 	SQLLEN				*headBindOffsetPtr;
-	SQLINTEGER			headBindType; 
+	SQLINTEGER			headBindType;
 	SQLSMALLINT			headCount;
 	SQLULEN				*headRowsProcessedPtr;
 //
@@ -171,7 +171,7 @@ DescRecord* OdbcDesc::getDescRecord(int number, bool bCashe)
 		}
 	}
 
-	return record;		
+	return record;
 }
 
 }; // end namespace OdbcJdbcLibrary

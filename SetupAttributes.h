@@ -27,8 +27,8 @@
 
 #define BUILDTYPE_VERSION 	"WI_T"
 #define MAJOR_VERSION 		2
-#define MINOR_VERSION 		1
-#define REVNO_VERSION 		0
+#define MINOR_VERSION 		2
+#define REVNO_VERSION 		1
 
 #ifdef _WIN64
 #define SUFFIX_BUILD		"64"
