@@ -86,7 +86,7 @@ typedef MList<CBindColumn,CBindColumnComparator> ListBindColumn;
 class OdbcDesc : public OdbcObject
 {
 public:
-	inline DescRecord*	getDescRecord(int number, bool bCashe = true);
+	DescRecord*	getDescRecord(int number, bool bCashe = true);
 	SQLRETURN sqlGetDescField(int recNumber, int fieldId, SQLPOINTER value, int length, SQLINTEGER *lengthPtr);
 	SQLRETURN sqlSetDescField (int recNumber, int fieldId, SQLPOINTER value, int length);
 	SQLRETURN sqlGetDescRec(SQLSMALLINT recNumber, SQLCHAR *Name, SQLSMALLINT BufferLength, SQLSMALLINT *StringLengthPtr,
@@ -141,7 +141,10 @@ public:
 inline
 DescRecord* OdbcDesc::getDescRecord(int number, bool bCashe)
 {
-	if (number >= recordSlots)
+	if (number > headCount)
+		headCount = number;
+
+	if (number >= recordSlots || headCount > recordSlots) // expand array in advance
 	{
 		int oldSlots = recordSlots;
 		DescRecord **oldRecords = records;
@@ -155,9 +158,6 @@ DescRecord* OdbcDesc::getDescRecord(int number, bool bCashe)
 		}
 	}
 
-	if (number > headCount)
-		headCount = number;
-
 	DescRecord * &record = records[number];
 
 	if (record == NULL)
@@ -168,6 +168,9 @@ DescRecord* OdbcDesc::getDescRecord(int number, bool bCashe)
 		case odtImplementationRow:
 		case odtImplementationParameter:
 			record->isIndicatorSqlDa = true;
+			break;
+		default:
+			break;
 		}
 	}
 

@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -117,7 +117,7 @@ DateTime DateTime::convert(const char *dateString, int length)
 	int		hour = 0;
 	int		second = 0;
 	int		minute = 0;
-	int		timezone = 0;
+//	int		timezone = 0;
 	int		n;
 	int		state = 0;			// 1 = hour, 2 = minute, 3 = second
 	const char *p = dateString;
@@ -172,7 +172,7 @@ DateTime DateTime::convert(const char *dateString, int length)
 									break;
 
 								case 3:
-									timezone = n / 100 * 60 + n % 100;
+									//timezone = n / 100 * 60 + n % 100;
 									break;
 
 								default:
@@ -189,7 +189,9 @@ DateTime DateTime::convert(const char *dateString, int length)
 						{
 						}
 					else if ((n = lookup (string, timezones)) >= 0)
-						timezone = tzMinutes [n];
+					{
+						//timezone = tzMinutes [n];
+					}
 					else
 						{
 						n = lookup (string, timezones);
@@ -223,7 +225,7 @@ DateTime DateTime::convert(const char *dateString, int length)
 
 			default:
 				*q++ = c;
-				numeric = false;			
+				numeric = false;
 			}
 		}
 
@@ -234,10 +236,12 @@ DateTime DateTime::convert(const char *dateString, int length)
 		year = time->tm_year + 1900;
 		}
 	else if (year < 100)
+	{
 		if (year > 70)
 			year += 1900;
 		else
 			year += 2000;
+	}
 
 	struct tm	time;
 	memset (&time, 0, sizeof (time));
@@ -252,9 +256,9 @@ DateTime DateTime::convert(const char *dateString, int length)
 
 	if ((!date.date) ||
 		(date.date == -1) ||
-	    (time.tm_mon != month - 1) || 
+	    (time.tm_mon != month - 1) ||
 		(time.tm_mday != day))
-		throw SQLEXCEPTION (CONVERSION_ERROR, 
+		throw SQLEXCEPTION (CONVERSION_ERROR,
 				"error converting to date from %s", dateString);
 	return date;
 }
@@ -295,10 +299,10 @@ int DateTime::getString (const char * format, int length, char *buffer)
 	struct tm tmTemp;
 	struct tm *time = &tmTemp;
 	memset (time, 0, sizeof (tmTemp));
-	
+
 	decodeDate (date, time);
 	return (int)strftime (buffer, length, format, time);
-	
+
 }
 
 int DateTime::getToday()
@@ -324,7 +328,7 @@ int DateTime::getNow()
 double DateTime::getDouble()
 {
 	return (double) date;
-}	
+}
 
 
 
@@ -425,9 +429,9 @@ signed int DateTime::encodeDate (struct tm	*times)
 	c = year / 100;
 	ya = year - 100 * c;
 
-	return (unsigned int) (((QUAD) 146097 * c) / 4 + 
-		(1461 * ya) / 4 + 
-		(153 * month + 2) / 5 + 
+	return (unsigned int) (((QUAD) 146097 * c) / 4 +
+		(1461 * ya) / 4 +
+		(153 * month + 2) / 5 +
 		day + 1721119 - 2400001);
 }
 
@@ -448,7 +452,7 @@ signed int DateTime::yday (struct tm	*times)
  *	january 1 to be Year day 0, although it
  *	is day 1 of the month.   (Note that QLI,
  *	when printing Year days takes the other
- *	view.)   
+ *	view.)
  *
  **************************************/
 	signed short	day, month, year;
@@ -461,7 +465,7 @@ signed int DateTime::yday (struct tm	*times)
 	if (month < 2)
 		return day;
 
-	if ( year%4 == 0 && year%100 != 0 || year%400 == 0 )
+	if ( (year%4 == 0 && year%100 != 0) || year%400 == 0 )
 		return day - 1;
 
 	return day - 2;

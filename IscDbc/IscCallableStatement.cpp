@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -49,36 +49,35 @@
 namespace IscDbcLibrary {
 
 char charTable [256] = {0};
-static int init();
-static int foo = init();
 
-int init ()
+static struct initCharTable
 {
-	int n;
-	const char *p;
+	initCharTable()
+	{
+		int n;
+		const char *p;
 
-	for (p = " ;\t\r\n"; *p; ++p)
-		charTable [*p] = WHITE;
+		for (p = " ;\t\r\n"; *p; ++p)
+			charTable [static_cast<unsigned char>(*p)] = WHITE;
 
-	for (p = "?=(),{}"; *p; ++p)
-		charTable [*p] = PUNCT;
+		for (p = "?=(),{}"; *p; ++p)
+			charTable [static_cast<unsigned char>(*p)] = PUNCT;
 
-	for (n = 'a'; n <= 'z'; ++n)
-		charTable [n] = LETTER | IDENT;
+		for (n = 'a'; n <= 'z'; ++n)
+			charTable [n] = LETTER | IDENT;
 
-	for (n = 'A'; n <= 'Z'; ++n)
-		charTable [n] = LETTER | IDENT;
+		for (n = 'A'; n <= 'Z'; ++n)
+			charTable [n] = LETTER | IDENT;
 
-	for (n = '0'; n <= '9'; ++n)
-		charTable [n] = DIGIT | IDENT;
+		for (n = '0'; n <= '9'; ++n)
+			charTable [n] = DIGIT | IDENT;
 
-	charTable ['\''] = QUOTE;
-	charTable ['"'] = QUOTE;
-	charTable ['_'] = IDENT;
-	charTable ['$'] = IDENT;
-
-	return 0;
-}
+		charTable ['\''] = QUOTE;
+		charTable ['"'] = QUOTE;
+		charTable ['_'] = IDENT;
+		charTable ['$'] = IDENT;
+	}
+} init;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -258,10 +257,10 @@ void IscCallableStatement::getToken(const char **ptr, char *token)
 
 	if (*p)
 		{
-		char c = charTable [*p];
+		char c = charTable [static_cast<unsigned char>(*p)];
 		*q++ = *p++;
 		if (c & IDENT)
-			while (charTable [*p] & IDENT)
+			while (IS_IDENT(*p))
 				*q++ = *p++;
 		else if (c & QUOTE)
 			{

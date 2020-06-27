@@ -1018,7 +1018,6 @@ bool IscConnection::removeSchemaFromSQL( char *strSql, int lenSql, char *strSqlO
 	ListSchemaIdentifier listSchemaIdentifierTbl;
 	int countNodesShema = 0;
 	int countTblNodesShema = 0;
-	int statysModify = 0;
 	int statusQuote = 0;
 	char *beg = strSql;
 	char *ptIn = strSql;
@@ -1287,7 +1286,7 @@ int IscConnection::getNativeSql (const char * inStatementText, int textLength1,
 	bool autoRemoveSchemaFromIdentifier = attachment->useSchemaIdentifier == 1;
 	bool autoQuoted = delimiter && attachment->autoQuotedIdentifier;
 
-#pragma FB_COMPILER_MESSAGE("IscConnection::getNativeSql - The temporary decision; FIXME!")
+//#pragma FB_COMPILER_MESSAGE("IscConnection::getNativeSql - The temporary decision; FIXME!")
 
 	if ( autoRemoveSchemaFromIdentifier )
 	{
@@ -1909,7 +1908,6 @@ void IscConnection::openDatabase(const char * dbName, Properties * properties)
 				int len2;
 				const char *beg = resultSet.sqlda->getVarying( 5, len2 );
 				const char *end = beg + len2;
-				const char *save = end;
 
 				while ( end > beg && *(--end) == ' ') len2--;
 

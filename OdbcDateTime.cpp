@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -22,12 +22,12 @@
  *
  * 2002-05-20	Updated OdbcDateTime.cpp
  *
- *				Contributed by Bernhard Schulte 
+ *				Contributed by Bernhard Schulte
  *				-	improvements to conversion routines
- *				o	TimeStamp Struct to Timestamp 
- *				o	DateTime to Date Struct 
+ *				o	TimeStamp Struct to Timestamp
+ *				o	DateTime to Date Struct
  *				o	TimeStamp to Timestamp Struct
- *				o	ndate takes a new parameter - seconds, 
+ *				o	ndate takes a new parameter - seconds,
  *					because days won't fit in otherwise.
  *
  */
@@ -117,13 +117,13 @@ int OdbcDateTime::convert (tagTIMESTAMP_STRUCT * tagTimeStampIn, TimeStamp * tim
 	times->tm_mon  = tagTimeStampIn->month-1;
 	times->tm_year = tagTimeStampIn->year-1900;
 
-	timeStampOut->nanos = ((tagTimeStampIn->hour * 60 + tagTimeStampIn->minute) * 60 + 
-		tagTimeStampIn->second) * ISC_TIME_SECONDS_PRECISION + tagTimeStampIn->fraction / STD_TIME_SECONDS_PRECISION; 
+	timeStampOut->nanos = ((tagTimeStampIn->hour * 60 + tagTimeStampIn->minute) * 60 +
+		tagTimeStampIn->second) * ISC_TIME_SECONDS_PRECISION + tagTimeStampIn->fraction / STD_TIME_SECONDS_PRECISION;
 
 	timeStampOut->date = nday(times);
 
 	return true;
-}	
+}
 
 
 
@@ -146,9 +146,9 @@ int OdbcDateTime::convert (DateTime * dateTimeIn, tagDATE_STRUCT * tagDateOut)
 
 	tagDateOut->year = times->tm_year + 1900;
 	tagDateOut->month = times->tm_mon + 1;
-	tagDateOut->day = times->tm_mday;	
+	tagDateOut->day = times->tm_mday;
 	return true;
-	
+
 }
 
 
@@ -281,9 +281,9 @@ signed int OdbcDateTime::nday (struct tm	*times)
 	c = year / 100;
 	ya = year - 100 * c;
 
-	return (signed int) (((QUAD) 146097 * c) / 4 + 
-		(1461 * ya) / 4 + 
-		(153 * month + 2) / 5 + 
+	return (signed int) (((QUAD) 146097 * c) / 4 +
+		(1461 * ya) / 4 +
+		(153 * month + 2) / 5 +
 		day + 1721119 - 2400001);
 }
 
@@ -305,7 +305,7 @@ signed int OdbcDateTime::yday (struct tm	*times)
  *	january 1 to be Year day 0, although it
  *	is day 1 of the month.   (Note that QLI,
  *	when printing Year days takes the other
- *	view.)   
+ *	view.)
  *
  **************************************/
 	signed short	day, month, year;
@@ -318,7 +318,7 @@ signed int OdbcDateTime::yday (struct tm	*times)
 	if (month < 2)
 		return day;
 
-	if ( year%4 == 0 && year%100 != 0 || year%400 == 0 )
+	if ( (year%4 == 0 && year%100 != 0) || year%400 == 0 )
 		return day - 1;
 
 	return day - 2;

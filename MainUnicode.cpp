@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -45,7 +45,7 @@ extern UINT codePage; // from Main.cpp
 template <typename TypeRealLen = SQLSMALLINT>
 class ConvertingString
 {
-	enum typestring { NONE, WIDECHARS, BYTESCHARS };
+	enum typestring { NONE, /* WIDECHARS, */ BYTESCHARS };
 
 	SQLCHAR		*byteString;
 	SQLWCHAR	*unicodeString;
@@ -54,14 +54,14 @@ class ConvertingString
 	typestring	isWhy;
 	bool		returnCountOfBytes;
 	OdbcConnection *connection;
-	
+
 public:
 	void setConnection( OdbcConnection *connect )
 	{
 		connection = connect;
 	}
 
-	ConvertingString() 
+	ConvertingString()
 	{
 		isWhy = NONE;
 		returnCountOfBytes = true;
@@ -115,7 +115,7 @@ public:
 	operator SQLCHAR*()	{ return byteString; }
 	int getLength() { return lengthString; }
 
-	~ConvertingString() 
+	~ConvertingString()
 	{
 		switch ( isWhy )
 		{
@@ -220,7 +220,7 @@ protected:
 			if ( lengthString )
 			{
 				byteString = new SQLCHAR[ lengthString + 2 ];
-				memset(byteString, 0, lengthString + 2); 
+				memset(byteString, 0, lengthString + 2);
 			}
 			else
 				byteString = NULL;
@@ -290,7 +290,7 @@ SQLRETURN SQL_API SQLConnectW( SQLHDBC hDbc,
 
 	SQLRETURN ret = ((OdbcConnection*) hDbc)->sqlConnect( ServerName, ServerName.getLength(), UserName,
 												UserName.getLength(), Authentication, Authentication.getLength() );
-	LOG_PRINT(( logFile, 
+	LOG_PRINT(( logFile,
 				"SQLConnectW           : Line %d\n"
 				"   +status            : %d\n"
 				"   +hDbc              : %p\n"
@@ -311,7 +311,7 @@ SQLRETURN SQL_API SQLConnectW( SQLHDBC hDbc,
 
 SQLRETURN SQL_API SQLDescribeColW( SQLHSTMT hStmt, SQLUSMALLINT columnNumber,
 							      SQLWCHAR *columnName, SQLSMALLINT bufferLength,
-								  SQLSMALLINT *nameLength, SQLSMALLINT *dataType, 
+								  SQLSMALLINT *nameLength, SQLSMALLINT *dataType,
 								  SQLULEN *columnSize, SQLSMALLINT *decimalDigits,
 								  SQLSMALLINT *nullable )
 {
@@ -397,7 +397,7 @@ SQLRETURN SQL_API SQLPrepareW( SQLHSTMT hStmt,
 	GUARD_HSTMT( hStmt );
 
 	ConvertingString<> StatementText( GETCONNECT_STMT( hStmt ), statementText, textLength );
-	
+
 	return ((OdbcStatement*) hStmt)->sqlPrepare( StatementText, StatementText.getLength() );
 }
 
@@ -453,7 +453,7 @@ SQLRETURN SQL_API SQLDriverConnectW( SQLHDBC hDbc, SQLHWND hWnd, SQLWCHAR *szCon
 	SQLRETURN ret = ((OdbcConnection*) hDbc)->sqlDriverConnect( hWnd, ConnStrIn, ConnStrIn.getLength(),
 													ConnStrOut, ConnStrOut.getLength(), pcbConnStrOut,
 													fDriverCompletion );
-	LOG_PRINT(( logFile, 
+	LOG_PRINT(( logFile,
 				"SQLDriverConnectW     : Line %d\n"
 				"   +status            : %d\n"
 				"   +hDbc              : %p\n"
@@ -596,7 +596,7 @@ SQLRETURN SQL_API SQLSetConnectOptionW( SQLHDBC hDbc, SQLUSMALLINT option, SQLUL
 
 			ConvertingString<> Value( (OdbcConnection*)hDbc, (SQLWCHAR *)value, bufferLength );
 
-			return ((OdbcConnection*) hDbc)->sqlSetConnectAttr( option, 
+			return ((OdbcConnection*) hDbc)->sqlSetConnectAttr( option,
 												(SQLPOINTER)(SQLCHAR*)Value, Value.getLength() );
 		}
 	}
@@ -750,7 +750,7 @@ SQLRETURN SQL_API SQLNativeSqlW( SQLHDBC hDbc,
 
 	if ( cbSqlStrIn == SQL_NTS )
 		cbSqlStrIn = (SQLINTEGER)wcslen( (const wchar_t*)szSqlStrIn );
-	
+
 	bool isByte = !( cbSqlStrIn % 2 );
 
 	ConvertingString<> SqlStrIn( (OdbcConnection*)hDbc, szSqlStrIn, cbSqlStrIn );
@@ -764,7 +764,7 @@ SQLRETURN SQL_API SQLNativeSqlW( SQLHDBC hDbc,
 
 ///// SQLPrimaryKeysW /////
 
-SQLRETURN SQL_API SQLPrimaryKeysW( SQLHSTMT hStmt, 
+SQLRETURN SQL_API SQLPrimaryKeysW( SQLHSTMT hStmt,
 								  SQLWCHAR *szCatalogName, SQLSMALLINT cbCatalogName,
 								  SQLWCHAR *szSchemaName, SQLSMALLINT cbSchemaName,
 								  SQLWCHAR *szTableName, SQLSMALLINT cbTableName )
@@ -910,7 +910,7 @@ SQLRETURN SQL_API SQLColAttributeW( SQLHSTMT hStmt, SQLUSMALLINT columnNumber,
 
 		if ( bufferLength > 0 )
 		{
-			ConvertingString<> CharacterAttribute( bufferLength, 
+			ConvertingString<> CharacterAttribute( bufferLength,
 									(SQLWCHAR *)characterAttribute, stringLength );
 			CharacterAttribute.setConnection( GETCONNECT_STMT( hStmt ) );
 
@@ -944,7 +944,7 @@ SQLRETURN SQL_API SQLGetConnectAttrW( SQLHDBC hDbc,
 			ConvertingString<SQLINTEGER> Value( bufferLength, (SQLWCHAR *)value, stringLength );
 			Value.setConnection( (OdbcConnection*)hDbc );
 
-			return ((OdbcConnection*) hDbc)->sqlGetConnectAttr( attribute, 
+			return ((OdbcConnection*) hDbc)->sqlGetConnectAttr( attribute,
 											(SQLPOINTER)(SQLCHAR*)Value, Value.getLength(), stringLength );
 		}
 	}
@@ -956,7 +956,7 @@ SQLRETURN SQL_API SQLGetConnectAttrW( SQLHDBC hDbc,
 ///// SQLGetDescFieldW /////
 
 SQLRETURN SQL_API SQLGetDescFieldW( SQLHDESC hDesc, SQLSMALLINT recNumber,
-								   SQLSMALLINT fieldIdentifier, SQLPOINTER value, 
+								   SQLSMALLINT fieldIdentifier, SQLPOINTER value,
 								   SQLINTEGER bufferLength, SQLINTEGER *stringLength )
 {
 	TRACE ("SQLGetDescFieldW");
@@ -978,8 +978,6 @@ SQLRETURN SQL_API SQLGetDescFieldW( SQLHDESC hDesc, SQLSMALLINT recNumber,
 
 		if ( bufferLength > 0 || bufferLength == SQL_NTS )
 		{
-			bool isByte = !( bufferLength % 2 );
-
 			ConvertingString<SQLINTEGER> Value( bufferLength, (SQLWCHAR *)value, stringLength );
 			Value.setConnection( GETCONNECT_DESC( hDesc ) );
 
@@ -997,8 +995,8 @@ SQLRETURN SQL_API SQLGetDescFieldW( SQLHDESC hDesc, SQLSMALLINT recNumber,
 SQLRETURN SQL_API SQLGetDescRecW( SQLHDESC hDesc,
 								 SQLSMALLINT recNumber, SQLWCHAR *name,
 								 SQLSMALLINT bufferLength, SQLSMALLINT *stringLength,
-								 SQLSMALLINT *type, SQLSMALLINT *subType, 
-								 SQLLEN     *length, SQLSMALLINT *precision, 
+								 SQLSMALLINT *type, SQLSMALLINT *subType,
+								 SQLLEN     *length, SQLSMALLINT *precision,
 								 SQLSMALLINT *scale, SQLSMALLINT *nullable )
 {
 	TRACE ("SQLGetDescRecW");
@@ -1008,7 +1006,7 @@ SQLRETURN SQL_API SQLGetDescRecW( SQLHDESC hDesc,
 	Name.setConnection( GETCONNECT_DESC( hDesc ) );
 
 	return ((OdbcDesc*) hDesc)->sqlGetDescRec( recNumber, Name, Name.getLength(),
-											  stringLength, type, subType, 
+											  stringLength, type, subType,
 											  length, precision, scale, nullable );
 }
 
@@ -1159,7 +1157,7 @@ SQLRETURN SQL_API SQLSetDescFieldW( SQLHDESC hDesc,
 		if ( bufferLength > 0 || bufferLength == SQL_NTS )
 		{
 			int len;
-			
+
 			if ( bufferLength == SQL_NTS )
 				len = (int)wcslen( (const wchar_t*)value );
 			else

@@ -131,7 +131,7 @@ int findCharsetsCode( const char *charset )
 int getCharsetSize( int charsetCode )
 {
 	if ( charsetCode > 0 ) charsetCode &= 0xff;
-	if ( charsetCode < 0 || charsetCode > SIZE_OF_LISTCHARSETS )
+	if ( charsetCode < 0 || charsetCode > static_cast<int>(SIZE_OF_LISTCHARSETS) )
 		return 1;
 	return listCharsets[ charsetCode ].size;
 }
@@ -502,15 +502,11 @@ static const UChar32 utf8_errorValue[6] =
 
 unsigned int utf8_mbstowcs( wchar_t *wcs, const char *mbs, unsigned int lengthForMBS )
 {
-	USHORT err_code = 0;
-	ULONG err_position = 0;
-
 	if ( !wcs )
 		return lengthForMBS * sizeof( *wcs );
 
 	const UCHAR* mbsOrg = (const UCHAR*)mbs;
-	const UCHAR* const mbsEnd = mbsOrg + lengthForMBS;
-	const USHORT* const wcsStart = (const USHORT*)wcs;
+	const wchar_t* const wcsStart = wcs;
 
 	for ( ULONG i = 0; i < lengthForMBS; )
 	{
@@ -524,8 +520,6 @@ unsigned int utf8_mbstowcs( wchar_t *wcs, const char *mbs, unsigned int lengthFo
 		}
 		else
 		{
-			err_position = i - 1;
-
 			c = utf8_nextCharSafeBody( mbsOrg,
 									   reinterpret_cast<int32_t*>(&i),
 									   lengthForMBS,
@@ -534,7 +528,6 @@ unsigned int utf8_mbstowcs( wchar_t *wcs, const char *mbs, unsigned int lengthFo
 
 			if ( c < 0 )
 			{
-				err_code = CS_BAD_INPUT;
 				break;
 			}
 			else if ( c <= 0xFFFF )
@@ -548,13 +541,11 @@ unsigned int utf8_mbstowcs( wchar_t *wcs, const char *mbs, unsigned int lengthFo
 	}
 
 	*wcs = L'\0';
-	return (const USHORT*)wcs - wcsStart;
+	return wcs - wcsStart;
 }
 
 unsigned int utf8_wcstombs( char *mbs, const wchar_t *wcs, unsigned int lengthForMBS )
 {
-	USHORT err_code = 0;
-	ULONG err_position = 0;
 	ULONG wcsLen = (ULONG)wcslen( wcs );
 
 	if ( !wcs || !*wcs )
@@ -573,8 +564,6 @@ unsigned int utf8_wcstombs( char *mbs, const wchar_t *wcs, unsigned int lengthFo
 	{
 		if ( !(mbsEnd - mbsOrg) )
 		{
-			err_code = CS_TRUNCATION_ERROR;
-			err_position = i * sizeof( *wcsOrg );
 			break;
 		}
 
@@ -588,8 +577,6 @@ unsigned int utf8_wcstombs( char *mbs, const wchar_t *wcs, unsigned int lengthFo
 		}
 		else
 		{
-			err_position = (i - 1) * sizeof( *wcsOrg );
-
 			if ( U_IS_SURROGATE( c ) )
 			{
 				UChar32 c2;
@@ -603,7 +590,6 @@ unsigned int utf8_wcstombs( char *mbs, const wchar_t *wcs, unsigned int lengthFo
 				}
 				else
 				{
-					err_code = CS_BAD_INPUT;
 					break;
 				}
 			}
@@ -632,7 +618,6 @@ unsigned int utf8_wcstombs( char *mbs, const wchar_t *wcs, unsigned int lengthFo
 			}
 			else
 			{
-				err_code = CS_TRUNCATION_ERROR;
 				break;
 			}
 		}

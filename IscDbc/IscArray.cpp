@@ -460,7 +460,7 @@ void IscArray::fetchArrayToString()
 				len=sprintf(ptDst,"%i",*(short*)ptSrc);
 				break;
 			case blr_long :
-				len=sprintf(ptDst,"%ld",*(int*)ptSrc);
+				len=sprintf(ptDst,"%d",*(int*)ptSrc);
 				break;
 			case blr_int64 :
 				len=sprintf(ptDst,"%lld",*(__int64*)ptSrc);
@@ -610,16 +610,14 @@ void IscArray::convStringToArray( char *data, int length )
 				len = arrSizeElement - sizeof(short);
 				if(lenSrc > len)
 					lenSrc = len;
+				*(short*)ptDst = lenSrc;
 				if(lenSrc > 0)
 				{
-					pt = ptDst;
+					pt = ptDst + 2;
 					do
 						*pt++ = *ptSrc++;
 					while ( --lenSrc );
 				}
-				else
-					*(short*)ptDst = 0;
-				*pt = '\0';
 				break;
 
 			case blr_text:
@@ -712,6 +710,9 @@ void IscArray::writeArray(Value * value)
 
 	case String:
 		convStringToArray ( value->data.string.string , (int)strlen( value->data.string.string ) );
+		break;
+
+	default:
 		break;
 	} // End switch (value->type)
 

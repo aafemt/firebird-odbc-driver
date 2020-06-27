@@ -499,7 +499,7 @@ void Sqlda::allocBuffer ( IscStatement *stmt )
 		if (length == 0)
 			throw SQLEXCEPTION (COMPILE_ERROR, "Sqlda variable has zero length");
 		offset = ROUNDUP (offset, boundary);
-		var->sqldata = (char*)(offsetSqldata[n] = offset);
+		var->sqldata = (char*)(intptr_t)(offsetSqldata[n] = offset);
 		offset += length;
 	}
 
@@ -608,7 +608,7 @@ void Sqlda::print()
 					break;
 
 				case SQL_LONG:
-					printf ("%ld", *(int*) p);
+					printf ("%d", *(int*) p);
 					break;
 
 				case SQL_FLOAT:
@@ -1138,7 +1138,7 @@ void Sqlda::setBlob(XSQLVAR * var, Value * value, IscStatement *stmt)
 		{
 		length = 0;
 		Blob *blob = value->data.blob;
-		for (int len, offset = 0; len = blob->getSegmentLength (offset); offset += len)
+		for (int len, offset = 0; (len = blob->getSegmentLength (offset)); offset += len)
 			{
 			GDS->_put_segment (statusVector, &blobHandle, len, (char*) blob->getSegment (offset));
 			if (statusVector [1])

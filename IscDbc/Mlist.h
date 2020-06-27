@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -31,10 +31,10 @@ namespace IscDbcLibrary {
 
 // Template for default value comparsion
 template <typename T>
-class DefaultComparator 
+class DefaultComparator
 {
 public:
-	static int compare(const T *a, const T *b) 
+	static int compare(const T *a, const T *b)
 	{
 	    return 1;
 	}
@@ -48,10 +48,10 @@ private:
 			*ptActiveNode; // active list node
 	int		count;	// count node
 	char	bOk;
-	
+
 	const int	diffCache;
 	int		numberStartCache;
-	int		countCache;		 
+	int		countCache;
 	int		rowActive;
 
 private:
@@ -111,10 +111,10 @@ public:
 		}
 		return bRez;
 	}
-	
+
 	T & operator [](int pos){ return  ptRoot[pos];}
 	T & operator ()(int pos)
-	{ 
+	{
 		reInit(pos);
 		if ( count <= pos )
 			count = pos + 1;
@@ -160,7 +160,7 @@ public:
 		}
 		return ptActiveNode;
 	}
-	
+
 	T *GetNext()
 	{
 		if ( rowActive + 1 >= count )
@@ -169,7 +169,7 @@ public:
 		ptActiveNode = &ptRoot[++rowActive];
 		return ptActiveNode;
 	}
-	
+
 	int SearchAndInsert(T * key)
 	{
 		register int ret = 1, i, l = 0, u = count - 1;
@@ -183,7 +183,7 @@ public:
 				u=i-1;
 			else if ( ret > 0 )
 				l=i+1;
-			else 
+			else
 				break;
 		}
 
@@ -207,7 +207,6 @@ public:
 	int Search(T * key)
 	{
 		register int ret = 1, i, l = 0, u = count - 1;
-		int size = sizeof(T);
 		T * buf = ptRoot;
 
 		while ( u >= l )
@@ -217,7 +216,7 @@ public:
 				u=i-1;
 			else if ( ret > 0 )
 				l=i+1;
-			else 
+			else
 				break;
 		}
 
@@ -238,7 +237,7 @@ public:
 			ptRoot = NULL;
 		}
 
-		count = 0; 
+		count = 0;
 		countCache = numberStartCache;
 	}
 };

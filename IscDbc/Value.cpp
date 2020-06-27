@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -26,7 +26,7 @@
  *
  *	2002-11-25	Values.cpp
  *				Contributed by C. G. Alvarez
- *				Minor adjustment to improve handling of 
+ *				Minor adjustment to improve handling of
  *				NUMERIC and DECIMAL
  *
  *	2002-11-24	Values.cpp
@@ -35,8 +35,8 @@
  *
  *	2002-05-20	Value.cpp
  *				Contributed by Bernhard Schulte
- *				o Updated setValue() to support changes 
- *				  in timestamp conversion.	
+ *				o Updated setValue() to support changes
+ *				  in timestamp conversion.
  *
  */
 
@@ -129,11 +129,14 @@ void Value::setValue(Value * value)
 		case Varchar:
 			setString (value->data.string.length, value->data.string.string, true);
 			return;
+
+		default:
+			break;
 		}
 
 	clear();
 	type = value->type;
-					
+
 	switch (value->type)
 		{
 		case Null:
@@ -170,10 +173,10 @@ void Value::setValue(Value * value)
 		case Date:
 			data.date = value->data.date;
 			break;
-									
+
 		default:
 			NOT_YET_IMPLEMENTED;
-		}			
+		}
 
 }
 
@@ -249,7 +252,7 @@ int Value::getString(int bufferSize, char * buffer)
 		case Null:
 			buffer [0] = 0;
 			return 1;
-					
+
 		case String:
 		case Char:
 		case Varchar:
@@ -359,6 +362,9 @@ int Value::compare(Value * value)
 
 			case Quad:
 				return (int) (data.quad - value->data.quad);
+
+			default:
+				break;
 			}
 
 	switch (MAX (type, value->type))
@@ -386,14 +392,14 @@ int Value::compare(Value * value)
 			if (n < l1)
 				{
 				for (; n < l1; ++n)
-					if (c = *p++ - ' ')
+					if ((c = *p++ - ' '))
 						return c;
 				return 0;
 				}
 			if (n < l2)
 				{
 				for (; n < l2; ++n)
-					if (c = ' ' - *q++)
+					if ((c = ' ' - *q++))
 						return c;
 				}
 			return 0;
@@ -412,11 +418,14 @@ int Value::compare(Value * value)
 
 		case Date:
 			return getDate().date - value->getDate().date;
+
+		default:
+			NOT_YET_IMPLEMENTED;
+
 		}
 
-	NOT_YET_IMPLEMENTED;
 
-	return 0;						
+	return 0;
 }
 
 void Value::setValue(float value)
@@ -613,7 +622,7 @@ const char* Value::getString(char **tempPtr)
 		case Timestamp:
 			data.timestamp.getTimeString (sizeof (temp), temp);
 			break;
-			
+
 		case TimeType:
 			data.time.getString (sizeof (temp), temp);
 			break;
@@ -687,12 +696,12 @@ Blob* Value::getBlob()
 
 		case String:
 			blob = new BinaryBlob;
-			blob->putSegment (data.string.length, data.string.string, false);	
+			blob->putSegment (data.string.length, data.string.string, false);
 			return blob;
 
+		default:
+			NOT_YET_IMPLEMENTED;
 		}
-
-	NOT_YET_IMPLEMENTED;
 
 	return NULL;
 }
@@ -902,6 +911,7 @@ bool Value::isNull(Type conversionType)
 			case Varchar:
 				if (data.string.length == 0)
 					return true;
+			default:
 				break;
 			}
 
@@ -1094,11 +1104,11 @@ void Value::roundStringNumber ( char *& strNumber, int numDigits, int &realDigit
 	char * &chBeg = strNumber;
 	char * chEnd = chBeg + numDigits;
 
-	if ( *chEnd >= '5' ) 
+	if ( *chEnd >= '5' )
 	{
 		++*--chEnd;
 
-		while ( *chEnd > '9' ) 
+		while ( *chEnd > '9' )
 		{
 			*chEnd = '0';
 			if ( chEnd > chBeg )
@@ -1176,7 +1186,7 @@ void Value::convertFloatToString(double value, char *string, int size, int *leng
 
 			if ( sign )
 				*pt++ = '-';
-			
+
 			*pt++ = *pt1++;
 			*pt++ = POINT_DIV;
 
@@ -1185,7 +1195,7 @@ void Value::convertFloatToString(double value, char *string, int size, int *leng
 
 			end = pt - 1;
 			while ( *end == '0' ) --end;
-			
+
 			if ( *end == POINT_DIV )
 				pt = end;
 			else
@@ -1212,7 +1222,7 @@ void Value::convertFloatToString(double value, char *string, int size, int *leng
 
 		// normal number
 		end = pt1 + numDigits;
-		
+
 		while ( pt <= end )
 		{
 			value *= 10;
@@ -1249,10 +1259,10 @@ void Value::convertFloatToString(double value, char *string, int size, int *leng
 			while ( (*pt++ = *pt1++) );
 			--pt;
 		}
-	} 
-	else if ( value > 0 ) 
+	}
+	else if ( value > 0 )
 	{   // shift to left number 0.0000122 to 0.122
-		while ( ( valFract = value * 10 ) < 1 ) 
+		while ( ( valFract = value * 10 ) < 1 )
 		{
 			value = valFract;
 			realDigits--;
@@ -1261,7 +1271,7 @@ void Value::convertFloatToString(double value, char *string, int size, int *leng
 		char * beg = buf + 1;
 		pt1 = buf + numDigits + 1;
 		pt = buf + 1;
-		
+
 		while ( pt <= pt1 )
 		{
 			value *= 10;
@@ -1276,7 +1286,7 @@ void Value::convertFloatToString(double value, char *string, int size, int *leng
 		*--pt = '\0';
 		--pt;
 
-		while ( pt > beg && *pt == '0' ) 
+		while ( pt > beg && *pt == '0' )
 			*pt-- = '\0';
 
 		pt = dst;

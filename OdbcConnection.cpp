@@ -237,9 +237,7 @@ struct InfoItem
 
 static SQLUSMALLINT functionsArray [100];
 static SQLSMALLINT  functionsBitmap [SQL_API_ODBC3_ALL_FUNCTIONS_SIZE];
-static bool moduleInit();
-static InfoItem infoItems [INFO_SLOTS];
-static bool foo = moduleInit();
+static InfoItem infoItems[INFO_SLOTS];
 
 /***
 #define SQL_FUNC_EXISTS(pfExists, uwAPI) \
@@ -248,44 +246,46 @@ static bool foo = moduleInit();
  				 ) ? SQL_TRUE : SQL_FALSE \
 ***/
 
-bool moduleInit()
+static struct moduleInit
 {
-	for (unsigned int n = 0; n < sizeof (supportedFunctions) / sizeof (supportedFunctions [0]); ++n)
+	moduleInit()
 	{
-		int fn = supportedFunctions [n];
-
-		if ( fn < 100 )
+		for (unsigned int n = 0; n < sizeof (supportedFunctions) / sizeof (supportedFunctions [0]); ++n)
 		{
-			//
-			// SQL_API_ALL_FUNCTIONS is used by an ODBC 2.x application
-			// to determine support of ODBC 2.x and earlier functions
-			//
-			// where functionsArray should be 100 elements
-			//
-			functionsArray [fn] = SQL_TRUE;
+			int fn = supportedFunctions [n];
+
+			if ( fn < 100 )
+			{
+				//
+				// SQL_API_ALL_FUNCTIONS is used by an ODBC 2.x application
+				// to determine support of ODBC 2.x and earlier functions
+				//
+				// where functionsArray should be 100 elements
+				//
+				functionsArray [fn] = SQL_TRUE;
+			}
+
+			ASSERT ((fn >> 4) < SQL_API_ODBC3_ALL_FUNCTIONS_SIZE);
+			functionsBitmap [fn >> 4] |= 1 << (fn & 0xf);
 		}
 
-		ASSERT ((fn >> 4) < SQL_API_ODBC3_ALL_FUNCTIONS_SIZE);
-		functionsBitmap [fn >> 4] |= 1 << (fn & 0xf);
+		for (const TblInfoItem *t = tblInfoItems; t->type; ++t)
+		{
+			int slot = INFO_SLOT (t->item);
+			ASSERT (slot >= 0 && slot < INFO_SLOTS);
+			InfoItem *item = infoItems + slot;
+	#ifdef DEBUG
+			ASSERT (item->name == NULL);
+			item->name = t->name;
+	#endif
+			item->type = t->type;
+			item->value = t->value;
+		}
+
+//		bool test = SQL_FUNC_EXISTS (functionsBitmap, SQL_API_SQLALLOCHANDLE);
+//		return test;
 	}
-
-	for (const TblInfoItem *t = tblInfoItems; t->type; ++t)
-	{
-		int slot = INFO_SLOT (t->item);
-		ASSERT (slot >= 0 && slot < INFO_SLOTS);
-		InfoItem *item = infoItems + slot;
-#ifdef DEBUG
-		ASSERT (item->name == NULL);
-		item->name = t->name;
-#endif
-		item->type = t->type;
-		item->value = t->value;
-	}
-
-	bool test = SQL_FUNC_EXISTS (functionsBitmap, SQL_API_SQLALLOCHANDLE);
-
-	return test;
-}
+} foo;
 
 static int getDriverBuildKey()
 {
@@ -429,7 +429,7 @@ SQLRETURN OdbcConnection::sqlSetConnectAttr( SQLINTEGER attribute, SQLPOINTER va
 	case SQL_ATTR_AUTOCOMMIT:
 		autoCommit = (intptr_t) value == SQL_AUTOCOMMIT_ON;
 		if (connection)
-			connection->setAutoCommit (autoCommit);
+			connection->setAutoCommit(autoCommit);
 		break;
 
 	case SQL_ATTR_ODBC_CURSORS:
@@ -796,7 +796,7 @@ SQLRETURN OdbcConnection::sqlBrowseConnect(SQLCHAR * inConnectionString, SQLSMAL
 		char name [256];
 		char value [256];
 		char *q = name;
-		char c;
+		char c = '\0';
 
 		while (p < end && ((c = *p),c == ' ' || c == '*'))
 			++p;
@@ -1530,6 +1530,9 @@ SQLRETURN OdbcConnection::sqlGetInfo( SQLUSMALLINT type, SQLPOINTER ptr, SQLSMAL
 #endif
 		*((SQLUINTEGER*) ptr) = value;
 		break;
+
+	case infoNone:
+		break;
 	}
 
 	return sqlSuccess();
@@ -1666,10 +1669,10 @@ SQLRETURN OdbcConnection::connect(const char *sharedLibrary, const char * databa
 		{
 			char buffer[256];
 			sprintf (buffer, "%d", connectionTimeout);
-			properties->putValue ("timeout", buffer);
+			properties->putValue("timeout", buffer);
 		}
 
-		connection->openDatabase (databaseName, properties);
+		connection->openDatabase(databaseName, properties);
 		properties->release();
 
 		env->envShare = connection->getEnvironmentShare();
@@ -2022,7 +2025,7 @@ void OdbcConnection::descriptorDeleted(OdbcDesc * descriptor)
 SQLRETURN OdbcConnection::sqlGetConnectAttr(int attribute, SQLPOINTER ptr, int bufferLength, SQLINTEGER *lengthPtr)
 {
 	clearErrors();
-	int value;
+	int value = 0;
 	const char *string = NULL;
 
 	switch (attribute)

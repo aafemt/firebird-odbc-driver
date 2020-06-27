@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -40,24 +40,23 @@ static char THIS_FILE[]=__FILE__;
 namespace IscDbcLibrary {
 
 char charTableHexToDigit [256] = {0};
-static int initCharHexToDigit();
-static int foo = initCharHexToDigit();
 
-int initCharHexToDigit ()
+static struct initCharHexToDigit
 {
-	int n;
+	initCharHexToDigit ()
+	{
+		int n;
 
-	for (n = 'a'; n <= 'f'; ++n)
-		charTableHexToDigit [n] = n - 'a' + 10;
+		for (n = 'a'; n <= 'f'; ++n)
+			charTableHexToDigit [n] = n - 'a' + 10;
 
-	for (n = 'A'; n <= 'F'; ++n)
-		charTableHexToDigit [n] = n - 'A' + 10;
+		for (n = 'A'; n <= 'F'; ++n)
+			charTableHexToDigit [n] = n - 'A' + 10;
 
-	for (n = '0'; n <= '9'; ++n)
-		charTableHexToDigit [n] = n - '0';
-
-	return 0;
-}
+		for (n = '0'; n <= '9'; ++n)
+			charTableHexToDigit [n] = n - '0';
+	}
+} foo;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -175,9 +174,9 @@ char* Stream::convStrHexToBinary (char * orgptr, int len)
 	int n = len/2;
 
 	while ( n-- )
-		*binstr =	charTableHexToDigit[ *ptr++ ] << 4,
-		*binstr++ += charTableHexToDigit[ *ptr++ ];
-	
+		*binstr =	charTableHexToDigit[ static_cast<unsigned char>(*ptr++) ] << 4,
+		*binstr++ += charTableHexToDigit[ static_cast<unsigned char>(*ptr++) ];
+
 	return orgptr;
 }
 
@@ -526,7 +525,7 @@ void Stream::compress(int length, void * address)
 	while (p < end)
 		{
 		short *start = ++q;
-		while (p < end && 
+		while (p < end &&
 			   ((p > yellow) || (p [0] != p [1] || p [1] != p [2])))
 			*q++ = *p++;
 		int n = q - start;
@@ -550,8 +549,8 @@ void Stream::compress(int length, void * address)
 
 char* Stream::decompress()
 {
-	char *data;
-	short *q, *limit;
+	char *data = nullptr;
+	short *q = nullptr, *limit = nullptr;
 	int run = 0;
 	decompressedLength = 0;
 
@@ -600,8 +599,8 @@ char* Stream::decompress()
 				}
 			}
 		}
-	
-	//printShorts ("Decompressed", (decompressedLength + 1) / 2, (short*) data);	
+
+	//printShorts ("Decompressed", (decompressedLength + 1) / 2, (short*) data);
 	return data;
 }
 
@@ -737,7 +736,7 @@ void* Stream::getSegment(int offset)
 
 void Stream::putSegment(Blob * blob)
 {
-	for (int n, offset = 0; n = blob->getSegmentLength (offset); offset += n)
+	for (int n, offset = 0; (n = blob->getSegmentLength (offset)); offset += n)
 		putSegment (n, (const char*) blob->getSegment (offset), true);
 }
 

@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -61,7 +61,7 @@ LinkedList::~LinkedList ()
  **************************************/
 LinkedNode *node;
 
-while (node = next)
+while ((node = next))
     {
 	next = node->next;
 	delete node;
@@ -165,7 +165,7 @@ void LinkedList::clear ()
  **************************************/
 LinkedNode	*node;
 
-while (node = next)
+while ((node = next))
     {
 	next = node->next;
 	delete node;
@@ -410,7 +410,7 @@ for (LinkedNode *node = next; node; node = node->next)
     if (node->object == item)
 		{
 		LinkedNode *insert = new LinkedNode (insertItem);
-		if (insert->prior = node->prior)
+		if ((insert->prior = node->prior))
 			insert->prior->next = insert;
 		else
 			next = insert;

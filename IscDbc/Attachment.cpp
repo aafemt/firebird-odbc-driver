@@ -374,7 +374,7 @@ void Attachment::openDatabase(const char *dbName, Properties *properties)
 								break;
 							default:
 								versionFb = atoi(beg);
-								while( *beg >= '0' && *beg <= '9' || *beg == ' ')
+								while( (*beg >= '0' && *beg <= '9') || *beg == ' ')
 									beg++;
 								if ( *beg == '.' )
 									break;
@@ -416,7 +416,7 @@ void Attachment::openDatabase(const char *dbName, Properties *properties)
 								break;
 							default: // Firebird (##.##.##.####) and Yaffil(##.##.####)
 								version = atoi(beg);
-								while( *beg >= '0' && *beg <= '9' || *beg == ' ')
+								while( (*beg >= '0' && *beg <= '9') || *beg == ' ')
 									beg++;
 								if ( *beg == '.' )
 									break;

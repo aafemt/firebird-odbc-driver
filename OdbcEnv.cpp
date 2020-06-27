@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -23,7 +23,7 @@
  *
  *				Contributed by Robert Milharcic
  *				o allocHandle() - Fix typo in assignment to connections
- *	
+ *
  *
  *
  */
@@ -228,7 +228,7 @@ SQLRETURN OdbcEnv::sqlSetEnvAttr(int attribute, SQLPOINTER value, int length)
 		postError ("HY000", exception);
 		return SQL_ERROR;
 	}
-			
+
 	return sqlSuccess();
 }
 
@@ -262,7 +262,7 @@ SQLRETURN OdbcEnv::sqlDrivers(SQLUSMALLINT direction,
 	default :
 		return sqlReturn (SQL_ERROR, "HY103", "Invalid retrieval code");
 	}
-	
+
 	if ( endDrv && *endDrv )
 	{
 		while( *endDrv )
@@ -280,12 +280,12 @@ SQLRETURN OdbcEnv::sqlDrivers(SQLUSMALLINT direction,
 	{
 		int lenDrv = (int)strlen(activeDrv);
 		int len = MIN(lenDrv, (int)MAX(0, (int)bufferLength1-1));
-		 
-		if ( len > 0 ) 
+
+		if ( len > 0 )
 			memcpy (serverName, activeDrv, len);
 
 		((char*) (serverName)) [len] = 0;
-		
+
 		if ( nameLength1Ptr )
 			*nameLength1Ptr = len;
 
@@ -297,8 +297,8 @@ SQLRETURN OdbcEnv::sqlDrivers(SQLUSMALLINT direction,
 	{
 		int lenDes = (int)strlen(DRIVER_FULL_NAME);
 		int len = MIN(lenDes, (int)MAX(0, (int)bufferLength2-1));
-		 
-		if ( len > 0 ) 
+
+		if ( len > 0 )
 			memcpy (description, DRIVER_FULL_NAME, len);
 
 		((char*) (description)) [len] = 0;
@@ -353,7 +353,7 @@ SQLRETURN OdbcEnv::sqlDataSources(SQLUSMALLINT direction,
 	default :
 		return sqlReturn (SQL_ERROR, "HY103", "Invalid retrieval code");
 	}
-	
+
 	if ( endDSN && *endDSN )
 	{
 		while( *endDSN )
@@ -371,12 +371,12 @@ SQLRETURN OdbcEnv::sqlDataSources(SQLUSMALLINT direction,
 	{
 		int lenDSN = (int)strlen(activeDSN);
 		int len = MIN(lenDSN, (int)MAX(0, (int)bufferLength1-1));
-		 
-		if ( len > 0 ) 
+
+		if ( len > 0 )
 			memcpy (serverName, activeDSN, len);
 
 		((char*) (serverName)) [len] = 0;
-		
+
 		if ( nameLength1Ptr )
 			*nameLength1Ptr = len;
 
@@ -388,8 +388,8 @@ SQLRETURN OdbcEnv::sqlDataSources(SQLUSMALLINT direction,
 	{
 		int lenDes = (int)strlen(DRIVER_FULL_NAME);
 		int len = MIN(lenDes, (int)MAX(0, (int)bufferLength2-1));
-		 
-		if ( len > 0 ) 
+
+		if ( len > 0 )
 			memcpy (description, DRIVER_FULL_NAME, len);
 
 		((char*) (description)) [len] = 0;
@@ -412,8 +412,8 @@ BOOL OdbcEnv::getDrivers()
 	const char	* odbcDrivers = "ODBC Drivers";
 	char * ptStr, * ptStrEnd, * ptStrSave;
 	char bufferDrv[SQL_MAX_DSN_LENGTH + 1];
-	int lenName = (int)strlen(DRIVER_FULL_NAME);
-	int n=0, nRead, nLen;
+	//int lenName = (int)strlen(DRIVER_FULL_NAME);
+	int nRead, nLen;
 
 	clearErrors();
 
@@ -425,10 +425,11 @@ BOOL OdbcEnv::getDrivers()
 		while( *ptStrEnd )
 			++ptStrEnd;
 		++ptStrEnd;
-		nLen = ptStrEnd - ptStr; 
+		nLen = ptStrEnd - ptStr;
 		nRead -= nLen;
 
-		n = SQLGetPrivateProfileString(ptStr, "FileExtns", "", bufferDrv, sizeof(bufferDrv),odbcInctFileName);
+		int n = SQLGetPrivateProfileString(ptStr, "FileExtns", "", bufferDrv, sizeof(bufferDrv),odbcInctFileName);
+		bufferDrv[n] = '\0';
 
 		if ( strstr(bufferDrv, "*.fdb") || strstr(bufferDrv, "*.gdb") )
 		{
@@ -438,7 +439,7 @@ BOOL OdbcEnv::getDrivers()
 
 		ptStr = ptStrEnd;
 	}
-	
+
 	*ptStrSave = '\0';
 	activeDrv = endDrv = listDrv;
 
@@ -451,7 +452,7 @@ bool OdbcEnv::getDataSources( SQLUSMALLINT wConfigMode )
 	char * ptStr, * ptStrEnd, * ptStrSave;
 	char bufferDSN[SQL_MAX_DSN_LENGTH + 1];
 	int lenName = (int)strlen(DRIVER_FULL_NAME);
-	int n=0, nRead, nLen;
+	int nRead, nLen;
 
 	clearErrors();
 
@@ -465,10 +466,11 @@ bool OdbcEnv::getDataSources( SQLUSMALLINT wConfigMode )
 		while( *ptStrEnd )
 			++ptStrEnd;
 		++ptStrEnd;
-		nLen = ptStrEnd - ptStr; 
+		nLen = ptStrEnd - ptStr;
 		nRead -= nLen;
 
-		n = SQLGetPrivateProfileString(odbcDataSources, ptStr, "", bufferDSN, sizeof(bufferDSN),odbcIniFileName);
+		int n = SQLGetPrivateProfileString(odbcDataSources, ptStr, "", bufferDSN, sizeof(bufferDSN),odbcIniFileName);
+		bufferDSN[n] = '\0';
 
 		if ( !memcmp(bufferDSN, DRIVER_FULL_NAME, lenName) )
 		{
@@ -478,7 +480,7 @@ bool OdbcEnv::getDataSources( SQLUSMALLINT wConfigMode )
 
 		ptStr = ptStrEnd;
 	}
-	
+
 	*ptStrSave = '\0';
 	activeDSN = endDSN = listDSN;
 

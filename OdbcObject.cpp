@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -43,10 +43,10 @@ OdbcObject::OdbcObject()
 	next = NULL; // NOMEY
 	errors = NULL;
 	infoPosted = false;
-	sqlDiagCursorRowCount = 0;			// SQL_DIAG_CURSOR_ROW_COUNT 
-	sqlDiagDynamicFunction = NULL;		// SQL_DIAG_DYNAMIC_FUNCTION 
+	sqlDiagCursorRowCount = 0;			// SQL_DIAG_CURSOR_ROW_COUNT
+	sqlDiagDynamicFunction = NULL;		// SQL_DIAG_DYNAMIC_FUNCTION
 	sqlDiagDynamicFunctionCode = 0;		// SQL_DIAG_DYNAMIC_FUNCTION_CODE
-	sqlDiagNumber = 0;					// SQL_DIAG_NUMBER 
+	sqlDiagNumber = 0;					// SQL_DIAG_NUMBER
 	sqlDiagReturnCode = SQL_SUCCESS;	// SQL_DIAG_RETURNCODE
 	sqlDiagRowCount = 0;				// SQL_DIAG_ROW_COUNT
 }
@@ -250,9 +250,9 @@ void OdbcObject::clearErrors()
 		}
 
 	infoPosted = false;
-	sqlDiagDynamicFunction = NULL;		// SQL_DIAG_DYNAMIC_FUNCTION 
+	sqlDiagDynamicFunction = NULL;		// SQL_DIAG_DYNAMIC_FUNCTION
 	sqlDiagDynamicFunctionCode = 0;		// SQL_DIAG_DYNAMIC_FUNCTION_CODE
-	sqlDiagNumber = 0;					// SQL_DIAG_NUMBER 
+	sqlDiagNumber = 0;					// SQL_DIAG_NUMBER
 	sqlDiagReturnCode = SQL_SUCCESS;	// SQL_DIAG_RETURNCODE
 	sqlDiagRowCount = 0;				// SQL_DIAG_ROW_COUNT
 }
@@ -276,7 +276,7 @@ const char * OdbcObject::getString(char * * temp, const UCHAR * string, int leng
 	ret [length] = 0;
 	*temp += length + 1;
 
-	return ret;	
+	return ret;
 }
 
 OdbcError* OdbcObject::postError(const char * state, JString msg)
@@ -322,13 +322,13 @@ SQLRETURN OdbcObject::sqlGetDiagField(int recNumber, int diagId, SQLPOINTER ptr,
 		return SQL_SUCCESS;
 
 	case SQL_DIAG_NUMBER:
-		*(SQLINTEGER*)ptr = sqlDiagNumber;
+		//*(SQLINTEGER*)ptr = sqlDiagNumber;
 		if( ptr )
 		{
 			SQLSMALLINT &nCount = *stringLength;
 			n = 0;
 			for (OdbcError *error = errors; error; error = error->next, ++n);
-			*(SDWORD*)ptr = n;
+			*(SQLINTEGER*)ptr = n;
 		}
 		return SQL_SUCCESS;
 
@@ -338,18 +338,6 @@ SQLRETURN OdbcObject::sqlGetDiagField(int recNumber, int diagId, SQLPOINTER ptr,
 
 	case SQL_DIAG_ROW_COUNT:
 		*(SQLINTEGER*)ptr = sqlDiagRowCount;
-		return SQL_SUCCESS;
-	}
-
-	if ( diagId == SQL_DIAG_NUMBER )
-	{
-		if( ptr )
-		{
-			SQLSMALLINT &nCount = *stringLength;
-			n = 0;
-			for (OdbcError *error = errors; error; error = error->next, ++n);
-			*(SDWORD*)ptr = n;
-		}
 		return SQL_SUCCESS;
 	}
 

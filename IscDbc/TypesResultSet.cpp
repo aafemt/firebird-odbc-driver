@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -106,7 +106,7 @@ struct Types {
 #define DATE(type,code,prec,prefix,suffix,datetimesub) 0,sizeof(type)-1,type,code,prec,sizeof(prefix)-1,prefix,sizeof(suffix)-1,suffix,0,"",NULLABLE,CASE_INSENSITIVE,SEARCHABLE_EXCEPT_LIKE,NOT_NUMERIC,NOT_MONEY,NOT_NUMERIC,sizeof(type)-1,type,UNSCALED,UNSCALED,TYPE_SQL_DATETIME,datetimesub,NOT_NUMERIC,NOT_NUMERIC
 #define DATETIME(type,code,prec,prefix,suffix,datetimesub) 0,sizeof(type)-1,type,code,prec,sizeof(prefix)-1,prefix,sizeof(suffix)-1,suffix,0,"",NULLABLE,CASE_INSENSITIVE,SEARCHABLE_EXCEPT_LIKE,NOT_NUMERIC,NOT_MONEY,NOT_NUMERIC,sizeof(type)-1,type,0,4,TYPE_SQL_DATETIME,datetimesub,NOT_NUMERIC,NOT_NUMERIC
 
-static Types types [] = 
+static Types types [] =
 {
 	ALPHA ("CHAR", JDBC_CHAR, MAX_CHAR_LENGTH),
 	ALPHA ("VARCHAR", JDBC_VARCHAR, MAX_VARCHAR_LENGTH),
@@ -121,7 +121,7 @@ static Types types [] =
 	NUMERIC ("DECIMAL", JDBC_DECIMAL, MAX_DECIMAL_LENGTH, "precision,scale", 0, MAX_DECIMAL_LENGTH, 10),
 	NUMERIC ("INTEGER", JDBC_INTEGER, MAX_INT_LENGTH, "", 0, 0, 10),
 	NUMERIC ("SMALLINT", JDBC_TINYINT, MAX_SMALLINT_LENGTH, "", 0, 0, 10),
-	NUMERIC ("SMALLINT", JDBC_SMALLINT, MAX_SMALLINT_LENGTH, "", 0, 0, 10),	
+	NUMERIC ("SMALLINT", JDBC_SMALLINT, MAX_SMALLINT_LENGTH, "", 0, 0, 10),
 	NUMERIC ("DOUBLE PRECISION", JDBC_FLOAT, MAX_DOUBLE_DIGIT_LENGTH, "", UNSCALED, UNSCALED, 2),
 	NUMERIC ("FLOAT", JDBC_REAL, MAX_FLOAT_DIGIT_LENGTH, "", UNSCALED, UNSCALED, 2),
 	NUMERIC ("DOUBLE PRECISION", JDBC_DOUBLE, MAX_DOUBLE_DIGIT_LENGTH, "", UNSCALED, UNSCALED, 2),
@@ -137,7 +137,7 @@ static Types types [] =
 //////////////////////////////////////////////////////////////////////
 
 TypesResultSet::TypesResultSet(int dataType, int appOdbcVersion, int bytesPerCharacter) : IscResultSet (NULL)
-{	
+{
 	dataTypes = dataType;
 
 	int endRow = sizeof (types) / sizeof (types [0]);
@@ -253,7 +253,7 @@ bool TypesResultSet::nextFetch()
 		sqldataOffsetPtr = (uintptr_t)types + (recordNumber - 1) * sizeof (*types);
 	}
 
-	if (++recordNumber > sizeof (types) / sizeof (types [0]))
+	if (++recordNumber > static_cast<int>(sizeof (types) / sizeof (types [0])))
 		return false;
 
 	XSQLVAR *var = ((XSQLDA*)*sqlda)->sqlvar;
@@ -277,7 +277,7 @@ bool TypesResultSet::nextFetch()
 	SET_INDICATOR_VAL(15,short,false);			// SQL_DATA_TYPE
 	SET_INDICATOR_VAL(16,short,true);			// SQL_DATETIME_SUB
 	SET_INDICATOR_VAL(17,int,true);				// NUM_PREC_RADIX
-	SET_INDICATOR_VAL(18,short,true);			// INTERVAL_PRECISION	
+	SET_INDICATOR_VAL(18,short,true);			// INTERVAL_PRECISION
 
 	return true;
 }
@@ -306,10 +306,10 @@ bool TypesResultSet::next()
 }
 
 int TypesResultSet::findType()
-{	
-	for(int i=0; i<sizeof (types)/sizeof (types [0]) ; i++)
+{
+	for(unsigned i=0; i<sizeof (types)/sizeof (types [0]) ; i++)
 		if (types[i].typeType == dataTypes)
-			return i;		
+			return i;
 
 	return -1;
 }

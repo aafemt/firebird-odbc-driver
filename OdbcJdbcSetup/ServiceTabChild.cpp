@@ -199,14 +199,14 @@ void CServiceTabChild::CheckRemotehost( char *fullPathFileName )
 	ptCh = ptStr;
 	while( *ptCh == ' ' ) ++ptCh;
 
-	if ( *(short*)ptCh == 0x5c5c ) // if '\\'
+	if ( ptCh[0] == '\\' && ptCh[1] == '\\')
 	{	// after "Browse"
 		ptCh+=2;
 		// name server
 		while( *ptCh && *ptCh != '\\' )
 			*ptStr++ = *ptCh++;
 
-		*ptCh++; //		*ptCh == '\\' alwaus
+		ptCh++; //		*ptCh == '\\' alwaus
 		*ptStr++ = ':';
 
 		// name disk
@@ -219,7 +219,10 @@ void CServiceTabChild::CheckRemotehost( char *fullPathFileName )
 		while( *ptCh )
 		{
 			if ( *ptCh == '\\' )
-				*ptStr++ = '/', *ptCh++;
+			{
+				*ptStr++ = '/';
+				ptCh++;
+			}
 			else
 				*ptStr++ = *ptCh++;
 		}

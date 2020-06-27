@@ -54,7 +54,9 @@
 			<Add option="-mthreads" />
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
-			<Add option="-DNDEBUG -D_WINDOWS" />
+			<Add option="-DNDEBUG" />
+			<Add option="-D_WINDOWS" />
+			<Add option="-D__USE_MINGW_ANSI_STDIO" />
 			<Add directory="$(#FIREBIRD.include)" />
 			<Add directory="../../IscDbc" />
 		</Compiler>

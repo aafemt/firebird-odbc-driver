@@ -73,8 +73,6 @@ void CServiceManager::startBackupDatabase( Properties *prop, ULONG options )
 	char thdBuffer[RESPONSE_BUFFER/2];
 	char *thd = thdBuffer;
 	short thdLength;
-	char respBuffer[RESPONSE_BUFFER];
-	char *resp = respBuffer;
 	const char *pt;
 	const char *param;
 	bool isServer = false;
@@ -148,11 +146,8 @@ void CServiceManager::startRestoreDatabase( Properties *prop, ULONG options )
 	char thdBuffer[RESPONSE_BUFFER/2];
 	char *thd = thdBuffer;
 	short thdLength;
-	char respBuffer[RESPONSE_BUFFER];
-	char *resp = respBuffer;
 	const char *pt;
 	const char *param;
-	bool isServer = false;
 	ULONG sizeVal;
 
 	properties = prop;
@@ -177,7 +172,6 @@ void CServiceManager::startRestoreDatabase( Properties *prop, ULONG options )
 		//    Pipe: "\\\\" + ServerName + "\\service_mgr"
 		//    Local: "service_mgr"
 		sprintf( svcName, "%s:service_mgr", param );
-		isServer = true;
 	}
 	else
 		strcpy( svcName, "service_mgr" );
@@ -268,8 +262,6 @@ void CServiceManager::startStaticticsDatabase( Properties *prop, ULONG options )
 	char thdBuffer[RESPONSE_BUFFER/2];
 	char *thd = thdBuffer;
 	short thdLength;
-	char respBuffer[RESPONSE_BUFFER];
-	char *resp = respBuffer;
 	const char *pt;
 	const char *param;
 	bool isServer = false;
@@ -332,11 +324,8 @@ void CServiceManager::startShowDatabaseLog( Properties *prop )
 	char thdBuffer[RESPONSE_BUFFER/2];
 	char *thd = thdBuffer;
 	short thdLength;
-	char respBuffer[RESPONSE_BUFFER];
-	char *resp = respBuffer;
 	const char *pt;
 	const char *param;
-	bool isServer = false;
 
 	properties = prop;
 	ADD_PARAM( spb, isc_spb_version );
@@ -360,7 +349,6 @@ void CServiceManager::startShowDatabaseLog( Properties *prop )
 		//    Pipe: "\\\\" + ServerName + "\\service_mgr"
 		//    Local: "service_mgr"
 		sprintf( svcName, "%s:service_mgr", param );
-		isServer = true;
 	}
 	else
 		strcpy( svcName, "service_mgr" );
@@ -385,8 +373,6 @@ void CServiceManager::startRepairDatabase( Properties *prop, ULONG options, ULON
 	char thdBuffer[RESPONSE_BUFFER/2];
 	char *thd = thdBuffer;
 	short thdLength;
-	char respBuffer[RESPONSE_BUFFER];
-	char *resp = respBuffer;
 	const char *pt;
 	const char *param;
 	bool isServer = false;
@@ -454,12 +440,9 @@ void CServiceManager::startUsersQuery( Properties *prop )
 	char thdBuffer[RESPONSE_BUFFER/2];
 	char *thd = thdBuffer;
 	short thdLength;
-	char respBuffer[RESPONSE_BUFFER];
-	char *resp = respBuffer;
 	const char *pt;
 	const char *param;
 	const char *paramUser;
-	bool isServer = false;
 	ULONG tempVal;
 
 	properties = prop;
@@ -484,7 +467,6 @@ void CServiceManager::startUsersQuery( Properties *prop )
 		//    Pipe: "\\\\" + ServerName + "\\service_mgr"
 		//    Local: "service_mgr"
 		sprintf( svcName, "%s:service_mgr", param );
-		isServer = true;
 	}
 	else
 		strcpy( svcName, "service_mgr" );
@@ -585,7 +567,6 @@ bool CServiceManager::nextQuery( char *outBuffer, int lengthOut, int &lengthReal
 	ISC_STATUS status[20];
 	char sendBuffer[] = { isc_info_svc_line };
 	char respBuffer[RESPONSE_BUFFER];
-	char *resp = respBuffer;
 	int length = lengthOut;
 	int offset;
 	bool nextQuery = false;
@@ -656,7 +637,6 @@ bool CServiceManager::nextQueryLimboTransactionInfo( char *outBuffer, int length
 	ISC_STATUS status[20];
 	char sendBuffer[] = { isc_info_svc_limbo_trans };
 	char respBuffer[RESPONSE_BUFFER];
-	char *resp = respBuffer;
 	int length = lengthOut;
 	int offset;
 	bool nextQuery = false;
@@ -721,7 +701,6 @@ bool CServiceManager::nextQueryUserInfo( char *outBuffer, int lengthOut, int &le
 	ISC_STATUS status[20];
 	char sendBuffer[] = { isc_info_svc_get_users };
 	char respBuffer[RESPONSE_BUFFER];
-	char *resp = respBuffer;
 	char *out = outBuffer;
 	UserInfo *info = NULL;
 	int length = lengthOut;

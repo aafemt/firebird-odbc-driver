@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -55,28 +55,28 @@ namespace IscDbcLibrary {
 class CServiceManager : public ServiceManager
 {
 public:
-	virtual Properties*	allocProperties();
-	virtual void startBackupDatabase( Properties *prop, ULONG options );
-	virtual void startRestoreDatabase( Properties *prop, ULONG options );
-	virtual void exitRestoreDatabase( void );
-	virtual void startStaticticsDatabase( Properties *prop, ULONG options );
-	virtual void startShowDatabaseLog( Properties *prop );
-	virtual void startRepairDatabase( Properties *prop, ULONG options, ULONG optionsValidate );
-	virtual void startUsersQuery( Properties *prop );
-	virtual bool nextQuery( char *outBuffer, int length, int &lengthOut, int &countError );
-	virtual bool nextQueryLimboTransactionInfo( char *outBuffer, int length, int &lengthOut );
-	virtual bool nextQueryUserInfo( char *outBuffer, int length, int &lengthOut );
-	virtual void closeService();
-	virtual int	getDriverBuildKey();
+	Properties*	allocProperties() override;
+	void startBackupDatabase( Properties *prop, ULONG options ) override;
+	void startRestoreDatabase( Properties *prop, ULONG options ) override;
+	void exitRestoreDatabase( void ) override;
+	void startStaticticsDatabase( Properties *prop, ULONG options ) override;
+	void startShowDatabaseLog( Properties *prop ) override;
+	void startRepairDatabase( Properties *prop, ULONG options, ULONG optionsValidate ) override;
+	void startUsersQuery( Properties *prop ) override;
+	bool nextQuery( char *outBuffer, int length, int &lengthOut, int &countError ) override;
+	bool nextQueryLimboTransactionInfo( char *outBuffer, int length, int &lengthOut ) override;
+	bool nextQueryUserInfo( char *outBuffer, int length, int &lengthOut ) override;
+	void closeService() override;
+	int	getDriverBuildKey() override;
 
 	void loadShareLibrary();
 	void unloadShareLibrary();
 	JString getIscStatusText( ISC_STATUS *statusVector );
-	virtual void addRef();
-	virtual int release();
+	void addRef() override;
+	int release() override;
 
 	CServiceManager();
-	~CServiceManager();
+	virtual ~CServiceManager();
 
 	CFbDll		*GDS;
 	Properties	*properties;

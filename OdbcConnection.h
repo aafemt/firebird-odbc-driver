@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -38,10 +38,10 @@ namespace OdbcJdbcLibrary {
 class OdbcEnv;
 class OdbcStatement;
 
-class OdbcConnection : public OdbcObject  
+class OdbcConnection : public OdbcObject
 {
-	enum 
-	{	
+	enum
+	{
 		DEF_READONLY_TPB = 1,
 		DEF_NOWAIT_TPB = 2,
 		DEF_DIALECT = 4,
@@ -52,28 +52,28 @@ class OdbcConnection : public OdbcObject
 	};
 
 public:
-	SQLRETURN sqlGetConnectAttr (int attribute, SQLPOINTER ptr, int bufferLength, SQLINTEGER * lengthPtr);
-	void descriptorDeleted (OdbcDesc* descriptor);
+	SQLRETURN sqlGetConnectAttr(int attribute, SQLPOINTER ptr, int bufferLength, SQLINTEGER * lengthPtr);
+	void descriptorDeleted(OdbcDesc* descriptor);
 	OdbcDesc* allocDescriptor(OdbcDescType type);
 	void expandConnectParameters();
 	void saveConnectParameters();
-	void statementDeleted (OdbcStatement *statement);
-	SQLRETURN sqlEndTran (int operation);
+	void statementDeleted(OdbcStatement *statement);
+	SQLRETURN sqlEndTran(int operation);
 	SQLRETURN sqlExecuteCreateDatabase(const char * sqlString);
-	SQLRETURN connect (const char *sharedLibrary, const char *databaseName, const char *account, const char *password, const char *role, const char *charset);
-	SQLRETURN sqlConnect (const SQLCHAR *dsn, int dsnLength, SQLCHAR*UID,int uidLength,SQLCHAR*password,int passwordLength);
+	SQLRETURN connect(const char *sharedLibrary, const char *databaseName, const char *account, const char *password, const char *role, const char *charset);
+	SQLRETURN sqlConnect(const SQLCHAR *dsn, int dsnLength, SQLCHAR*UID,int uidLength,SQLCHAR*password,int passwordLength);
 	DatabaseMetaData* getMetaData();
-	virtual SQLRETURN allocHandle (int handleType, SQLHANDLE *outputHandle);
-	char* appendString (char *ptr, const char *string);
+	virtual SQLRETURN allocHandle(int handleType, SQLHANDLE *outputHandle);
+	char* appendString(char *ptr, const char *string);
 	SQLRETURN sqlGetInfo( SQLUSMALLINT type, SQLPOINTER ptr, SQLSMALLINT maxLength, SQLSMALLINT * actualLength );
 	SQLRETURN sqlDisconnect();
-	SQLRETURN sqlGetFunctions (SQLUSMALLINT functionId, SQLUSMALLINT *supportedPtr);
-	JString readAttribute (const char *attribute);
-	JString readAttributeFileDSN (const char * attribute);
-	void writeAttributeFileDSN (const char * attribute, const char * value);
-	SQLRETURN sqlDriverConnect (SQLHWND hWnd, 
-						   const SQLCHAR *connectString, int connectStringLength, 
-						   SQLCHAR *outConnectBuffer, int connectBufferLength, SQLSMALLINT *outStringLength, 
+	SQLRETURN sqlGetFunctions(SQLUSMALLINT functionId, SQLUSMALLINT *supportedPtr);
+	JString readAttribute(const char *attribute);
+	JString readAttributeFileDSN(const char * attribute);
+	void writeAttributeFileDSN(const char * attribute, const char * value);
+	SQLRETURN sqlDriverConnect(SQLHWND hWnd,
+						   const SQLCHAR *connectString, int connectStringLength,
+						   SQLCHAR *outConnectBuffer, int connectBufferLength, SQLSMALLINT *outStringLength,
 						   int driverCompletion);
 	SQLRETURN sqlBrowseConnect(SQLCHAR * inConnectionString, SQLSMALLINT stringLength1, SQLCHAR * outConnectionString, SQLSMALLINT bufferLength, SQLSMALLINT * stringLength2Ptr);
 	SQLRETURN sqlNativeSql(SQLCHAR * inStatementText, SQLINTEGER textLength1,	SQLCHAR * outStatementText, SQLINTEGER bufferLength, SQLINTEGER * textLength2Ptr);

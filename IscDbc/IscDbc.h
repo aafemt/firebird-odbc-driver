@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -69,21 +69,21 @@
 #define QUOTE				16
 #define IDENT				32
 
-#define IS_POINT(p)			((p) == '.')
-#define IS_QUOTE(p)			(charTable [(p)] == QUOTE)
-#define IS_WHITE(p)			(charTable [(p)] == WHITE)
-#define IS_LETTER(p)		(charTable [(p)] & LETTER)
-#define IS_IDENT(p)			(charTable [(p)] & IDENT)
-#define IS_END_TOKEN(p)		((p) == '\0' || (charTable [(p)] & (PUNCT | WHITE)))
-#define SKIP_WHITE(p)		while (charTable [*p] == WHITE) ++p
-#define SKIP_NO_WHITE(p)	while ( *p && charTable [*p] != WHITE) ++p
+#define IS_POINT(p)			(static_cast<unsigned char>(p) == '.')
+#define IS_QUOTE(p)			(charTable [static_cast<unsigned char>(p)] == QUOTE)
+#define IS_WHITE(p)			(charTable [static_cast<unsigned char>(p)] == WHITE)
+#define IS_LETTER(p)		(charTable [static_cast<unsigned char>(p)] & LETTER)
+#define IS_IDENT(p)			(charTable [static_cast<unsigned char>(p)] & IDENT)
+#define IS_END_TOKEN(p)		((p) == '\0' || (charTable [static_cast<unsigned char>(p)] & (PUNCT | WHITE)))
+#define SKIP_WHITE(p)		while (charTable [static_cast<unsigned char>(*p)] == WHITE) ++p
+#define SKIP_NO_WHITE(p)	while ( *p && charTable [static_cast<unsigned char>(*p)] != WHITE) ++p
 
 #define TOKEN_LENGTH(token)	( sizeof ( token ) - 1 )
 #define IS_MATCH(str,token)	( !strncasecmp( str, token, TOKEN_LENGTH( token ) ) && IS_END_TOKEN(*(str + TOKEN_LENGTH( token ) ) ) )
 
 #define FB_COMPILER_MESSAGE_STR(x) #x
 #define FB_COMPILER_MESSAGE_STR2(x)   FB_COMPILER_MESSAGE_STR(x)
-#define FB_COMPILER_MESSAGE(desc) message(__FILE__ "("	\
+#define FB_COMPILER_MESSAGE(desc) message (__FILE__ "("	\
 									FB_COMPILER_MESSAGE_STR2(__LINE__) "):" desc)
 
 #ifdef DEBUG
@@ -92,10 +92,11 @@
 		throw SQLEXCEPTION (CONVERSION_ERROR, "Error conversion")
 #else
 #define CONVERSION_CHECK_DEBUG(bool_assign)
-#endif																
+#endif
 
-#ifdef _WINDOWS
+#ifdef __WIN32__
 
+#ifdef _MSC_VER
 #if _MSC_VER >= 1400 // VC80 and later
 #define strcasecmp		_stricmp
 #define strncasecmp		_strnicmp
@@ -107,6 +108,7 @@
 #define snprintf		_snprintf
 #define fcvt			_fcvt
 #define gcvt			_gcvt
+#endif
 
 #else
 
@@ -156,7 +158,7 @@ typedef unsigned __int64			UQUAD;
 #define MAX_TIMESTAMP_LENGTH		24
 #define MAX_QUAD_LENGTH				18
 
-namespace IscDbcLibrary 
+namespace IscDbcLibrary
 {
 int getTypeStatement(IscConnection *connection, isc_stmt_handle Stmt,const void * buffer, int bufferLength, int *lengthPtr);
 int getInfoCountRecordsStatement(IscConnection *connection, isc_stmt_handle Stmt,const void * buffer, int bufferLength, int *lengthPtr);

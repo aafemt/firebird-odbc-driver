@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -21,7 +21,7 @@
  *  2002-06-25	Connection.h
  *				Contributed by C. G. Alvarez
  *				declare getDatabaseServerName() in DatabaseMetaData
- *	
+ *
  *
  *	2002-06-04	Connection.h
  *				Contributed by Robert Milharcic
@@ -103,7 +103,7 @@ size_t _WcsToMbs( char *mbstr,  const wchar_t *wcstr, size_t count );
 
 #endif // ISC_TIME_SECONDS_PRECISION
 
-// Default standart size of fraction it's 9 number  
+// Default standart size of fraction it's 9 number
 // It's 9 = ISC_TIME_SECONDS_PRECISION * STD_TIME_SECONDS_PRECISION
 #define STD_TIME_SECONDS_PRECISION          100000L
 
@@ -195,7 +195,7 @@ public:
 	virtual void		sqlEndTran(int operation) = 0;
 };
 
-class Connection  
+class Connection
 {
 public:
 //{{{ specification jdbc
@@ -259,7 +259,7 @@ public:
 
 #define DATABASEMETADATA_VERSION	1
 
-class DatabaseMetaData 
+class DatabaseMetaData
 {
 public:
 //{{{ specification jdbc
@@ -453,7 +453,7 @@ public:
 
 #define STATEMENT_VERSION	1
 
-class Statement  
+class Statement
 {
 public:
 //{{{ specification jdbc
@@ -536,12 +536,12 @@ public:
 
 #define STATEMENTMETADATA_VERSION	1
 
-class StatementMetaData  
+class StatementMetaData
 {
 public:
 // specification jdbc
 	virtual int			getColumnCount() = 0;
-	virtual int			getColumnType (int index, int &realSqlType) = 0;
+	virtual int			getColumnType(int index, int &realSqlType) = 0;
 	virtual int			getPrecision(int index) = 0;
 	virtual int			getNumPrecRadix(int index) = 0;
 	virtual int			getScale(int index) = 0;
@@ -577,9 +577,9 @@ public:
 
 #define PREPAREDSTATEMENT_VERSION	1
 
-class PreparedStatement : public Statement  
+class PreparedStatement : public Statement
 {
-public: 
+public:
 //{{{ specification jdbc
 	virtual void		clearParameters() = 0;
 	virtual bool		execute() = 0;
@@ -625,7 +625,7 @@ public:
 
 #define RESULTSET_VERSION	1
 
-class ResultSet  
+class ResultSet
 {
 public:
 //{{{ specification jdbc
@@ -754,7 +754,7 @@ public:
 
 #define RESULTSETMETADATA_VERSION	1
 
-class ResultSetMetaData  
+class ResultSetMetaData
 {
 public:
 	virtual const char*	getTableName (int index) = 0;
@@ -783,7 +783,7 @@ public:
 
 #define RESULTLIST_VERSION		1
 
-class ResultList  
+class ResultList
 {
 public:
 	virtual const char*	getTableName() = 0;
@@ -838,9 +838,9 @@ public:
 	virtual bool		executeProcedure() = 0;
 	virtual void		rollbackLocal() = 0;
 	virtual void		commitLocal() = 0;
-	virtual StatementMetaData*	
+	virtual StatementMetaData*
 						getStatementMetaDataIPD() = 0;
-	virtual StatementMetaData*	
+	virtual StatementMetaData*
 						getStatementMetaDataIRD() = 0;
 	virtual int			getNumParams() = 0;
 	virtual void		drop() = 0;

@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -71,12 +71,12 @@ int getPlanStatement(IscConnection * connection, isc_stmt_handle Stmt,const void
 
 	if(GDS->_dsql_sql_info(statusVector,&Stmt,sizeof(plan_info),plan_info,bufferLength,plan_buffer))
 		return -1;
-	else if(plan_buffer[0] == isc_info_sql_get_plan) 
+	else if(plan_buffer[0] == isc_info_sql_get_plan)
 	{
 		l = GDS->_vax_integer((char*)plan_buffer+1,2)+3;
 		plan_buffer[0] = plan_buffer[1] = 32; // ' '
 		plan_buffer[2] = '\n';
-		if(l+1<bufferLength)plan_buffer[l++] = '\n'; 
+		if(l+1<bufferLength)plan_buffer[l++] = '\n';
 		plan_buffer[l] = 0;
 	}
 	return 0;
@@ -94,7 +94,7 @@ int getPageDatabase(IscConnection * connection, const void * info_buffer, int bu
 
 int getWalDatabase(IscConnection * connection, const void * info_buffer, int bufferLength,short *lengthPtr)
 {
-	static char db_info[] = { 		
+	static char db_info[] = {
 		isc_info_num_wal_buffers,
 		isc_info_wal_buffer_size,
 		isc_info_wal_grpc_wait_usecs,
@@ -126,7 +126,7 @@ int getInfoDatabase(IscConnection * connection, const void * info_buffer, int bu
 	int length;
 	ISC_STATUS	statusVector[20];
 	char * info_buf=(char*)info_buffer;
-	short &l=*lengthPtr,len;
+	short &l=*lengthPtr;
 	int set_used=0;
 	long value_out;
 	CFbDll * GDS = connection->GDS;
@@ -137,12 +137,13 @@ int getInfoDatabase(IscConnection * connection, const void * info_buffer, int bu
 	if (GDS->_database_info(statusVector, &Db,db_info_length,db_info,256,buffer))
 		return -1;
 
-	for(d = buffer, info = info_buf; *d != isc_info_end;) 
+	for(d = buffer, info = info_buf; *d != isc_info_end;)
 	{
+		short len = 0;
 		item = *d++;
 		length = GDS->_vax_integer(d, 2);
 		d += 2;
-		switch (item) 
+		switch (item)
 		{
 		case isc_info_end:
 			break;
@@ -232,8 +233,8 @@ void getStatInformations(IscConnection * connection, char bNumberCall)
 	struct timeb time_buffer;
 #define LARGE_NUMBER 696600000	/* to avoid overflow, get rid of decades) */
 
-	char items[] = 
-	{ 
+	char items[] =
+	{
 		isc_info_reads, isc_info_writes, isc_info_fetches,
 		isc_info_marks,
 		isc_info_page_size, isc_info_num_buffers,
@@ -270,7 +271,7 @@ void getStatInformations(IscConnection * connection, char bNumberCall)
 	p = buffer;
 
 	while (1)
-		switch (*p++) 
+		switch (*p++)
 		{
 		case isc_info_reads:
 			ptStat->reads = get_parameter(&p);
@@ -330,8 +331,8 @@ int getStatInformations(IscConnection * connection, const void * info_buffer, in
 	struct timeb time_buffer;
 #define LARGE_NUMBER 696600000	/* to avoid overflow, get rid of decades) */
 
-	char items[] = 
-	{ 
+	char items[] =
+	{
 		isc_info_reads, isc_info_writes, isc_info_fetches,
 		isc_info_marks,
 		isc_info_page_size, isc_info_num_buffers,
@@ -358,7 +359,7 @@ int getStatInformations(IscConnection * connection, const void * info_buffer, in
 	p = buffer;
 
 	while (1)
-		switch (*p++) 
+		switch (*p++)
 		{
 		case isc_info_reads:
 			ptStat->reads = get_parameter(&p);
@@ -413,7 +414,7 @@ int getStatInformations(IscConnection * connection, const void * info_buffer, in
 		}
 }
 
-const char * strFormatReport = 
+const char * strFormatReport =
 		"\nCurrent memory = !c"
 		"\nDelta memory   = !d"
 		"\nMax memory     = !x"
@@ -427,7 +428,7 @@ const char * strFormatReport =
 
 int strBuildStatInformations(const void * info_buffer, int bufferLength, short *lengthPtr)
 {
-	signed int delta, length;
+	signed int length;
 	char *p, c;
 	const char * string = strFormatReport;
 
@@ -437,9 +438,10 @@ int strBuildStatInformations(const void * info_buffer, int bufferLength, short *
 	{
 		if (c != '!')
 			*p++ = c;
-		else 
+		else
 		{
-			switch (c = *string++) 
+			int delta = 0;
+			switch (c = *string++)
 			{
 			case 'r':
 				delta = StatInfoAfter.reads - StatInfoBefore.reads;
@@ -472,11 +474,11 @@ int strBuildStatInformations(const void * info_buffer, int bufferLength, short *
 				delta = StatInfoAfter.elapsed - StatInfoBefore.elapsed;
 				break;
 			default:
-				sprintf((char*)p, "?%c?", c);
+				sprintf(p, "?%c?", c);
 				while (*p)
 					p++;
 			}
-			switch (c) 
+			switch (c)
 			{
 			case 'r':
 			case 'w':
@@ -487,12 +489,12 @@ int strBuildStatInformations(const void * info_buffer, int bufferLength, short *
 			case 'b':
 			case 'c':
 			case 'x':
-				sprintf((char*)p, "%ld", delta);
+				sprintf(p, "%d", delta);
 				while (*p)
 					p++;
 				break;
 			case 'e':
-				sprintf(p, "%ld.%.2ld", delta / 100, delta % 100);
+				sprintf(p, "%d.%.2d", delta / 100, delta % 100);
 				while (*p)
 					p++;
 				break;

@@ -134,10 +134,12 @@ void IscBlob::fetchBlob()
 		{
 		ISC_STATUS ret = connection->GDS->_get_segment (statusVector, &blobHandle, &length, sizeof (buffer), buffer);
 		if (ret)
+		{
 			if (ret == isc_segstr_eof)
 				break;
 			else if (ret != isc_segment)
 				THROW_ISC_EXCEPTION (connection, statusVector);
+		}
 		putSegment (length, buffer, true);
 		}
 
@@ -187,7 +189,7 @@ void IscBlob::writeBlob(char * sqldata)
 	if ( statusVector [1] )
 		THROW_ISC_EXCEPTION (connection, statusVector);
 
-	for ( int len, offset = 0; len = getSegmentLength (offset); offset += len )
+	for ( int len, offset = 0; (len = getSegmentLength (offset)); offset += len )
 	{
 		GDS->_put_segment ( statusVector, &blobHandle, len, (char*) getSegment (offset));
 		if ( statusVector [1] )
@@ -216,7 +218,7 @@ void IscBlob::writeStreamHexToBlob(char * sqldata)
 	if ( statusVector [1] )
 		THROW_ISC_EXCEPTION (connection, statusVector);
 
-	for ( int len, offset = 0; len = getSegmentLength (offset); offset += len )
+	for ( int len, offset = 0; (len = getSegmentLength (offset)); offset += len )
 	{
 		GDS->_put_segment ( statusVector, &blobHandle, len/2, convStrHexToBinary ( (char*)getSegment (offset), len ) );
 		if ( statusVector [1] )

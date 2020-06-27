@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -58,161 +58,161 @@ struct ListErrorLinks
 } listSqlErrorLink[] = {
 
 	CODE_ERR( 53,    -1 ) // 42000 :: Syntax error
-	CODE_ERR(  0,   -84 ) // 
-	CODE_ERR(  0,   -85 ) // 
-	CODE_ERR(  0,  -103 ) // 
-	CODE_ERR(  0,  -104 ) // 
-	CODE_ERR(  0,  -105 ) // 
-	CODE_ERR(  0,  -150 ) // 
-	CODE_ERR(  0,  -151 ) // 
-	CODE_ERR(  0,  -155 ) // 
-	CODE_ERR(  0,  -157 ) // 
-	CODE_ERR(  0,  -158 ) // 
-	CODE_ERR(  0,  -162 ) // 
-	CODE_ERR(  0,  -170 ) // 
-	CODE_ERR(  0,  -171 ) // 
-	CODE_ERR(  0,  -172 ) // 
-	CODE_ERR(  0,  -203 ) // 
+	CODE_ERR(  0,   -84 ) //
+	CODE_ERR(  0,   -85 ) //
+	CODE_ERR(  0,  -103 ) //
+	CODE_ERR(  0,  -104 ) //
+	CODE_ERR(  0,  -105 ) //
+	CODE_ERR(  0,  -150 ) //
+	CODE_ERR(  0,  -151 ) //
+	CODE_ERR(  0,  -155 ) //
+	CODE_ERR(  0,  -157 ) //
+	CODE_ERR(  0,  -158 ) //
+	CODE_ERR(  0,  -162 ) //
+	CODE_ERR(  0,  -170 ) //
+	CODE_ERR(  0,  -171 ) //
+	CODE_ERR(  0,  -172 ) //
+	CODE_ERR(  0,  -203 ) //
 	CODE_ERR( 55,  -204 ) // 42S02 :: isc_dsql_relation_err
-	CODE_ERR(  0,  -205 ) // 
-	CODE_ERR(  0,  -206 ) // 
-	CODE_ERR(  0,  -208 ) // 
-	CODE_ERR(  0,  -219 ) // 
-	CODE_ERR(  0,  -230 ) // 
-	CODE_ERR(  0,  -231 ) // 
-	CODE_ERR(  0,  -232 ) // 
-	CODE_ERR(  0,  -233 ) // 
-	CODE_ERR(  0,  -234 ) // 
-	CODE_ERR(  0,  -235 ) // 
-	CODE_ERR(  0,  -236 ) // 
-	CODE_ERR(  0,  -237 ) // 
-	CODE_ERR(  0,  -238 ) // 
-	CODE_ERR(  0,  -239 ) // 
-	CODE_ERR(  0,  -240 ) // 
-	CODE_ERR(  0,  -241 ) // 
-	CODE_ERR(  0,  -242 ) // 
-	CODE_ERR(  0,  -243 ) // 
-	CODE_ERR(  0,  -244 ) // 
-	CODE_ERR(  0,  -245 ) // 
-	CODE_ERR(  0,  -246 ) // 
-	CODE_ERR(  0,  -247 ) // 
-	CODE_ERR(  0,  -248 ) // 
-	CODE_ERR(  0,  -249 ) // 
-	CODE_ERR(  0,  -250 ) // 
-	CODE_ERR(  0,  -251 ) // 
-	CODE_ERR(  0,  -252 ) // 
-	CODE_ERR(  0,  -253 ) // 
-	CODE_ERR(  0,  -254 ) // 
-	CODE_ERR(  0,  -255 ) // 
-	CODE_ERR(  0,  -257 ) // 
-	CODE_ERR(  0,  -258 ) // 
-	CODE_ERR(  0,  -259 ) // 
-	CODE_ERR(  0,  -260 ) // 
-	CODE_ERR(  0,  -261 ) // 
-	CODE_ERR(  0,  -281 ) // 
-	CODE_ERR(  0,  -282 ) // 
-	CODE_ERR(  0,  -283 ) // 
-	CODE_ERR(  0,  -284 ) // 
-	CODE_ERR(  0,  -291 ) // 
-	CODE_ERR(  0,  -292 ) // 
-	CODE_ERR(  0,  -293 ) // 
-	CODE_ERR(  0,  -294 ) // 
-	CODE_ERR(  0,  -295 ) // 
-	CODE_ERR(  0,  -296 ) // 
-	CODE_ERR(  0,  -297 ) // 
-	CODE_ERR(  0,  -313 ) // 
-	CODE_ERR(  0,  -314 ) // 
-	CODE_ERR(  0,  -315 ) // 
-	CODE_ERR(  0,  -383 ) // 
-	CODE_ERR(  0,  -401 ) // 
-	CODE_ERR(  0,  -402 ) // 
-	CODE_ERR(  0,  -406 ) // 
-	CODE_ERR(  0,  -407 ) // 
-	CODE_ERR(  0,  -413 ) // 
-	CODE_ERR(  0,  -501 ) // 
-	CODE_ERR(  0,  -502 ) // 
-	CODE_ERR(  0,  -504 ) // 
-	CODE_ERR(  0,  -508 ) // 
-	CODE_ERR(  0,  -510 ) // 
-	CODE_ERR(  0,  -518 ) // 
-	CODE_ERR(  0,  -519 ) // 
-	CODE_ERR(  0,  -530 ) // 
-	CODE_ERR(  0,  -531 ) // 
-	CODE_ERR(  0,  -532 ) // 
-	CODE_ERR(  0,  -551 ) // 
-	CODE_ERR(  0,  -552 ) // 
-	CODE_ERR(  0,  -553 ) // 
-	CODE_ERR(  0,  -595 ) // 
-	CODE_ERR(  0,  -596 ) // 
-	CODE_ERR(  0,  -597 ) // 
-	CODE_ERR(  0,  -598 ) // 
-	CODE_ERR(  0,  -599 ) // 
-	CODE_ERR(  0,  -600 ) // 
-	CODE_ERR(  0,  -601 ) // 
-	CODE_ERR(  0,  -604 ) // 
-	CODE_ERR(  0,  -605 ) // 
-	CODE_ERR(  0,  -607 ) // 
-	CODE_ERR(  0,  -612 ) // 
-	CODE_ERR(  0,  -615 ) // 
-	CODE_ERR(  0,  -616 ) // 
-	CODE_ERR(  0,  -617 ) // 
-	CODE_ERR(  0,  -618 ) // 
-	CODE_ERR(  0,  -625 ) // 
-	CODE_ERR(  0,  -637 ) // 
-	CODE_ERR(  0,  -660 ) // 
-	CODE_ERR(  0,  -663 ) // 
-	CODE_ERR(  0,  -664 ) // 
-	CODE_ERR(  0,  -677 ) // 
-	CODE_ERR(  0,  -685 ) // 
-	CODE_ERR(  0,  -689 ) // 
-	CODE_ERR(  0,  -690 ) // 
-	CODE_ERR(  0,  -691 ) // 
-	CODE_ERR(  0,  -692 ) // 
-	CODE_ERR(  0,  -693 ) // 
-	CODE_ERR(  0,  -694 ) // 
-	CODE_ERR(  0,  -802 ) // 
-	CODE_ERR(  0,  -803 ) // 
-	CODE_ERR(  0,  -804 ) // 
-	CODE_ERR(  0,  -806 ) // 
-	CODE_ERR(  0,  -807 ) // 
-	CODE_ERR(  0,  -808 ) // 
-	CODE_ERR(  0,  -809 ) // 
-	CODE_ERR(  0,  -810 ) // 
-	CODE_ERR(  0,  -811 ) // 
-	CODE_ERR(  0,  -816 ) // 
-	CODE_ERR(  0,  -817 ) // 
-	CODE_ERR(  0,  -820 ) // 
-	CODE_ERR(  0,  -823 ) // 
-	CODE_ERR(  0,  -824 ) // 
-	CODE_ERR(  0,  -825 ) // 
-	CODE_ERR(  0,  -826 ) // 
-	CODE_ERR(  0,  -827 ) // 
-	CODE_ERR(  0,  -828 ) // 
-	CODE_ERR(  0,  -829 ) // 
-	CODE_ERR(  0,  -830 ) // 
-	CODE_ERR(  0,  -831 ) // 
-	CODE_ERR(  0,  -832 ) // 
-	CODE_ERR(  0,  -833 ) // 
-	CODE_ERR(  0,  -834 ) // 
-	CODE_ERR(  0,  -835 ) // 
-	CODE_ERR(  0,  -836 ) // 
-	CODE_ERR(  0,  -837 ) // 
-	CODE_ERR(  0,  -838 ) // 
-	CODE_ERR(  0,  -839 ) // 
-	CODE_ERR(  0,  -840 ) // 
-	CODE_ERR(  0,  -841 ) // 
-	CODE_ERR(  0,  -842 ) // 
-	CODE_ERR(  0,  -901 ) // 
-	CODE_ERR(  0,  -902 ) // 
-	CODE_ERR(  0,  -904 ) // 
-	CODE_ERR(  0,  -906 ) // 
-	CODE_ERR(  0,  -909 ) // 
-	CODE_ERR(  0,  -911 ) // 
+	CODE_ERR(  0,  -205 ) //
+	CODE_ERR(  0,  -206 ) //
+	CODE_ERR(  0,  -208 ) //
+	CODE_ERR(  0,  -219 ) //
+	CODE_ERR(  0,  -230 ) //
+	CODE_ERR(  0,  -231 ) //
+	CODE_ERR(  0,  -232 ) //
+	CODE_ERR(  0,  -233 ) //
+	CODE_ERR(  0,  -234 ) //
+	CODE_ERR(  0,  -235 ) //
+	CODE_ERR(  0,  -236 ) //
+	CODE_ERR(  0,  -237 ) //
+	CODE_ERR(  0,  -238 ) //
+	CODE_ERR(  0,  -239 ) //
+	CODE_ERR(  0,  -240 ) //
+	CODE_ERR(  0,  -241 ) //
+	CODE_ERR(  0,  -242 ) //
+	CODE_ERR(  0,  -243 ) //
+	CODE_ERR(  0,  -244 ) //
+	CODE_ERR(  0,  -245 ) //
+	CODE_ERR(  0,  -246 ) //
+	CODE_ERR(  0,  -247 ) //
+	CODE_ERR(  0,  -248 ) //
+	CODE_ERR(  0,  -249 ) //
+	CODE_ERR(  0,  -250 ) //
+	CODE_ERR(  0,  -251 ) //
+	CODE_ERR(  0,  -252 ) //
+	CODE_ERR(  0,  -253 ) //
+	CODE_ERR(  0,  -254 ) //
+	CODE_ERR(  0,  -255 ) //
+	CODE_ERR(  0,  -257 ) //
+	CODE_ERR(  0,  -258 ) //
+	CODE_ERR(  0,  -259 ) //
+	CODE_ERR(  0,  -260 ) //
+	CODE_ERR(  0,  -261 ) //
+	CODE_ERR(  0,  -281 ) //
+	CODE_ERR(  0,  -282 ) //
+	CODE_ERR(  0,  -283 ) //
+	CODE_ERR(  0,  -284 ) //
+	CODE_ERR(  0,  -291 ) //
+	CODE_ERR(  0,  -292 ) //
+	CODE_ERR(  0,  -293 ) //
+	CODE_ERR(  0,  -294 ) //
+	CODE_ERR(  0,  -295 ) //
+	CODE_ERR(  0,  -296 ) //
+	CODE_ERR(  0,  -297 ) //
+	CODE_ERR(  0,  -313 ) //
+	CODE_ERR(  0,  -314 ) //
+	CODE_ERR(  0,  -315 ) //
+	CODE_ERR(  0,  -383 ) //
+	CODE_ERR(  0,  -401 ) //
+	CODE_ERR(  0,  -402 ) //
+	CODE_ERR(  0,  -406 ) //
+	CODE_ERR(  0,  -407 ) //
+	CODE_ERR(  0,  -413 ) //
+	CODE_ERR(  0,  -501 ) //
+	CODE_ERR(  0,  -502 ) //
+	CODE_ERR(  0,  -504 ) //
+	CODE_ERR(  0,  -508 ) //
+	CODE_ERR(  0,  -510 ) //
+	CODE_ERR(  0,  -518 ) //
+	CODE_ERR(  0,  -519 ) //
+	CODE_ERR(  0,  -530 ) //
+	CODE_ERR(  0,  -531 ) //
+	CODE_ERR(  0,  -532 ) //
+	CODE_ERR(  0,  -551 ) //
+	CODE_ERR(  0,  -552 ) //
+	CODE_ERR(  0,  -553 ) //
+	CODE_ERR(  0,  -595 ) //
+	CODE_ERR(  0,  -596 ) //
+	CODE_ERR(  0,  -597 ) //
+	CODE_ERR(  0,  -598 ) //
+	CODE_ERR(  0,  -599 ) //
+	CODE_ERR(  0,  -600 ) //
+	CODE_ERR(  0,  -601 ) //
+	CODE_ERR(  0,  -604 ) //
+	CODE_ERR(  0,  -605 ) //
+	CODE_ERR(  0,  -607 ) //
+	CODE_ERR(  0,  -612 ) //
+	CODE_ERR(  0,  -615 ) //
+	CODE_ERR(  0,  -616 ) //
+	CODE_ERR(  0,  -617 ) //
+	CODE_ERR(  0,  -618 ) //
+	CODE_ERR(  0,  -625 ) //
+	CODE_ERR(  0,  -637 ) //
+	CODE_ERR(  0,  -660 ) //
+	CODE_ERR(  0,  -663 ) //
+	CODE_ERR(  0,  -664 ) //
+	CODE_ERR(  0,  -677 ) //
+	CODE_ERR(  0,  -685 ) //
+	CODE_ERR(  0,  -689 ) //
+	CODE_ERR(  0,  -690 ) //
+	CODE_ERR(  0,  -691 ) //
+	CODE_ERR(  0,  -692 ) //
+	CODE_ERR(  0,  -693 ) //
+	CODE_ERR(  0,  -694 ) //
+	CODE_ERR(  0,  -802 ) //
+	CODE_ERR(  0,  -803 ) //
+	CODE_ERR(  0,  -804 ) //
+	CODE_ERR(  0,  -806 ) //
+	CODE_ERR(  0,  -807 ) //
+	CODE_ERR(  0,  -808 ) //
+	CODE_ERR(  0,  -809 ) //
+	CODE_ERR(  0,  -810 ) //
+	CODE_ERR(  0,  -811 ) //
+	CODE_ERR(  0,  -816 ) //
+	CODE_ERR(  0,  -817 ) //
+	CODE_ERR(  0,  -820 ) //
+	CODE_ERR(  0,  -823 ) //
+	CODE_ERR(  0,  -824 ) //
+	CODE_ERR(  0,  -825 ) //
+	CODE_ERR(  0,  -826 ) //
+	CODE_ERR(  0,  -827 ) //
+	CODE_ERR(  0,  -828 ) //
+	CODE_ERR(  0,  -829 ) //
+	CODE_ERR(  0,  -830 ) //
+	CODE_ERR(  0,  -831 ) //
+	CODE_ERR(  0,  -832 ) //
+	CODE_ERR(  0,  -833 ) //
+	CODE_ERR(  0,  -834 ) //
+	CODE_ERR(  0,  -835 ) //
+	CODE_ERR(  0,  -836 ) //
+	CODE_ERR(  0,  -837 ) //
+	CODE_ERR(  0,  -838 ) //
+	CODE_ERR(  0,  -839 ) //
+	CODE_ERR(  0,  -840 ) //
+	CODE_ERR(  0,  -841 ) //
+	CODE_ERR(  0,  -842 ) //
+	CODE_ERR(  0,  -901 ) //
+	CODE_ERR(  0,  -902 ) //
+	CODE_ERR(  0,  -904 ) //
+	CODE_ERR(  0,  -906 ) //
+	CODE_ERR(  0,  -909 ) //
+	CODE_ERR(  0,  -911 ) //
 	CODE_ERR( 50,  -913 ) // 40001 :: lock conflict
-	CODE_ERR(  0,  -922 ) // 
-	CODE_ERR(  0,  -923 ) // 
-	CODE_ERR(  0,  -924 ) // 
-	CODE_ERR(  0,  -926 ) // 
+	CODE_ERR(  0,  -922 ) //
+	CODE_ERR(  0,  -923 ) //
+	CODE_ERR(  0,  -924 ) //
+	CODE_ERR(  0,  -926 ) //
 };
 
 template < int sizeHASH >
@@ -241,8 +241,8 @@ class CListErrorLinks
 	ListErrorLinks **hashTable;
 
 public:
-	CListErrorLinks( ListErrorLinks * list, int count ) 
-	{ 
+	CListErrorLinks( ListErrorLinks * list, int count )
+	{
 		hashTable = new ListErrorLinks*[sizeHASH];
 		memset( hashTable, 0, sizeof( ListErrorLinks* ) * sizeHASH );
 
@@ -257,8 +257,8 @@ public:
 		} while ( --count );
 	}
 
-	~CListErrorLinks() 
-	{	
+	~CListErrorLinks()
+	{
 		delete[] hashTable;
 	}
 
@@ -302,13 +302,13 @@ ListErrorLinks listErrorLink[] = {
 	CODE_ERR( 66,  335544794L ) // HY008 :: isc_cancelled
 };
 
-CListErrorLinks< HASH_SIZE > 
+CListErrorLinks< HASH_SIZE >
 	listSqlError( listSqlErrorLink, sizeof( listSqlErrorLink ) / sizeof( *listSqlErrorLink ) );
 
-CListErrorLinks< HASH_SIZE_ERROR, FbErrorCalcHash< HASH_SIZE_ERROR > > 
+CListErrorLinks< HASH_SIZE_ERROR, FbErrorCalcHash< HASH_SIZE_ERROR > >
 	listServerError( listErrorLink, sizeof( listErrorLink ) / sizeof( *listErrorLink ) );
 
-struct Hash 
+struct Hash
 {
 	bool		subClassOdbc;
 	const char	*string;
@@ -321,9 +321,9 @@ struct Hash
 Hash codes [] = {
 	CODE_ISO ( "01000", "General warning" )									// 0
 	CODE_ISO ( "01001", "Cursor operation conflict" )						// 1
-	CODE_ISO ( "01002", "Disconnect error SQLDisconnect" )					// 2		
+	CODE_ISO ( "01002", "Disconnect error SQLDisconnect" )					// 2
 	CODE_ISO ( "01003", "NULL value eliminated in set function" )			// 3
-	CODE_ISO ( "01004", "String data, right truncated" )					// 4	
+	CODE_ISO ( "01004", "String data, right truncated" )					// 4
 	CODE_ISO ( "01006", "Privilege not revoked" )							// 5
 	CODE_ISO ( "01007", "Privilege not granted" )							// 6
 	CODE_ODBC( "01S00", "Invalid connection string attribute" )				// 7
@@ -443,8 +443,8 @@ class CListOdbcError
 	Hash **hashTable;
 
 public:
-	CListOdbcError() 
-	{ 
+	CListOdbcError()
+	{
 		hashTable = new Hash*[HASH_SIZE];
 		memset( hashTable, 0, sizeof ( Hash* ) * HASH_SIZE );
 
@@ -461,7 +461,7 @@ public:
 	}
 
 	~CListOdbcError()
-	{	
+	{
 		delete[] hashTable;
 	}
 
@@ -554,7 +554,7 @@ SQLRETURN OdbcError::sqlGetDiagRec(UCHAR * stateBuffer, SQLINTEGER * nativeCodeP
 {
 	if (stateBuffer)
 		strcpy ((char*) stateBuffer, sqlState);
-	
+
 	if (nativeCodePtr)
 		*nativeCodePtr = nativeCode;
 
@@ -585,7 +585,7 @@ SQLRETURN OdbcError::sqlGetDiagRec(UCHAR * stateBuffer, SQLINTEGER * nativeCodeP
 SQLRETURN OdbcError::sqlGetDiagField(int diagId, SQLPOINTER ptr, int msgBufferLength, SQLSMALLINT *msgLength)
 {
 	const char *string = NULL;
-	int value;
+	int value = 0;
 
 	switch (diagId)
 		{
@@ -620,18 +620,18 @@ SQLRETURN OdbcError::sqlGetDiagField(int diagId, SQLPOINTER ptr, int msgBufferLe
 			else
 				string = "";
 			break;
-		
+
 		case SQL_DIAG_MESSAGE_TEXT:
 			string = msg;
 			break;
-		
+
 		case SQL_DIAG_NATIVE:
 			value = nativeCode;
 			break;
-		
+
 		case SQL_DIAG_SQLSTATE:
 			string = sqlState;
-			break;			
+			break;
 
 		case SQL_DIAG_ROW_NUMBER:
 			value = rowNumber;

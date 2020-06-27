@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -80,18 +80,16 @@ namespace OdbcJdbcLibrary {
 
 unsigned __int64 listScale[19];
 
-static int init();
-static int foo = init();
-
-int init()
+static struct init
 {
-	listScale[0] = 1;
+	init()
+	{
+		listScale[0] = 1;
 
-	for (int i = 1; i < sizeof(listScale)/sizeof(listScale[0]); i++)
-		listScale[i] = listScale[i-1] * 10;
-
-	return 0;
-}
+		for (unsigned int i = 1; i < sizeof(listScale)/sizeof(listScale[0]); i++)
+			listScale[i] = listScale[i-1] * 10;
+	}
+} foo;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -697,7 +695,7 @@ ADRESS_FUNCTION OdbcConvert::getAdressFunction(DescRecord * from, DescRecord * t
 				return &OdbcConvert::notYetImplemented;
 			}
 		}
-		else 
+		else
 		{
 			if ( to->isIndicatorSqlDa && to->headSqlVarPtr->isReplaceForParamArray() )
 			{
@@ -861,7 +859,7 @@ ADRESS_FUNCTION OdbcConvert::getAdressFunction(DescRecord * from, DescRecord * t
 				return &OdbcConvert::notYetImplemented;
 			}
 		}
-		else 
+		else
 		{
 			if ( to->isIndicatorSqlDa && to->headSqlVarPtr->isReplaceForParamArray() )
 			{
@@ -997,7 +995,7 @@ ADRESS_FUNCTION OdbcConvert::getAdressFunction(DescRecord * from, DescRecord * t
 	return NULL;
 }
 
-inline 
+inline
 SQLPOINTER OdbcConvert::getAdressBindDataFrom(char * pointer)
 {
 	return (SQLPOINTER)(pointer + *bindOffsetPtrFrom);
@@ -1009,7 +1007,7 @@ SQLLEN * OdbcConvert::getAdressBindIndFrom(char * pointer)
 	return (SQLLEN *)(pointer + *bindOffsetPtrIndFrom);
 }
 
-inline 
+inline
 SQLPOINTER OdbcConvert::getAdressBindDataTo(char * pointer)
 {
 	return (SQLPOINTER)(pointer + *bindOffsetPtrTo);
@@ -1187,7 +1185,7 @@ int OdbcConvert::convTagNumericTo##TYPE_TO(DescRecord * from, DescRecord * to)		
 	tagSQL_NUMERIC_STRUCT * nm =																\
 					(tagSQL_NUMERIC_STRUCT *)getAdressBindDataFrom((char*)from->dataPtr);		\
 																								\
-	val = *(QUAD*)nm->val;																		\
+	memcpy(&val, nm->val, sizeof(val));															\
 																								\
 	if ( to->scale != nm->scale )																\
 		val = ( val * listScale[to->scale] ) / listScale[nm->scale];							\
@@ -1213,7 +1211,7 @@ int OdbcConvert::convTagNumericTo##TYPE_TO(DescRecord * from, DescRecord * to)		
 	tagSQL_NUMERIC_STRUCT * nm =																\
 					(tagSQL_NUMERIC_STRUCT *)getAdressBindDataFrom((char*)from->dataPtr);		\
 																								\
-	val = *(QUAD*)nm->val;																		\
+	memcpy(&val, nm->val, sizeof(val));															\
 																								\
 	if ( !nm->sign )																			\
 		val = -val;																				\
@@ -1589,7 +1587,7 @@ int OdbcConvert::convBlob##To##TYPE_TO(DescRecord * from, DescRecord * to)						
 																								\
 				if ( len && len < dataRemaining )												\
 				{																				\
-					OdbcError *error = parentStmt->postError( new OdbcError( 0, "01004", "Data truncated" ) ); \
+					parentStmt->postError( new OdbcError( 0, "01004", "Data truncated" ) ); \
 					ret = SQL_SUCCESS_WITH_INFO;												\
 				}																				\
 			}																					\
@@ -1606,9 +1604,9 @@ int OdbcConvert::convBlob##To##TYPE_TO(DescRecord * from, DescRecord * to)						
 }																								\
 
 int OdbcConvert::notYetImplemented(DescRecord * from, DescRecord * to)
-{ 
+{
 	parentStmt->postError ("07006", "Restricted data type attribute violation");
-	return SQL_ERROR; 
+	return SQL_ERROR;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1626,7 +1624,7 @@ int OdbcConvert::convGuidToString(DescRecord * from, DescRecord * to)
 	SQLGUID *g = (SQLGUID*)getAdressBindDataFrom((char*)from->dataPtr);
 	int len, outlen = to->length;
 
-	len = snprintf(pointer, outlen, "%08lX-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X",
+	len = snprintf(pointer, outlen, "%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X",
 		(unsigned int) g->Data1, g->Data2, g->Data3, g->Data4[0], g->Data4[1], g->Data4[2], g->Data4[3], g->Data4[4], g->Data4[5], g->Data4[6], g->Data4[7]);
 
 	if ( len == -1 ) len = outlen;
@@ -2149,7 +2147,7 @@ int OdbcConvert::convTimeToString(DescRecord * from, DescRecord * to)
 	int len, outlen = to->length;
 
 	if ( nnano )
-		len = snprintf(pointer, outlen, "%02d:%02d:%02d.%04lu",hour, minute, second, nnano);
+		len = snprintf(pointer, outlen, "%02d:%02d:%02d.%04u",hour, minute, second, nnano);
 	else
 		len = snprintf(pointer, outlen, "%02d:%02d:%02d",hour, minute, second);
 
@@ -2181,7 +2179,7 @@ int OdbcConvert::convTimeToStringW(DescRecord * from, DescRecord * to)
 	int len, outlen = to->length / sizeof( wchar_t );
 
 	if ( nnano )
-		len = swprintf(pointer, outlen, L"%02d:%02d:%02d.%04lu",hour, minute, second, nnano);
+		len = swprintf(pointer, outlen, L"%02d:%02d:%02d.%04u",hour, minute, second, nnano);
 	else
 		len = swprintf(pointer, outlen, L"%02d:%02d:%02d",hour, minute, second);
 
@@ -2345,7 +2343,7 @@ int OdbcConvert::convDateTimeToString(DescRecord * from, DescRecord * to)
 	int len, outlen = to->length;
 
 	if ( nnano )
-		len = snprintf(pointer, outlen, "%04d-%02d-%02d %02d:%02d:%02d.%04lu",year,month,mday,hour, minute, second, nnano);
+		len = snprintf(pointer, outlen, "%04d-%02d-%02d %02d:%02d:%02d.%04u",year,month,mday,hour, minute, second, nnano);
 	else
 		len = snprintf(pointer, outlen, "%04d-%02d-%02d %02d:%02d:%02d",year,month,mday,hour, minute, second);
 
@@ -2445,7 +2443,7 @@ int OdbcConvert::convDateTimeToTagDateTime(DescRecord * from, DescRecord * to)
 	int nday = LO_LONG(number);
 	int ntime = HI_LONG(number);
 
-	if ( ntime < 0 ) 
+	if ( ntime < 0 )
 		ntime = 0;
 
 	decode_sql_date(nday, tagTs->day, tagTs->month, tagTs->year);
@@ -2487,7 +2485,7 @@ int OdbcConvert::convDateTimeToBinary(DescRecord * from, DescRecord * to)
 		decode_sql_time(ntime, tagTs.hour, tagTs.minute, tagTs.second);
 		tagTs.fraction = (ntime % ISC_TIME_SECONDS_PRECISION);
 
-		if ( tagTs.fraction ) 
+		if ( tagTs.fraction )
 			tagTs.fraction = (10000 + tagTs.fraction) / 100 - 100;
 
 		shortDate *ptd = (shortDate*)pointer;
@@ -2633,16 +2631,16 @@ int OdbcConvert::convBlobToBlob(DescRecord * from, DescRecord * to)
 			from->startedReturnSQLData = true;
 			int len = MIN(dataRemaining, MAX(0, (int)to->length));
 			int lenRead;
-			 
+
 			if ( pointer )
 			{
-				if ( len > 0 ) 
+				if ( len > 0 )
 				{
 					if ( blob->isArray() )
 						blob->getBinary (from->dataOffset, len, pointer);
 					else if ( directOpen )
 						blob->directFetchBlob((char*)pointer, len, lenRead);
-					else 
+					else
 						blob->getBytes (from->dataOffset, len, pointer);
 				}
 
@@ -2651,7 +2649,7 @@ int OdbcConvert::convBlobToBlob(DescRecord * from, DescRecord * to)
 
 				if ( len && len < dataRemaining )
 				{
-					OdbcError *error = parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
+					parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
 					ret = SQL_SUCCESS_WITH_INFO;
 				}
 			}
@@ -2721,8 +2719,8 @@ int OdbcConvert::convBlobToBinary(DescRecord * from, DescRecord * to)
 			from->startedReturnSQLData = true;
 			int len = MIN(dataRemaining, MAX(0, (int)to->length-1)>>1);
 			int lenRead;
-		 
-			if ( len > 0 ) 
+
+			if ( len > 0 )
 			{
 				if ( directOpen )
 					blob->directFetchBlob((char*)pointer, len, lenRead);
@@ -2735,7 +2733,7 @@ int OdbcConvert::convBlobToBinary(DescRecord * from, DescRecord * to)
 
 			if ( len && len < dataRemaining )
 			{
-				OdbcError *error = parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
+				parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
 				ret = SQL_SUCCESS_WITH_INFO;
 			}
 		}
@@ -2797,7 +2795,7 @@ int OdbcConvert::convBlobToString(DescRecord * from, DescRecord * to)
 		else
 		{
 			length = blob->length();
-			
+
 			if ( blob->isBlob() )
 				length *= 2;
 		}
@@ -2816,10 +2814,10 @@ int OdbcConvert::convBlobToString(DescRecord * from, DescRecord * to)
 			from->startedReturnSQLData = true;
 			int len = MIN(dataRemaining, MAX(0, (int)to->length-1));
 			int lenRead;
-			 
+
 			if ( pointer )
 			{
-				if ( len > 0 ) 
+				if ( len > 0 )
 				{
 					if ( !directOpen )
 					{
@@ -2843,7 +2841,7 @@ int OdbcConvert::convBlobToString(DescRecord * from, DescRecord * to)
 
 				if ( len && len < dataRemaining )
 				{
-					OdbcError *error = parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
+					parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
 					ret = SQL_SUCCESS_WITH_INFO;
 				}
 			}
@@ -2954,13 +2952,13 @@ int OdbcConvert::convBlobToStringW( DescRecord * from, DescRecord * to )
 		{
 			from->startedReturnSQLData = true;
 			int len = MIN(dataRemaining, MAX(0, to->length / (int)sizeof(wchar_t) - 1));
-			 
+
 			if ( pointer )
 			{
 				if (blob->isBlob())
 				{
 					len &= ~1;  // we can only return an even number
-					if ( len > 0 ) 
+					if ( len > 0 )
 					{
 						char *tmp = new char[len];
 
@@ -2992,7 +2990,7 @@ int OdbcConvert::convBlobToStringW( DescRecord * from, DescRecord * to )
 
 				if ( len && len < dataRemaining )
 				{
-					OdbcError *error = parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
+					parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
 					ret = SQL_SUCCESS_WITH_INFO;
 				}
 			}
@@ -3032,7 +3030,7 @@ int OdbcConvert::convBinaryToBlob(DescRecord * from, DescRecord * to)
 	if( len > 0 )
 	{
 		Blob *& blob = to->dataBlobPtr;
-		
+
 		if ( blob->isArray() )
 		{
 			blob->clear();
@@ -3046,7 +3044,7 @@ int OdbcConvert::convBinaryToBlob(DescRecord * from, DescRecord * to)
 			blob->directCloseBlob();
 		}
 	}
-	else		
+	else
 		*(short*)indicatorTo = SQL_NULL_DATA;
 
 	return ret;
@@ -3217,7 +3215,7 @@ int OdbcConvert::convStringToString(DescRecord * from, DescRecord * to)
 	{
 		from->startedReturnSQLData = true;
 		int len = MIN(dataRemaining, MAX(0, (int)to->length-1));
-		 
+
 		if ( !pointerTo )
 			length = dataRemaining;
 		else
@@ -3232,10 +3230,10 @@ int OdbcConvert::convStringToString(DescRecord * from, DescRecord * to)
 
 			if ( len && len < dataRemaining )
 			{
-				OdbcError *error = parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
+				parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
 				ret = SQL_SUCCESS_WITH_INFO;
 			}
-				
+
 			length = dataRemaining;
 		}
 	}
@@ -3303,7 +3301,7 @@ int OdbcConvert::convStringToStringW(DescRecord * from, DescRecord * to)
 	{
 		from->startedReturnSQLData = true;
 		int len = MIN(dataRemaining, MAX(0, (int)(to->length / sizeof( wchar_t )) - 1 ));
-		 
+
 		if ( pointerTo )
 		{
 			wcsncpy(pointerTo, pointerFromWcs + from->dataOffset, len);
@@ -3313,7 +3311,7 @@ int OdbcConvert::convStringToStringW(DescRecord * from, DescRecord * to)
 
 			if ( len && len < dataRemaining )
 			{
-				OdbcError *error = parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
+				parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
 				ret = SQL_SUCCESS_WITH_INFO;
 			}
 		}
@@ -3330,7 +3328,7 @@ int OdbcConvert::convStringToStringW(DescRecord * from, DescRecord * to)
 
 // for use App to SqlDa
 int OdbcConvert::convStringToVarString(DescRecord * from, DescRecord * to)
-{	
+{
 	SQLLEN * indicatorFrom = getAdressBindIndFrom((char*)from->indicatorPtr);
 	SQLLEN * indicatorTo = getAdressBindIndTo((char*)to->indicatorPtr);
 
@@ -3353,9 +3351,7 @@ int OdbcConvert::convStringToVarString(DescRecord * from, DescRecord * to)
 
 	if (lenVar && (int)lenVar > (int)to->length)
 	{
-		OdbcError *error = parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
-//		if (error)
-//			error->setColumnNumber (column, rowNumber);
+		parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
 		ret = SQL_SUCCESS_WITH_INFO;
 	}
 
@@ -3370,7 +3366,7 @@ int OdbcConvert::convStringToVarString(DescRecord * from, DescRecord * to)
 
 // for use App to SqlDa
 int OdbcConvert::convStringToBlob(DescRecord * from, DescRecord * to)
-{	
+{
 	SQLLEN * indicatorFrom = getAdressBindIndFrom((char*)from->indicatorPtr);
 	SQLLEN * indicatorTo = getAdressBindIndTo((char*)to->indicatorPtr);
 
@@ -3389,7 +3385,7 @@ int OdbcConvert::convStringToBlob(DescRecord * from, DescRecord * to)
 
 	if( len > 0 )
 		to->dataBlobPtr->writeStringHexToBlob(pointerTo, pointerFrom, len);
-	else		
+	else
 		*(short*)indicatorTo = SQL_NULL_DATA;
 
 	return ret;
@@ -3397,21 +3393,22 @@ int OdbcConvert::convStringToBlob(DescRecord * from, DescRecord * to)
 
 // for use App to SqlDa
 int OdbcConvert::convStringWToBlob(DescRecord * from, DescRecord * to)
-{	
+{
 	SQLLEN * indicatorFrom = getAdressBindIndFrom((char*)from->indicatorPtr);
 	SQLLEN * indicatorTo = getAdressBindIndTo((char*)to->indicatorPtr);
 
 	ODBCCONVERT_CHECKNULL_SQLDA;
 
-	SQLLEN * octetLengthPtr = getAdressBindIndFrom((char*)from->octetLengthPtr);
+//	SQLLEN * octetLengthPtr = getAdressBindIndFrom((char*)from->octetLengthPtr);
 	wchar_t * pointerFrom = (wchar_t*)getAdressBindDataFrom((char*)from->dataPtr);
 	char * pointerTo = (char*)getAdressBindDataTo((char*)to->dataPtr);
 
-	SQLINTEGER len;
+//	SQLINTEGER len;
 	SQLINTEGER lenMbs;
 	SQLRETURN ret = SQL_SUCCESS;
 
-	GET_WLEN_FROM_OCTETLENGTHPTR;
+//	GET_WLEN_FROM_OCTETLENGTHPTR;
+// WTF? Zero-terminated string is expected? Seriously...?
 
 	lenMbs = (SQLUINTEGER)to->WcsToMbs( NULL, pointerFrom, 0 );
 	lenMbs = MIN( lenMbs, (int)MAX(0, (int)to->length));
@@ -3423,7 +3420,7 @@ int OdbcConvert::convStringWToBlob(DescRecord * from, DescRecord * to)
 		to->dataBlobPtr->writeStringHexToBlob(pointerTo, tempValue, lenMbs);
 		delete [] tempValue;
 	}
-	else		
+	else
 		*(short*)indicatorTo = SQL_NULL_DATA;
 
 	return ret;
@@ -3431,7 +3428,7 @@ int OdbcConvert::convStringWToBlob(DescRecord * from, DescRecord * to)
 
 // for use App to SqlDa
 int OdbcConvert::convStreamHexStringToBlob(DescRecord * from, DescRecord * to)
-{	
+{
 	char * pointerTo = (char*)getAdressBindDataTo((char*)to->dataPtr);
 	SQLLEN * indicatorFrom = getAdressBindIndFrom((char*)from->indicatorPtr);
 	SQLLEN * indicatorTo = getAdressBindIndTo((char*)to->indicatorPtr);
@@ -3450,7 +3447,7 @@ int OdbcConvert::convStreamHexStringToBlob(DescRecord * from, DescRecord * to)
 
 // for use App to SqlDa
 int OdbcConvert::convStreamToBlob(DescRecord * from, DescRecord * to)
-{	
+{
 	char * pointerTo = (char*)getAdressBindDataTo((char*)to->dataPtr);
 	SQLLEN * indicatorFrom = getAdressBindIndFrom((char*)from->indicatorPtr);
 	SQLLEN * indicatorTo = getAdressBindIndTo((char*)to->indicatorPtr);
@@ -3495,7 +3492,7 @@ int OdbcConvert::convStringToBinary(DescRecord * from, DescRecord * to)
 	{
 		from->startedReturnSQLData = true;
 		int len = MIN(dataRemaining, MAX(0, (int)to->length));
-		 
+
 		if ( !pointerTo )
 			length = dataRemaining;
 		else
@@ -3508,10 +3505,10 @@ int OdbcConvert::convStringToBinary(DescRecord * from, DescRecord * to)
 
 			if ( len && len < dataRemaining )
 			{
-				OdbcError *error = parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
+				parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
 				ret = SQL_SUCCESS_WITH_INFO;
 			}
-				
+
 			length = dataRemaining;
 		}
 	}
@@ -3558,7 +3555,7 @@ int OdbcConvert::transferStringToTinyInt(DescRecord * from, DescRecord * to)
 		src++;
 		minus = true;
 	}
-	
+
 	while ( *src )
 	{
 		val *= 10;
@@ -3631,7 +3628,7 @@ int OdbcConvert::transferStringWToDateTime(DescRecord * from, DescRecord * to)
 	int n = len;
 	char * beg = (char*)pointerFrom + 1;
 	short * next = (short*)(beg + 1);
-	
+
 	while ( n-- )
 		*beg++ = (char)*next++;
 
@@ -3678,7 +3675,7 @@ int OdbcConvert::transferStringToAllowedType(DescRecord * from, DescRecord * to)
 	{
 		if ( len > to->octetLength )
 		{
-			OdbcError *error = parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
+			parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
 			ret = SQL_SUCCESS_WITH_INFO;
 		}
 
@@ -3696,7 +3693,7 @@ int OdbcConvert::transferStringToAllowedType(DescRecord * from, DescRecord * to)
 
 		if ( len + from->dataOffset > to->length )
 		{
-			OdbcError *error = parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
+			parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
 			ret = SQL_SUCCESS_WITH_INFO;
 		}
 
@@ -3739,7 +3736,7 @@ int OdbcConvert::transferStringWToAllowedType(DescRecord * from, DescRecord * to
 
 	if ( cch + from->dataOffset > to->octetLength )
 	{
-  		OdbcError *error = parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
+  		parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
 		ret = SQL_SUCCESS_WITH_INFO;
 		do
 		{
@@ -3779,15 +3776,15 @@ int OdbcConvert::transferStringWToAllowedType(DescRecord * from, DescRecord * to
 // for use App to SqlDa
 int OdbcConvert::transferArrayStringToAllowedType(DescRecord * from, DescRecord * to)
 {
-	SQLLEN * octetLengthPtr = getAdressBindIndFrom((char*)from->octetLengthPtr);
+//	SQLLEN * octetLengthPtr = getAdressBindIndFrom((char*)from->octetLengthPtr);
 	char * pointerFrom = (char*)getAdressBindDataFrom((char*)from->dataPtr);
 	SQLLEN * indicatorFrom = getAdressBindIndFrom((char*)from->indicatorPtr);
 	SQLLEN * indicatorTo = getAdressBindIndTo((char*)to->indicatorPtr);
 
 	ODBCCONVERT_CHECKNULL_SQLDA;
 
-	char * firstChar;
-	int len;
+	char * firstChar = nullptr;
+	int len = 0;
 
 	if ( !from->data_at_exec )
 	{
@@ -3898,7 +3895,7 @@ int OdbcConvert::convVarStringToBinary(DescRecord * from, DescRecord * to)
 	{
 		from->startedReturnSQLData = true;
 		int len = MIN(dataRemaining, MAX(0, (int)to->length));
-		 
+
 		if ( !pointerTo )
 			length = dataRemaining;
 		else
@@ -3912,10 +3909,10 @@ int OdbcConvert::convVarStringToBinary(DescRecord * from, DescRecord * to)
 
 			if ( len && len < dataRemaining )
 			{
-				OdbcError *error = parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
+				parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
 				ret = SQL_SUCCESS_WITH_INFO;
 			}
-				
+
 			length = dataRemaining;
 		}
 	}
@@ -3962,7 +3959,7 @@ int OdbcConvert::convVarStringToString(DescRecord * from, DescRecord * to)
 	{
 		from->startedReturnSQLData = true;
 		int len = MIN(dataRemaining, MAX(0, (int)to->length-1));
-		 
+
 		if ( !pointerTo )
 			length = dataRemaining;
 		else
@@ -3978,10 +3975,10 @@ int OdbcConvert::convVarStringToString(DescRecord * from, DescRecord * to)
 
 			if ( len && len < dataRemaining )
 			{
-				OdbcError *error = parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
+				parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
 				ret = SQL_SUCCESS_WITH_INFO;
 			}
-				
+
 			length = dataRemaining;
 		}
 	}
@@ -4045,7 +4042,7 @@ int OdbcConvert::convVarStringToStringW(DescRecord * from, DescRecord * to)
 	{
 		from->startedReturnSQLData = true;
 		int len = MIN(dataRemaining, MAX(0, (int)(to->length / sizeof( wchar_t )) - 1 ));
-		 
+
 		if ( pointerTo )
 		{
 			wcsncpy(pointerTo, pointerFromWcs + from->dataOffset, len);
@@ -4055,7 +4052,7 @@ int OdbcConvert::convVarStringToStringW(DescRecord * from, DescRecord * to)
 
 			if ( len && len < dataRemaining )
 			{
-				OdbcError *error = parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
+				parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
 				ret = SQL_SUCCESS_WITH_INFO;
 			}
 		}
@@ -4078,7 +4075,7 @@ int OdbcConvert::convVarStringSystemToString(DescRecord * from, DescRecord * to)
 	SQLLEN * indicatorFrom = getAdressBindIndFrom((char*)from->indicatorPtr);
 
 	ODBCCONVERT_CHECKNULL( pointerTo );
-	
+
 	SQLRETURN ret = SQL_SUCCESS;
 	unsigned short lenVar = *(unsigned short*)pointerFrom;
 	int len;
@@ -4097,9 +4094,7 @@ int OdbcConvert::convVarStringSystemToString(DescRecord * from, DescRecord * to)
 
 	if (len && (int)len > (int)to->length)
 	{
-		OdbcError *error = parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
-//		if (error)
-//			error->setColumnNumber (column, rowNumber);
+		parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
 		ret = SQL_SUCCESS_WITH_INFO;
 	}
 
@@ -4120,7 +4115,7 @@ int OdbcConvert::convVarStringSystemToStringW(DescRecord * from, DescRecord * to
 	SQLLEN * indicatorFrom = getAdressBindIndFrom((char*)from->indicatorPtr);
 
 	ODBCCONVERT_CHECKNULLW( pointerTo );
-	
+
 	SQLRETURN ret = SQL_SUCCESS;
 	unsigned short lenVar = *(unsigned short*)pointerFrom;
 	int len;
@@ -4134,15 +4129,13 @@ int OdbcConvert::convVarStringSystemToStringW(DescRecord * from, DescRecord * to
 
 	if( len > 0 )
 		mbstowcs( pointerTo, src, len );
-	
+
 	pointerTo[len] = (wchar_t)'\0';
 	len *= sizeof( wchar_t );
 
 	if (len && (int)len > (int)to->length)
 	{
-		OdbcError *error = parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
-//		if (error)
-//			error->setColumnNumber (column, rowNumber);
+		parentStmt->postError (new OdbcError (0, "01004", "Data truncated"));
 		ret = SQL_SUCCESS_WITH_INFO;
 	}
 
@@ -4181,9 +4174,9 @@ signed int OdbcConvert::encode_sql_date(SQLUSMALLINT day, SQLUSMALLINT month, SQ
 	c = year / 100;
 	ya = year - 100 * c;
 
-	return (signed int) (((QUAD) 146097 * c) / 4 + 
-		(1461 * ya) / 4 + 
-		(153 * month + 2) / 5 + 
+	return (signed int) (((QUAD) 146097 * c) / 4 +
+		(1461 * ya) / 4 +
+		(153 * month + 2) / 5 +
 		day - 678882); //	day + 1721119 - 2400001);
 }
 
@@ -4297,7 +4290,7 @@ void OdbcConvert::convertStringDateTimeToServerStringDateTime (char *& string, i
 	else
 	{
 		while( *++ptBeg == ' ' );
-		
+
 		if ( UPPER(*ptBeg) == 'D' )
 		{
 			offsetPoint = 0;
@@ -4359,7 +4352,7 @@ void OdbcConvert::getFirstElementFromArrayString(char * string, char *& firstCha
 	if ( !ptTmp || !*ptTmp )
 		return;
 
-	while( *ptTmp == '{' || *ptTmp == ' ' ) 
+	while( *ptTmp == '{' || *ptTmp == ' ' )
 		ptTmp++;
 
 	if ( *ptTmp == '\'' )
