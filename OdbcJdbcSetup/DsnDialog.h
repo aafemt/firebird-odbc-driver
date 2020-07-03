@@ -50,11 +50,9 @@ class CDsnDialog
 
 	const char** drivers;
 	const char** charsets;
-	const char** useshemas;
 
 public:
-	CDsnDialog( HWND hDlgParent, const char **jdbcDrivers, const char **jdbcCharsets,
-				const char **useShemasIdentifier );
+	CDsnDialog( HWND hDlgParent, const char **jdbcDrivers, const char **jdbcCharsets);
 	~CDsnDialog();
 
 // Dialog Data
@@ -70,7 +68,6 @@ public:
 	JString	m_driver;
 	JString	m_role;
 	JString	m_charset;
-	JString	m_useschema;
 	JString	m_locktimeout;
 	BOOL	m_readonly;
 	BOOL	m_nowait;

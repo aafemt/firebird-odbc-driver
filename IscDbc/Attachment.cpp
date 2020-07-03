@@ -68,7 +68,6 @@ Attachment::Attachment()
 	isRoles = false;
 	userType = 8;
 	charsetCode = 0; // NONE
-	useSchemaIdentifier = 0;
 	useLockTimeoutWaitTransactions = 0;
 	databaseProductName = "Interbase";
 	majorFb = 1;
@@ -475,29 +474,6 @@ void Attachment::openDatabase(const char *dbName, Properties *properties)
 		autoQuotedIdentifier = true;
 	else
 		autoQuotedIdentifier = false;
-
-	property = properties->findValue ("useSchema", NULL);
-
-	if ( property )
-	{
-		switch ( *property )
-		{
-		case '1': // remove SCHEMA from SQL query
-			useSchemaIdentifier = 1;
-			break;
-
-		case '2': // use full SCHEMA
-			useSchemaIdentifier = 2;
-			break;
-
-		default:
-		case '0': // set null field SCHEMA
-			useSchemaIdentifier = 0;
-			break;
-		}
-	}
-	else
-		useSchemaIdentifier = 0;
 
 	property = properties->findValue ("useLockTimeout", NULL);
 

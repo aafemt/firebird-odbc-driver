@@ -80,7 +80,6 @@
 #define IDC_EDIT_USER_LAST_NAME         1075
 #define IDC_EDIT_USER_ID                1076
 #define IDC_EDIT_GROUP_ID               1077
-#define IDC_COMBOBOX_USE_SCHEMA         1078
 #define IDC_LOCKTIMEOUT                 1079
 #define IDC_STATIC_LOCKTIMEOUT          1080
 #define IDC_CHECK_SFTHREAD              1081
@@ -138,9 +137,6 @@
 #define IDS_ERROR_MESSAGE_19		46
 #define IDS_ERROR_MESSAGE_20		47
 #define IDS_BUTTON_SERVICES             48
-#define IDS_USESCHEMA_NULL              49
-#define IDS_USESCHEMA_DEL               50
-#define IDS_USESCHEMA_FULL              51
-#define IDS_STATIC_LOCKTIMEOUT          52
-#define IDS_CHECK_SFTHREAD		53
-#define IDS_BUTTON_CLOSE		54
+#define IDS_STATIC_LOCKTIMEOUT          49
+#define IDS_CHECK_SFTHREAD		50
+#define IDS_BUTTON_CLOSE		51

@@ -129,7 +129,6 @@ public:
 	JString		pageSize;
 	int			optTpb;
 	int			defOptions;
-	JString		useSchemaIdentifier;
 	JString		useLockTimeoutWaitTransactions;
 	bool		quotedIdentifier;
 	bool		sensitiveIdentifier;

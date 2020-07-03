@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -27,7 +27,7 @@
  *
  *	2002-07-02	IscProcedureColumnsResultSet.cpp
  *				Contributed by C. G. Alvarez
- *				Fixed invalid table alias in typos in 
+ *				Fixed invalid table alias in typos in
  *				getProcedureColumns()
  *
  *
@@ -35,7 +35,7 @@
  *
  *				Contributed by C. G. Alvarez
  *				o qualify the column names in getProcedureColumns()
- *				
+ *
  *
  */
 
@@ -75,18 +75,15 @@ IscProcedureColumnsResultSet::IscProcedureColumnsResultSet(IscDatabaseMetaData *
 	sqlType.appOdbcVersion = metaData->connection->getUseAppOdbcVersion(); // SQL_OV_ODBC2 or SQL_OV_ODBC3
 }
 
-void IscProcedureColumnsResultSet::getProcedureColumns(const char * catalog, 
-													   const char * schemaPattern, 
-													   const char * procedureNamePattern, 
+void IscProcedureColumnsResultSet::getProcedureColumns(const char * catalog,
+													   const char * schemaPattern,
+													   const char * procedureNamePattern,
 													   const char * columnNamePattern)
 {
 	char sql[4096] = "";
 	char * pt = sql;
-	addString(pt, "select cast( '");
-	if (catalog && *catalog)
-		addString(pt, catalog);
-	addString(pt, "' as varchar(255)) as procedure_cat,\n"									// 1
-				"\tcast (p.rdb$owner_name as varchar(31)) as procedure_schem,\n"		// 2
+	addString(pt, "select cast(NULL as varchar(7)) as procedure_cat,\n"					// 1
+				"\tcast (NULL as varchar(7)) as procedure_schem,\n"		// 2
 				"\tcast (pp.rdb$procedure_name as varchar(31)) as procedure_name,\n"	// 3
 				"\tcast (pp.rdb$parameter_name as varchar(31)) as column_name,\n"		// 4
 				"\tpp.rdb$parameter_type as column_type,\n"			// 5
@@ -106,16 +103,13 @@ void IscProcedureColumnsResultSet::getProcedureColumns(const char * catalog,
 				"\tcast ('YES' as varchar(3)) as is_nullable,\n"	// 19
 				"\tf.rdb$field_precision as column_precision,\n"	// 20
 				"\tf.rdb$description as remarks_blob\n"				// 21
-		"from rdb$procedure_parameters pp, rdb$fields f, rdb$procedures p\n"
-		"where pp.rdb$field_source = f.rdb$field_name and p.rdb$procedure_name = pp.rdb$procedure_name\n");
+		"from rdb$procedure_parameters pp, rdb$fields f\n"
+		"where pp.rdb$field_source = f.rdb$field_name\n");
 
 	char * ptFirst = sql + strlen(sql);
 
 	if ( sqlType.appOdbcVersion == 2 ) // SQL_OV_ODBC2
 		addString(ptFirst, " and pp.rdb$parameter_type = 0\n" );
-
-	if (schemaPattern && *schemaPattern)
-		expandPattern (ptFirst, " and ","p.rdb$owner_name", schemaPattern);
 
 	if (procedureNamePattern && *procedureNamePattern)
 		expandPattern (ptFirst, " and ","pp.rdb$procedure_name", procedureNamePattern);
@@ -136,9 +130,6 @@ bool IscProcedureColumnsResultSet::nextFetch()
 {
 	if (!IscResultSet::nextFetch())
 		return false;
-
-	if ( !metaData->getUseSchemaIdentifier() )
-		sqlda->setNull(2);
 
 	int parameterType = sqlda->getShort (5);
 	int type = parameterType ? SQL_PARAM_OUTPUT : SQL_PARAM_INPUT;
@@ -167,7 +158,7 @@ bool IscProcedureColumnsResultSet::nextFetch()
 	case JDBC_DECIMAL:
 		sqlda->updateShort ( 10, -sqlType.scale );
 	}
-	
+
 	adjustResults (sqlType);
 
 	if ( !sqlda->isNull(21) )
@@ -204,7 +195,7 @@ void IscProcedureColumnsResultSet::adjustResults (IscSqlType &sqlType)
 		sqlda->updateShort (10, -ISC_TIME_SECONDS_PRECISION_SCALE);
 	default:
 		sqlda->updateShort (11, 10);
-	}	
+	}
 
 	switch (sqlType.type)
 	{
@@ -241,7 +232,7 @@ void IscProcedureColumnsResultSet::adjustResults (IscSqlType &sqlType)
 		break;
 	default:
 		sqlda->setNull (17);
-	} 
+	}
 }
 
 }; // end namespace IscDbcLibrary

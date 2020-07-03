@@ -641,7 +641,7 @@ SQLRETURN OdbcConnection::sqlDriverConnect(SQLHWND hWnd, const SQLCHAR * connect
 			defOptions |= DEF_AUTOQUOTED;
 		}
 		else if ( IS_KEYWORD( KEY_DSN_USESCHEMA ) || IS_KEYWORD( SETUP_USESCHEMA ) )
-			useSchemaIdentifier = value;
+			; // Ignore it
 		else if ( IS_KEYWORD( KEY_DSN_LOCKTIMEOUT ) || IS_KEYWORD( SETUP_LOCKTIMEOUT ) )
 			useLockTimeoutWaitTransactions = value;
 		else if ( IS_KEYWORD( KEY_DSN_SAFETHREAD ) || IS_KEYWORD( SETUP_SAFETHREAD ) )
@@ -1659,9 +1659,6 @@ SQLRETURN OdbcConnection::connect(const char *sharedLibrary, const char * databa
 								: databaseAccess == DROP_DB ? "2"
 								: "0");
 
-		if (useSchemaIdentifier)
-			properties->putValue ("useSchema", useSchemaIdentifier);
-
 		if (useLockTimeoutWaitTransactions)
 			properties->putValue ("useLockTimeout", useLockTimeoutWaitTransactions);
 
@@ -1829,9 +1826,6 @@ void OdbcConnection::expandConnectParameters()
 				dialect3 = false;
 		}
 
-		if (useSchemaIdentifier.IsEmpty())
-			useSchemaIdentifier = readAttribute(SETUP_USESCHEMA);
-
 		if (useLockTimeoutWaitTransactions.IsEmpty())
 			useLockTimeoutWaitTransactions = readAttribute(SETUP_LOCKTIMEOUT);
 
@@ -1930,9 +1924,6 @@ void OdbcConnection::expandConnectParameters()
 				dialect3 = false;
 		}
 
-		if (useSchemaIdentifier.IsEmpty())
-			useSchemaIdentifier = readAttributeFileDSN (SETUP_USESCHEMA);
-
 		if (useLockTimeoutWaitTransactions.IsEmpty())
 			useLockTimeoutWaitTransactions = readAttributeFileDSN (SETUP_LOCKTIMEOUT);
 
@@ -1996,7 +1987,6 @@ void OdbcConnection::saveConnectParameters()
 	writeAttributeFileDSN (SETUP_QUOTED, quotedIdentifier ? "Y" : "N");
 	writeAttributeFileDSN (SETUP_SENSITIVE, sensitiveIdentifier ? "Y" : "N");
 	writeAttributeFileDSN (SETUP_AUTOQUOTED, autoQuotedIdentifier ? "Y" : "N");
-	writeAttributeFileDSN (SETUP_USESCHEMA, useSchemaIdentifier);
 	writeAttributeFileDSN (SETUP_LOCKTIMEOUT, useLockTimeoutWaitTransactions);
 	writeAttributeFileDSN (SETUP_SAFETHREAD, safeThread ? "Y" : "N");
 

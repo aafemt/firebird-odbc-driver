@@ -114,7 +114,6 @@ public:
 	JString getInfoString (char *buffer, int item, const char *defaultString);
 	int getInfoItem (char *buffer, int item, int defaultValue);
 	JString getIscStatusText (ISC_STATUS *statusVector);
-	bool removeSchemaFromSQL( char *strSql, int lenSql, char *strSqlOut, int &lenSqlOut );
 	virtual int getNativeSql (const char * inStatementText, int textLength1,
 								char * outStatementText, int bufferLength,
 								int * textLength2Ptr);

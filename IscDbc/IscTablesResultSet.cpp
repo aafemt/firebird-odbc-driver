@@ -55,11 +55,14 @@ void IscTablesResultSet::getTables(const char * catalog, const char * schemaPatt
 	const char * ptSql = sql;
 	char * pt = sql;
 
+/*
 	addString(pt, "select cast( '");
 	if (catalog && *catalog)
 		addString(pt, catalog);
 	addString(pt, "' as varchar(255)) as table_cat,\n"									// 1
-					  "cast (tbl.rdb$owner_name as varchar(31)) as table_schem,\n"		// 2
+*/
+	addString(pt, "select cast(NULL as varchar(7)) as table_cat,\n"					// 1
+					  "cast (NULL as varchar(7)) as table_schem,\n"		// 2
 					  "cast (tbl.rdb$relation_name as varchar(31)) as table_name,\n"	// 3
 					  "cast ('TABLE' as varchar(13)) as table_type,\n"					// 4
 					  "cast (NULL as varchar(255)) as remarks,\n"						// 5
@@ -82,10 +85,13 @@ void IscTablesResultSet::getTables(const char * catalog, const char * schemaPatt
 		{
 			ptSql = pt = sql;
 			*pt = '\0';
+/*
 			addString(pt, "select cast( '");
 			addString(pt, metaData->getDSN());
 			addString(pt, "' as varchar(31)) as table_cat,\n"	        // 1
-				    "cast (NULL as varchar(31)) as table_schem,\n"		// 2
+*/
+			addString(pt, "select cast(NULL as varchar(7)) as table_cat,\n"	        // 1
+				    "cast (NULL as varchar(7)) as table_schem,\n"		// 2
 					"cast (NULL as varchar(31)) as table_name,\n"		// 3
 					"cast (NULL as varchar(13)) as table_type,\n"		// 4
 					"cast (NULL as varchar(255)) as remarks\n"			// 5
@@ -117,7 +123,7 @@ void IscTablesResultSet::getTables(const char * catalog, const char * schemaPatt
 			&& !(tableNamePattern && *tableNamePattern) )
 		{
 			ptSql = "select cast (NULL as varchar(7)) as table_cat,\n"		// 1
-				    "cast (NULL as varchar(31)) as table_schem,\n"			// 2
+				    "cast (NULL as varchar(7)) as table_schem,\n"			// 2
 					"cast (NULL as varchar(31)) as table_name,\n"			// 3
 					"cast ('SYSTEM TABLE' as varchar(13)) as table_type,\n"	// 4
 					"cast (NULL as varchar(255)) as remarks\n"				// 5
@@ -129,14 +135,14 @@ void IscTablesResultSet::getTables(const char * catalog, const char * schemaPatt
 		sqlAllParam = 0;
 		if (schemaPattern && *schemaPattern)
 		{
-			expandPattern (ptFirst, " where ","tbl.rdb$owner_name", schemaPattern);
+			expandPattern(ptFirst, " where ","tbl.rdb$owner_name", schemaPattern);
 			sep = " and (";
 			firstWhere = false;
 		}
 
 		if (tableNamePattern && *tableNamePattern)
 		{
-			expandPattern (ptFirst, firstWhere ? " where " : " and ", "tbl.rdb$relation_name", tableNamePattern);
+			expandPattern(ptFirst, firstWhere ? " where " : " and ", "tbl.rdb$relation_name", tableNamePattern);
 			sep = " and (";
 		}
 
@@ -168,7 +174,7 @@ void IscTablesResultSet::getTables(const char * catalog, const char * schemaPatt
 			addString(ptFirst, ")\n");
 			}
 
-		addString(ptFirst, " order by tbl.rdb$system_flag desc, tbl.rdb$owner_name, tbl.rdb$relation_name");
+		addString(ptFirst, " order by tbl.rdb$system_flag desc, tbl.rdb$relation_name");
 
 	} while ( false );
 
@@ -214,8 +220,10 @@ bool IscTablesResultSet::nextFetch()
 	if (!IscResultSet::nextFetch())
 		return false;
 
+/*
 	if ( !metaData->getUseSchemaIdentifier() )
 		sqlda->setNull(2);
+*/
 
 	if ( sqlda->getShort (6) )
 		sqlda->updateVarying (4, "SYSTEM TABLE");

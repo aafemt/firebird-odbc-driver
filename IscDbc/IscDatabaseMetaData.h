@@ -209,7 +209,6 @@ public:
     virtual const char* getDatabaseServerName();
 	virtual const char* getUserAccess();
 	virtual int getDatabasePageSize();
-	virtual const int getUseSchemaIdentifier();
 	virtual const int getUseLockTimeoutWaitTransactions();
 	virtual bool supportsStatementMetaData();
 	virtual ResultSet* getUDTs(const char* catalog, const char* schemaPattern, const char* typeNamePattern, int* types);

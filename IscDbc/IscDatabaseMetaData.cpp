@@ -330,11 +330,6 @@ int IscDatabaseMetaData::getDatabasePageSize()
 	return connection->attachment->pageSize;
 	}
 
-const int IscDatabaseMetaData::getUseSchemaIdentifier()
-	{
-	return connection->attachment->getUseSchemaIdentifier();
-	}
-
 const int IscDatabaseMetaData::getUseLockTimeoutWaitTransactions()
 	{
 	return connection->attachment->getUseLockTimeoutWaitTransactions();
@@ -662,9 +657,7 @@ bool IscDatabaseMetaData::supportsLimitedOuterJoins()
 
 const char* IscDatabaseMetaData::getSchemaTerm()
 	{
-	if ( !connection->attachment->getUseSchemaIdentifier() )
-		return "";
-	return "schema";
+	return "owner";
 	}
 
 const char* IscDatabaseMetaData::getProcedureTerm()

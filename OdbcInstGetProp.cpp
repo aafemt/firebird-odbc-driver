@@ -13,11 +13,11 @@
 #define TRUE	1
 #endif
 
-static const char *charsets []= 
-{ 
+static const char *charsets []=
+{
 	"NONE", "ASCII", "BIG_5", "CYRL", "DOS437", "DOS850", "DOS852", "DOS857", "DOS860",
-	"DOS861", "DOS863", "DOS865", "DOS866", "EUCJ_0208", "GB_2312", "ISO8859_1", 
-	"ISO8859_2", "KSC_5601", "OCTETS", "SJIS_0208", "UNICODE_FSS", "UTF8", 
+	"DOS861", "DOS863", "DOS865", "DOS866", "EUCJ_0208", "GB_2312", "ISO8859_1",
+	"ISO8859_2", "KSC_5601", "OCTETS", "SJIS_0208", "UNICODE_FSS", "UTF8",
 	"WIN1250", "WIN1251", "WIN1252", "WIN1253", "WIN1254", NULL
 };
 
@@ -35,8 +35,8 @@ static const char *d3_1[] =
 	NULL
 };
 
-static const char *useshemas []= 
-{ 
+static const char *useshemas []=
+{
 	"0 - Set null field SCHEMA",
 	"1 - Remove SCHEMA from SQL query",
 	"2 - Use full SCHEMA",
@@ -54,7 +54,7 @@ static const char *szHelpUseLockTimeoutWaitTransactions = "Init value Lock Timeo
 static const char *szHelpSafeThread = "Safe Thread (default Yes)";
 
 int ODBCINSTGetProperties( HODBCINSTPROPERTY hLastProperty )
-{ 
+{
 
     hLastProperty->pNext 	    = (HODBCINSTPROPERTY)malloc( sizeof(ODBCINSTPROPERTY) );
     hLastProperty 		    = hLastProperty->pNext;
@@ -101,7 +101,7 @@ int ODBCINSTGetProperties( HODBCINSTPROPERTY hLastProperty )
     memcpy( hLastProperty->aPromptData, charsets, sizeof(charsets) );
     strncpy( hLastProperty->szName, SETUP_CHARSET, INI_MAX_PROPERTY_NAME );
     strcpy( hLastProperty->szValue, "NONE" );
-	
+
     hLastProperty->pNext            = (HODBCINSTPROPERTY)malloc( sizeof(ODBCINSTPROPERTY) );
     hLastProperty                   = hLastProperty->pNext;
     memset( hLastProperty, 0, sizeof(ODBCINSTPROPERTY) );
@@ -112,7 +112,7 @@ int ODBCINSTGetProperties( HODBCINSTPROPERTY hLastProperty )
     memcpy( hLastProperty->aPromptData, aYesNo, sizeof(aYesNo) );
     strncpy( hLastProperty->szName, SETUP_READONLY_TPB, INI_MAX_PROPERTY_NAME );
     strcpy( hLastProperty->szValue, "No" );
-	
+
     hLastProperty->pNext            = (HODBCINSTPROPERTY)malloc( sizeof(ODBCINSTPROPERTY) );
     hLastProperty                   = hLastProperty->pNext;
     memset( hLastProperty, 0, sizeof(ODBCINSTPROPERTY) );
@@ -167,17 +167,6 @@ int ODBCINSTGetProperties( HODBCINSTPROPERTY hLastProperty )
     memcpy( hLastProperty->aPromptData, aYesNo, sizeof(aYesNo) );
     strncpy( hLastProperty->szName, SETUP_AUTOQUOTED, INI_MAX_PROPERTY_NAME );
     strcpy( hLastProperty->szValue, "No" );
-
-    hLastProperty->pNext            = (HODBCINSTPROPERTY)malloc( sizeof(ODBCINSTPROPERTY) );
-    hLastProperty                   = hLastProperty->pNext;
-    memset( hLastProperty, 0, sizeof(ODBCINSTPROPERTY) );
-    hLastProperty->pszHelp	    = (char *)strdup( szHelpUseSchemaIdentifier );
-    hLastProperty->nPromptType      = ODBCINST_PROMPTTYPE_COMBOBOX;
-    hLastProperty->bRefresh	    = TRUE;
-    hLastProperty->aPromptData      = (char**)malloc( sizeof(useshemas) );
-    memcpy( hLastProperty->aPromptData, useshemas, sizeof(useshemas) );
-    strncpy( hLastProperty->szName, SETUP_USESCHEMA, INI_MAX_PROPERTY_NAME );
-    strcpy( hLastProperty->szValue, useshemas[0] );
 
     hLastProperty->pNext 	    = (HODBCINSTPROPERTY)malloc( sizeof(ODBCINSTPROPERTY) );
     hLastProperty 		    = hLastProperty->pNext;

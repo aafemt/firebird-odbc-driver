@@ -45,17 +45,16 @@ IscColumnPrivilegesResultSet::IscColumnPrivilegesResultSet(IscDatabaseMetaData *
 
 void IscColumnPrivilegesResultSet::getColumnPrivileges(const char * catalog, const char * schemaPattern, const char * tableNamePattern, const char * columnNamePattern)
 {
-	char sql[4096] = "select cast ('' as varchar(7)) as table_cat,"
-				          "cast (tbl.rdb$owner_name as varchar(31)) as table_schem,"
+	char sql[4096] = "select cast (NULL as varchar(7)) as table_cat,"
+				          "cast (NULL as varchar(7)) as table_schem,"
 						  "cast (rfr.rdb$relation_name as varchar(31)) as table_name,"
 						  "cast (rfr.rdb$field_name as varchar(31)) as column_name,"
 						  "cast (priv.rdb$grantor as varchar(31)) as grantor,"
 						  "cast (priv.rdb$user as varchar(31)) as grantee,"
-						  "cast( priv.rdb$privilege as varchar(11) ) as privilege,"
-						  "cast ( priv.rdb$grant_option as varchar(3) ) as is_grantable "
-						  "from rdb$relation_fields rfr, rdb$user_privileges priv, rdb$relations tbl\n"
-						  " where rfr.rdb$relation_name = priv.rdb$relation_name\n"
-						  "		and rfr.rdb$relation_name = tbl.rdb$relation_name\n";
+						  "cast (priv.rdb$privilege as varchar(11) ) as privilege,"
+						  "cast (priv.rdb$grant_option as varchar(3) ) as is_grantable "
+						  "from rdb$relation_fields rfr, rdb$user_privileges priv\n"
+						  " where rfr.rdb$relation_name = priv.rdb$relation_name\n";
 
 	char * ptFirst = sql + strlen(sql);
 
@@ -68,9 +67,6 @@ void IscColumnPrivilegesResultSet::getColumnPrivileges(const char * catalog, con
 						metaData->getUserAccess(),metaData->getUserType());
 		addString(ptFirst, buf, len);
 	}
-
-	if (schemaPattern && *schemaPattern)
-		expandPattern (ptFirst, " and ","tbl.rdb$owner_name", schemaPattern);
 
 	if (tableNamePattern && *tableNamePattern)
 		expandPattern (ptFirst, " and ","rfr.rdb$relation_name", tableNamePattern);
@@ -88,9 +84,6 @@ bool IscColumnPrivilegesResultSet::nextFetch()
 {
 	if (!IscResultSet::nextFetch())
 		return false;
-
-	if ( !metaData->getUseSchemaIdentifier() )
-		sqlda->setNull(2);
 
 	int len1, len2;
 	const char *grantor = sqlda->getVarying(5, len1);

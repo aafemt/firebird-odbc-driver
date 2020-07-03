@@ -1485,7 +1485,7 @@ bool Setup::configureDialog()
 	if ( jdbcDriver.IsEmpty() )
 		jdbcDriver = drivers [0];
 
-	CDsnDialog dialog( hWnd ,drivers, charsets, useshemas );
+	CDsnDialog dialog( hWnd ,drivers, charsets);
 	dialog.m_name = dsn;
 	dialog.m_description = description;
 	dialog.m_database = dbName;
@@ -1495,7 +1495,6 @@ bool Setup::configureDialog()
 	dialog.m_driver = jdbcDriver;
 	dialog.m_role = role;
 	dialog.m_charset = charset;
-	dialog.m_useschema = useschema;
 	dialog.m_locktimeout = locktimeout;
 
 	if ( IS_CHECK_YES(*(const char*)readonlyTpb) )
@@ -1537,7 +1536,9 @@ bool Setup::configureDialog()
 	{
 		intptr_t ret = dialog.DoModal();
 		if ( ret != IDOK )
+		{
 			return false;
+		}
 
 		if ( SQLValidDSN( (const char *)dialog.m_name ) )
 			break;
@@ -1565,7 +1566,6 @@ bool Setup::configureDialog()
 	jdbcDriver = dialog.m_driver;
 	role = dialog.m_role;
 	charset = dialog.m_charset;
-	useschema = dialog.m_useschema;
 	locktimeout = dialog.m_locktimeout;
 
 	if( dialog.m_readonly ) readonlyTpb = "Y";
@@ -1616,7 +1616,6 @@ void Setup::writeAttributes()
 	writeAttribute( SETUP_QUOTED, quoted );
 	writeAttribute( SETUP_SENSITIVE, sensitive );
 	writeAttribute( SETUP_AUTOQUOTED, autoQuoted );
-	writeAttribute( SETUP_USESCHEMA, useschema );
 	writeAttribute( SETUP_SAFETHREAD, safeThread );
 
 	char buffer[256];
@@ -1641,7 +1640,6 @@ void Setup::readAttributes()
 	quoted = readAttribute( SETUP_QUOTED );
 	sensitive = readAttribute( SETUP_SENSITIVE );
 	autoQuoted = readAttribute( SETUP_AUTOQUOTED );
-	useschema = readAttribute( SETUP_USESCHEMA );
 	pageSize = 0;
 	safeThread = readAttribute( SETUP_SAFETHREAD );
 

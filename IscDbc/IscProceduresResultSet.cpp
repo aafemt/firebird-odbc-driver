@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -47,11 +47,8 @@ void IscProceduresResultSet::getProcedures(const char * catalog, const char * sc
 {
 	char sql[2048] = "";
 	char * pt = sql;
-	addString(pt, "select cast( '");
-	if (catalog && *catalog)
-		addString(pt, catalog);
-	addString(pt, "' as varchar(255)) as procedure_cat,\n"									// 1
-				"\tcast (proc.rdb$owner_name as varchar(31)) as procedure_schem,\n"		// 2
+	addString(pt, "select cast(NULL as varchar(7)) as procedure_cat,\n"									// 1
+				"\tcast (NULL as varchar(31)) as procedure_schem,\n"		// 2
 				"\tcast (proc.rdb$procedure_name as varchar(31)) as procedure_name,\n"	// 3
 				"\tproc.rdb$procedure_inputs as num_input_params,\n"		// 4
 				"\tproc.rdb$procedure_outputs as num_output_params,\n"		// 5
@@ -61,23 +58,15 @@ void IscProceduresResultSet::getProcedures(const char * catalog, const char * sc
 				"\tproc.rdb$description as remarks_blob\n");				// 9
 
 	char * ptFirst = sql + strlen(sql);
-	const char *sep = " where ";
 
 	if ( addBlr )
 		addString(ptFirst, ", proc.rdb$procedure_blr\n"); // 10 BLR_PROCEDURE
 
 	addString(ptFirst, "from rdb$procedures proc\n");
 
-	if (schemaPattern && *schemaPattern)
-	{
-		expandPattern (ptFirst, " where ","proc.rdb$owner_name", schemaPattern);
-		sep = " and ";
-	}
-
 	if (procedureNamePattern && *procedureNamePattern)
 	{
-		expandPattern (ptFirst, sep,"proc.rdb$procedure_name", procedureNamePattern);
-		sep = " and ";
+		expandPattern(ptFirst, " where ","proc.rdb$procedure_name", procedureNamePattern);
 	}
 
 	addString(ptFirst, " order by proc.rdb$procedure_name");
@@ -89,9 +78,6 @@ bool IscProceduresResultSet::nextFetch()
 {
 	if (!IscResultSet::nextFetch())
 		return false;
-
-	if ( !metaData->getUseSchemaIdentifier() )
-		sqlda->setNull(2);
 
 	if ( sqlda->isNull(4) )
 		sqlda->updateShort(4, 0);
@@ -120,7 +106,7 @@ bool IscProceduresResultSet::canSelectFromProcedure()
 	XSQLVAR *var = sqlda->Var(10);
 	IscBlob * blob = (IscBlob *)*(intptr_t*)var->sqldata;
 	int length = blob->length();
-	
+
 	char * buffer = (char*)malloc (length);
 
 	blob->getBytes (0, length, buffer);

@@ -147,15 +147,6 @@ IDS_ERROR_MESSAGE_20, // "Open database '%s' failed"
 IDS_BUTTON_SERVICES, // "Services"
 	"Servicios"
 ,
-IDS_USESCHEMA_NULL, // "Set null field SCHEMA"
-	"Definir como nulo el campo SCHEMA"
-,
-IDS_USESCHEMA_DEL, // "Remove SCHEMA from SQL query"
-	"Remover SCHEMA de consulta SQL"
-,
-IDS_USESCHEMA_FULL, // "Use full SCHEMA"
-	"Usar SCHEMA completo"
-,
 IDS_STATIC_LOCKTIMEOUT, // "lock timeout"
 	"Lock timeout"
 ,

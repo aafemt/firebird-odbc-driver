@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -80,11 +80,14 @@ void IscColumnsResultSet::getColumns(const char * catalog, const char * schemaPa
 {
 	char sql[4096] = "";
 	char * pt = sql;
+/*
 	addString(pt, "select cast( '");
 	if (catalog && *catalog)
 		addString(pt, catalog);
 	addString(pt, "' as varchar(255)) as table_cat,\n"								// 1 - VARCHAR
-				"\tcast (tbl.rdb$owner_name as varchar(31)) as table_schem,\n"		// 2 - VARCHAR
+*/
+	addString(pt, "select cast(NULL as varchar(31)) as table_cat,\n"								// 1 - VARCHAR
+				"\tcast (NULL as varchar(31)) as table_schem,\n"		// 2 - VARCHAR
 				"\tcast (rfr.rdb$relation_name as varchar(31)) as table_name,\n"	// 3 - VARCHAR NOT NULL
 				"\tcast (rfr.rdb$field_name as varchar(31)) as column_name,\n"		// 4 - VARCHAR NOT NULL
 				"\tfld.rdb$field_type as data_type,\n"				// 5 - SMALLINT NOT NULL
@@ -125,14 +128,14 @@ void IscColumnsResultSet::getColumns(const char * catalog, const char * schemaPa
 		expandPattern (ptFirst, " and ","rfr.rdb$field_name", fieldNamePattern);
 
 	addString(ptFirst, " order by rfr.rdb$relation_name, rfr.rdb$field_position\n");
-	
+
 #ifdef DEBUG
 	OutputDebugString (sql);
 #endif
 	prepareStatement (sql);
 
 // SELECT returns 26 columns,
-// But all interests only 18 
+// But all interests only 18
 // This line is forbidden for modifying!!!
 	numberColumns = 18;
 }
@@ -145,12 +148,14 @@ bool IscColumnsResultSet::nextFetch()
 		return false;
 	}
 
+/*
 	if ( !metaData->getUseSchemaIdentifier() )
 		sqlda->setNull(2);
+*/
 
 	int &charLength = sqlType.lengthCharIn;
 	int &len = sqlType.lengthIn;
-	
+
 	charLength = sqlda->getShort (19);
 	len = sqlda->getShort (24);
 
@@ -162,7 +167,7 @@ bool IscColumnsResultSet::nextFetch()
 	sqlda->updateShort (10, 10);					// NUM_PREC_RADIX
 	sqlda->updateInt (16, len);						// CHAR_OCTET_LENGTH
 	sqlda->updateInt (17, sqlda->getShort (23)+1);	// ORDINAL_POSITION
-	
+
 	//translate to the SQL type information
 	sqlType.blrType	  = sqlda->getShort (5);		// DATA_TYPE
 	sqlType.subType	  = sqlda->getShort (15);		// SUB_TYPE
@@ -213,7 +218,7 @@ bool IscColumnsResultSet::nextFetch()
 			break;
 		default:
 			sqlda->setNull (16);
-		} 
+		}
 	}
 
 	adjustResults (sqlType);
@@ -238,7 +243,7 @@ bool IscColumnsResultSet::getDefSource (int indexIn, int indexTarget)
 	blob.directOpenBlob ((char*)var->sqldata);
 	blob.directFetchBlob (buffer, 1024, lenRead);
 	blob.directCloseBlob();
-	
+
 	end = buffer + lenRead;
 
 	while ( *++beg == ' ' );
@@ -251,14 +256,14 @@ bool IscColumnsResultSet::getDefSource (int indexIn, int indexTarget)
 	}
 
 	*end = '\0';
-	
+
 	sqlda->updateVarying (indexTarget, beg);
 
 	return true;
-}								
+}
 
-void IscColumnsResultSet::setCharLen (int charLenInd, 
-								      int fldLenInd, 
+void IscColumnsResultSet::setCharLen (int charLenInd,
+								      int fldLenInd,
 									  IscSqlType &sqlType)
 {
 	int fldLen = sqlda->getInt (fldLenInd);
@@ -273,7 +278,7 @@ void IscColumnsResultSet::setCharLen (int charLenInd,
 		charLen = sqlType.length;
 		fldLen  = sqlType.bufferLength;
 	}
-	
+
 	sqlda->updateInt (fldLenInd, fldLen);
 
 	if (!charLen)
@@ -284,9 +289,9 @@ void IscColumnsResultSet::setCharLen (int charLenInd,
 
 void IscColumnsResultSet::checkQuotes (IscSqlType &sqlType, JString stringVal)
 {
-	// Revolting ODBC wants the default value quoted unless its a 
+	// Revolting ODBC wants the default value quoted unless its a
 	// number or a pseudo-literal
-	
+
 	JString	string = stringVal;
 	string.upcase (string);
 
@@ -324,12 +329,12 @@ void IscColumnsResultSet::adjustResults (IscSqlType &sqlType)
 	switch (sqlType.type)
 	{
 	case JDBC_LONGVARCHAR:
-		sqlda->updateVarying (6, "BLOB SUB_TYPE TEXT");
+		sqlda->updateVarying (6, "BLOB SUB_TYPE TEXT"); // these strings must match ones in TypesResultSet table
 		break;
 	case JDBC_LONGVARBINARY:
-		sqlda->updateVarying (6, "BLOB SUB_TYPE BLR");
+		sqlda->updateVarying (6, "BLOB SUB_TYPE 0");
 		break;
-	} 
+	}
 
 	// decimal digits have no meaning for some columns
 	// radix - doesn't mean much for some colums either
@@ -362,7 +367,7 @@ void IscColumnsResultSet::adjustResults (IscSqlType &sqlType)
 	case JDBC_SQL_TIMESTAMP:
 		sqlda->updateShort (9, -ISC_TIME_SECONDS_PRECISION_SCALE);
 		sqlda->setNull (10);
-	}	
+	}
 
 	// nullable
 	short nullable = !sqlda->getShort (11) || sqlda->isNull(11);

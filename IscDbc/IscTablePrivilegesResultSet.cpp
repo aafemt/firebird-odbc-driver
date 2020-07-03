@@ -50,36 +50,34 @@ IscTablePrivilegesResultSet::IscTablePrivilegesResultSet(IscDatabaseMetaData *me
 
 void IscTablePrivilegesResultSet::getTablePrivileges(const char * catalog, const char * schemaPattern, const char * tableNamePattern)
 {
-	char sql[2048] =  "select cast ('' as varchar(7)) as table_cat,"					//1
-				          "cast (tbl.rdb$owner_name as varchar(31)) as table_schem,"	//2
+	char sql[2048] =  "select cast (NULL as varchar(7)) as table_cat,"					//1
+				          "cast (NULL as varchar(7)) as table_schem,"					//2
 						  "cast (tbl.rdb$relation_name as varchar(31)) as table_name,"	//3
 						  "cast (priv.rdb$grantor as varchar(31)) as grantor,"			//4
 						  "cast (priv.rdb$user as varchar(31)) as grantee,"				//5
 						  "cast (priv.rdb$privilege as varchar(11)) as privilege,"		//6
 						  "cast ('YES' as varchar(3)) as isgrantable, "					//7
 						  "priv.rdb$grant_option as GRANT_OPTION "						//8
-                          "from rdb$relations tbl, rdb$user_privileges priv\n"
-                          "where tbl.rdb$relation_name = priv.rdb$relation_name\n";
+                          "from rdb$user_privileges priv\n";
 
 	char * ptFirst = sql + strlen(sql);
+	const char* sep = " where ";
 
 	if ( !allTablesAreSelectable )
 	{
 		char buf[256];
-		int len = sprintf (buf, "and priv.rdb$object_type = 0\n"
+		int len = sprintf (buf, "where priv.rdb$object_type = 0\n"
 					  "and ( (priv.rdb$user = '%s' and priv.rdb$user_type = %d)\n"
 					  "\tor (priv.rdb$user = 'PUBLIC' and priv.rdb$user_type = 8) )\n",
 						metaData->getUserAccess(),metaData->getUserType());
 		addString(ptFirst, buf, len);
+		sep = " and ";
 	}
 
-    if (schemaPattern && *schemaPattern)
-        expandPattern (ptFirst, " and ","tbl.rdb$owner_name", schemaPattern);
-
     if (tableNamePattern && *tableNamePattern)
-        expandPattern (ptFirst, " and ","tbl.rdb$relation_name", tableNamePattern);
+        expandPattern(ptFirst, sep, "priv.rdb$relation_name", tableNamePattern);
 
-    addString(ptFirst, " order by tbl.rdb$relation_name, priv.rdb$privilege, priv.rdb$user");
+    addString(ptFirst, " order by priv.rdb$relation_name, priv.rdb$privilege, priv.rdb$user");
 
     prepareStatement (sql);
     numberColumns = 7;
@@ -89,9 +87,6 @@ bool IscTablePrivilegesResultSet::nextFetch()
 {
     if (!IscResultSet::nextFetch())
         return false;
-
-	if ( !metaData->getUseSchemaIdentifier() )
-		sqlda->setNull(2);
 
 	int len1, len2;
 	const char *grantor = sqlda->getVarying(4, len1);
