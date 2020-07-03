@@ -62,11 +62,7 @@ public:
 	inline SQLRETURN fetchData();
 	inline SQLRETURN returnData();
 	inline SQLRETURN returnDataFromExtendedFetch();
-#ifdef _WIN64
 	SQLRETURN sqlColAttribute( int column, int fieldId, SQLPOINTER attributePtr, int bufferLength, SQLSMALLINT *strLengthPtr, SQLLEN *numericAttributePtr );
-#else
-	SQLRETURN sqlColAttribute( int column, int fieldId, SQLPOINTER attributePtr, int bufferLength, SQLSMALLINT *strLengthPtr, SQLPOINTER numericAttributePtr );
-#endif
 	SQLRETURN sqlFetchScroll(int orientation, int offset);
 	SQLRETURN sqlFetchScrollCursorStatic(int orientation, int offset);
 	SQLRETURN sqlSetPos(SQLUSMALLINT rowNumber, SQLUSMALLINT operation, SQLUSMALLINT lockType);
@@ -108,22 +104,22 @@ public:
 	SQLRETURN sqlStatistics(SQLCHAR * catalog, int catLength, SQLCHAR * schema, int schemaLength, SQLCHAR * table, int tableLength, int unique, int reservedSic);
 	void releaseParameters();
 	void releaseBindings();
-	SQLRETURN sqlFreeStmt (int option);
+	SQLRETURN sqlFreeStmt(int option);
 	SQLRETURN sqlFetch();
-	SQLRETURN sqlBindCol (int columnNumber, int targetType, SQLPOINTER targetValuePtr, SQLLEN bufferLength, SQLLEN *indPtr);
+	SQLRETURN sqlBindCol(int columnNumber, int targetType, SQLPOINTER targetValuePtr, SQLLEN bufferLength, SQLLEN *indPtr);
 	void rebindColumn();
 	void rebindParam(bool initAttrDataAtExec = false);
-	void setResultSet (ResultSet *results, bool fromSystemCatalog = true);
+	void setResultSet(ResultSet *results, bool fromSystemCatalog = true);
 	void releaseResultSet();
 	void releaseStatement();
-	SQLRETURN sqlPrepare (SQLCHAR *sql, int sqlLength);
+	SQLRETURN sqlPrepare(SQLCHAR *sql, int sqlLength);
 
-	SQLRETURN sqlColumns (SQLCHAR * catalog, int catLength, SQLCHAR * schema, int schemaLength, SQLCHAR * table, int tableLength, SQLCHAR *column, int columnLength);
-	SQLRETURN sqlTables (SQLCHAR* catalog, int catLength, SQLCHAR* schema, int schemaLength, SQLCHAR*table, int tableLength, SQLCHAR *type, int typeLength);
-	SQLRETURN sqlTablePrivileges (SQLCHAR* catalog, int catLength, SQLCHAR* schema, int schemaLength, SQLCHAR*table, int tableLength);
-	SQLRETURN sqlColumnPrivileges (SQLCHAR* catalog, int catLength, SQLCHAR* schema, int schemaLength, SQLCHAR*table, int tableLength, SQLCHAR * column, int columnLength);
+	SQLRETURN sqlColumns(SQLCHAR * catalog, int catLength, SQLCHAR * schema, int schemaLength, SQLCHAR * table, int tableLength, SQLCHAR *column, int columnLength);
+	SQLRETURN sqlTables(SQLCHAR* catalog, int catLength, SQLCHAR* schema, int schemaLength, SQLCHAR*table, int tableLength, SQLCHAR *type, int typeLength);
+	SQLRETURN sqlTablePrivileges(SQLCHAR* catalog, int catLength, SQLCHAR* schema, int schemaLength, SQLCHAR*table, int tableLength);
+	SQLRETURN sqlColumnPrivileges(SQLCHAR* catalog, int catLength, SQLCHAR* schema, int schemaLength, SQLCHAR*table, int tableLength, SQLCHAR * column, int columnLength);
 	SQLRETURN sqlSpecialColumns(unsigned short rowId, SQLCHAR * catalog, int catLength, SQLCHAR * schema, int schemaLength, SQLCHAR * table, int tableLength, unsigned short scope, unsigned short nullable);
-	SQLRETURN sqlSetParam (int parameter, int cType, int sqlType, int precision, int scale, PTR ptr, SQLLEN * length);
+	SQLRETURN sqlSetParam(int parameter, int cType, int sqlType, int precision, int scale, PTR ptr, SQLLEN * length);
 	void addBindColumn(int column, DescRecord * recordFrom, DescRecord * recordTo);
 	void delBindColumn(int column);
 	void addBindParam(int param, DescRecord * recordFrom, DescRecord * recordTo);

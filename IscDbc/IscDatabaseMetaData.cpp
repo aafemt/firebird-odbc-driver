@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -28,7 +28,7 @@
  *
  *	2002-07-02	IscDatabaseMetaData.cpp
  *				C. G.Alvarez
- *				Return TRANSACTION_READ_COMMITTED from 
+ *				Return TRANSACTION_READ_COMMITTED from
  *				IscDatabaseMetaData::getDefaultTransactionIsolation()
  *
  *
@@ -60,7 +60,7 @@
 #include "IscProcedureColumnsResultSet.h"
 #include "TypesResultSet.h"
 #include "IscSpecialColumnsResultSet.h"
-#include "IscTablePrivilegesResultSet.h" 
+#include "IscTablePrivilegesResultSet.h"
 
 #define TRANSACTION_READ_UNCOMMITTED  1
 
@@ -72,7 +72,7 @@
 
 /**
  * Dirty reads and non-repeatable reads are prevented; phantom
- * reads can occur.     
+ * reads can occur.
  */
 #define TRANSACTION_REPEATABLE_READ   4
 
@@ -123,11 +123,11 @@ short IscDatabaseMetaData::getStrStatInfoBd(const void * info_buffer, int buffer
 
 ResultSet* IscDatabaseMetaData::getTables(const char * catalog, const char * schemaPattern, const char * tableNamePattern, int typeCount, const char **types)
 {
-	IscTablesResultSet *resultSet = new IscTablesResultSet (this);
+	IscTablesResultSet *resultSet = new IscTablesResultSet(this);
 
 	try
 		{
-		resultSet->getTables (catalog, schemaPattern, tableNamePattern, typeCount, types);
+		resultSet->getTables(catalog, schemaPattern, tableNamePattern, typeCount, types);
 		}
 	catch (...)
 		{
@@ -197,9 +197,9 @@ ResultSet* IscDatabaseMetaData::getImportedKeys(const char * catalog, const char
 	return (ResultSet*) resultSet;
 }
 
-ResultSet* IscDatabaseMetaData::getIndexInfo(const char * catalog, 
-											 const char * schemaPattern, 
-											 const char * tableNamePattern, 
+ResultSet* IscDatabaseMetaData::getIndexInfo(const char * catalog,
+											 const char * schemaPattern,
+											 const char * tableNamePattern,
 											 bool unique, bool approximate)
 {
 	IscIndexInfoResultSet *resultSet = new IscIndexInfoResultSet (this);
@@ -465,7 +465,7 @@ const char* IscDatabaseMetaData::getSearchStringEscape()
 
 const char* IscDatabaseMetaData::getExtraNameCharacters()
 	{
-	return "$";	
+	return "$";
 	}
 
 bool IscDatabaseMetaData::supportsAlterTableWithAddColumn()
@@ -925,7 +925,7 @@ int IscDatabaseMetaData::getMaxUserNameLength()
 
 int IscDatabaseMetaData::getDefaultTransactionIsolation()
 	{
-    return TRANSACTION_READ_COMMITTED; 
+    return TRANSACTION_READ_COMMITTED;
 	}
 
 bool IscDatabaseMetaData::supportsTransactions()
@@ -949,7 +949,7 @@ bool IscDatabaseMetaData::supportsTransactionIsolationLevel(int level)
 
 		/**
 		 * Dirty reads and non-repeatable reads are prevented; phantom
-		 * reads can occur.     
+		 * reads can occur.
 		 */
 		case TRANSACTION_REPEATABLE_READ:
 			return true;
@@ -1005,7 +1005,7 @@ ResultSet* IscDatabaseMetaData::getProcedures(const char* catalog, const char* s
 
 ResultSet* IscDatabaseMetaData::getProcedureColumns(const char* catalog,
 		const char* schemaPattern,
-		const char* procedureNamePattern, 
+		const char* procedureNamePattern,
 		const char* columnNamePattern)
 	{
 	IscProcedureColumnsResultSet *resultSet = new IscProcedureColumnsResultSet (this);
@@ -1138,8 +1138,8 @@ ResultSet* IscDatabaseMetaData::getTypeInfo(int dataType)
 
 		if ( resultSet.getCountRowsStaticCursor() )
 		{
-			bytesPerCharacter = resultSet.sqlda->getShort(1);	
-		} 
+			bytesPerCharacter = resultSet.sqlda->getShort(1);
+		}
 		return new TypesResultSet( dataType, connection->getUseAppOdbcVersion(), bytesPerCharacter );
 	}
 	catch (...)
@@ -1209,7 +1209,7 @@ bool IscDatabaseMetaData::supportsBatchUpdates()
 	return false;
 	}
 
-ResultSet* IscDatabaseMetaData::getUDTs(const char* catalog, const char* schemaPattern, 
+ResultSet* IscDatabaseMetaData::getUDTs(const char* catalog, const char* schemaPattern,
 		  const char* typeNamePattern, int* types)
 	{
 	NOT_YET_IMPLEMENTED;

@@ -1136,7 +1136,7 @@ SQLRETURN OdbcConnection::sqlGetInfo( SQLUSMALLINT type, SQLPOINTER ptr, SQLSMAL
 	InfoItem *item = infoItems + slot;
 	int n;
 
-	if ( slot < 0 || slot >= INFO_SLOTS || item->type == infoNone )
+	if (slot < 0 || slot >= INFO_SLOTS || item->type == infoNone)
 		return sqlReturn (SQL_ERROR, "HY096", "Information type out of range");
 
 	const char *string = item->value;

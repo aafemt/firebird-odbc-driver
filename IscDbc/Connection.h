@@ -211,8 +211,8 @@ public:
 	virtual bool		isClosed() = 0;
 	virtual bool		isReadOnly() = 0;
 	virtual const char*	nativeSQL(const char* sqlString) = 0;
-	virtual CallableStatement* prepareCall (const char *sql) = 0;
-	virtual PreparedStatement* prepareStatement (const char *sqlString) = 0;
+	virtual CallableStatement* prepareCall(const char *sql) = 0;
+	virtual PreparedStatement* prepareStatement(const char *sqlString) = 0;
 	virtual void		rollback() = 0;
 	virtual void		setAutoCommit (bool setting) = 0;
 	virtual void		setCatalog(const char* catalog) = 0;
@@ -225,7 +225,7 @@ public:
 	virtual void		commitAuto() = 0;
 	virtual void		rollbackAuto() = 0;
 
-	virtual Blob*		genHTML (Properties *context, int genHeaders) = 0;
+	virtual Blob*		genHTML(Properties *context, int genHeaders) = 0;
 	virtual int			getNativeSql (const char * inStatementText, int textLength1,
 										char * outStatementText, int bufferLength,
 										int * textLength2Ptr) = 0;
@@ -308,7 +308,7 @@ public:
 	virtual int getMaxTablesInSelect() = 0;
 	virtual int getMaxUserNameLength() = 0;
 	virtual const char* getNumericFunctions() = 0;
-	virtual ResultSet* getPrimaryKeys (const char * catalog, const char * schemaPattern, const char * tableNamePattern) = 0;
+	virtual ResultSet* getPrimaryKeys(const char * catalog, const char * schemaPattern, const char * tableNamePattern) = 0;
 	virtual ResultSet* getProcedureColumns(const char* catalog,	const char* schemaPattern, const char* procedureNamePattern, const char* columnNamePattern) = 0;
 	virtual ResultSet* getProcedures(const char* catalog, const char* schemaPattern, const char* procedureNamePattern) = 0;
 	virtual const char* getProcedureTerm() = 0;
@@ -319,7 +319,7 @@ public:
 	virtual const char* getStringFunctions() = 0;
 	virtual const char* getSystemFunctions() = 0;
 	virtual ResultSet* getTablePrivileges(const char* catalog, const char* schemaPattern, const char* tableNamePattern) = 0;
-	virtual ResultSet* getTables (const char *catalog, const char *schemaPattern, const char *tableNamePattern, int typeCount, const char **types) = 0;
+	virtual ResultSet* getTables(const char *catalog, const char *schemaPattern, const char *tableNamePattern, int typeCount, const char **types) = 0;
 	virtual ResultSet* getTableTypes() = 0;
 	virtual const char* getTimeDateFunctions() = 0;
 	virtual ResultSet* getTypeInfo(int dataType) = 0;
@@ -404,11 +404,11 @@ public:
 	virtual short getSqlStrPageSizeBd(const void * info_buffer, int bufferLength,short *lengthPtr) = 0;
 	virtual short getSqlStrWalInfoBd(const void * info_buffer, int bufferLength,short *lengthPtr) = 0;
 	virtual short getStrStatInfoBd(const void * info_buffer, int bufferLength,short *lengthPtr) = 0;
-	virtual ResultSet* getObjectPrivileges (const char *catalog, const char *schemaPattern, const char *namePattern, int objectType) = 0;
-	virtual ResultSet* getUserRoles (const char *user) = 0;
-	virtual ResultSet* getRoles (const char * catalog, const char * schema, const char *rolePattern) = 0;
-	virtual ResultSet* getUsers (const char * catalog, const char *userPattern) = 0;
-	virtual ResultSet* specialColumns (const char * catalog, const char *schema, const char * table, int scope, int nullable) = 0;
+	virtual ResultSet* getObjectPrivileges(const char *catalog, const char *schemaPattern, const char *namePattern, int objectType) = 0;
+	virtual ResultSet* getUserRoles(const char *user) = 0;
+	virtual ResultSet* getRoles(const char * catalog, const char * schema, const char *rolePattern) = 0;
+	virtual ResultSet* getUsers(const char * catalog, const char *userPattern) = 0;
+	virtual ResultSet* specialColumns(const char * catalog, const char *schema, const char * table, int scope, int nullable) = 0;
     virtual const char* getDatabaseServerName() = 0;
 	virtual const char* getUserAccess() = 0;
 	virtual int getDatabasePageSize() = 0;

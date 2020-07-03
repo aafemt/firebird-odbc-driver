@@ -576,7 +576,7 @@ SQLRETURN SQL_API SQLGetTypeInfoW( SQLHSTMT hStmt, SQLSMALLINT dataType )
 	TRACE ("SQLGetTypeInfoW");
 	GUARD_HSTMT( hStmt );
 
-	return ((OdbcStatement*) hStmt)->sqlGetTypeInfo( dataType );
+	return ((OdbcStatement*) hStmt)->sqlGetTypeInfo(dataType);
 }
 
 ///// SQLSetConnectOptionW /////  Level 1	///// Deprecated
@@ -887,11 +887,7 @@ SQLRETURN SQL_API SQLDriversW( SQLHENV hEnv, SQLUSMALLINT fDirection,
 SQLRETURN SQL_API SQLColAttributeW( SQLHSTMT hStmt, SQLUSMALLINT columnNumber,
 								   SQLUSMALLINT fieldIdentifier, SQLPOINTER characterAttribute,
 								   SQLSMALLINT bufferLength, SQLSMALLINT *stringLength,
-#ifdef _WIN64
 								   SQLLEN *numericAttribute )
-#else
-								   SQLPOINTER numericAttribute )
-#endif
 {
 	TRACE ("SQLColAttributeW");
 	GUARD_HSTMT( hStmt );

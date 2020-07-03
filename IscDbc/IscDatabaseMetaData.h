@@ -37,11 +37,11 @@ class IscDatabaseMetaData : public DatabaseMetaData
 {
 public:
 //{{{ specification jdbc
-	virtual ResultSet* getIndexInfo (const char * catalog, const char * schemaPattern, const char * tableNamePattern, bool unique, bool approximate);
-	virtual ResultSet* getImportedKeys (const char * catalog, const char * schemaPattern, const char * tableNamePattern);
-	virtual ResultSet* getPrimaryKeys (const char * catalog, const char * schemaPattern, const char * tableNamePattern);
-	virtual ResultSet* getColumns (const char *catalog, const char *schema, const char *table, const char *fieldNamePattern);
-	virtual ResultSet* getTables (const char *catalog, const char *schemaPattern, const char *tableNamePattern, int typeCount, const char **types);
+	virtual ResultSet* getIndexInfo(const char * catalog, const char * schemaPattern, const char * tableNamePattern, bool unique, bool approximate);
+	virtual ResultSet* getImportedKeys(const char * catalog, const char * schemaPattern, const char * tableNamePattern);
+	virtual ResultSet* getPrimaryKeys(const char * catalog, const char * schemaPattern, const char * tableNamePattern);
+	virtual ResultSet* getColumns(const char *catalog, const char *schema, const char *table, const char *fieldNamePattern);
+	virtual ResultSet* getTables(const char *catalog, const char *schemaPattern, const char *tableNamePattern, int typeCount, const char **types);
 	virtual bool allProceduresAreCallable();
 	virtual bool allTablesAreSelectable();
 	virtual const char* getURL();

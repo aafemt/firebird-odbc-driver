@@ -300,7 +300,7 @@ SQLRETURN OdbcStatement::sqlTables(SQLCHAR * catalog, int catLength,
 	try
 	{
 		DatabaseMetaData *metaData = connection->getMetaData();
-		setResultSet (metaData->getTables (cat, scheme, tbl, numberTypes, typeVector));
+		setResultSet(metaData->getTables(cat, scheme, tbl, numberTypes, typeVector));
 	}
 	catch ( std::exception &ex )
 	{
@@ -3018,7 +3018,7 @@ SQLRETURN OdbcStatement::sqlGetTypeInfo(int dataType)
 	try
 	{
 		DatabaseMetaData *metaData = connection->getMetaData();
-		setResultSet (metaData->getTypeInfo (dataType), false);
+		setResultSet(metaData->getTypeInfo(dataType), false);
 	}
 	catch ( std::exception &ex )
 	{
@@ -3124,10 +3124,12 @@ SQLRETURN OdbcStatement::sqlPutData (SQLPOINTER value, SQLLEN valueSize)
 			binding->beginBlobDataTransfer();
 
 		if ( valueSize == SQL_NTS )
+		{
 			if ( binding->conciseType == SQL_C_WCHAR )
 				valueSize = (SQLINTEGER)wcslen( (wchar_t*)value ) * sizeof(wchar_t);
 			else // if ( binding->conciseType == SQL_C_CHAR )
 				valueSize = (SQLINTEGER)strlen( (char*)value );
+		}
 
 		if( valueSize )
 		{
@@ -3162,10 +3164,12 @@ SQLRETURN OdbcStatement::sqlPutData (SQLPOINTER value, SQLLEN valueSize)
 			binding->startedTransfer = true;
 
 		if ( valueSize == SQL_NTS )
+		{
 			if ( binding->conciseType == SQL_C_WCHAR )
 				valueSize = (SQLINTEGER)wcslen( (wchar_t*)value ) * sizeof(wchar_t);
 			else // if ( binding->conciseType == SQL_C_CHAR )
 				valueSize = (SQLINTEGER)strlen( (char*)value );
+		}
 
 		CBindColumn &bindParam = (*listBindIn)[ parameterNeedData - 1 ];
 		SQLPOINTER valueSave = binding->dataPtr;
@@ -3507,14 +3511,10 @@ SQLRETURN OdbcStatement::sqlRowCount(SQLLEN *rowCount)
 	return sqlSuccess();
 }
 
-#ifdef _WIN64
 SQLRETURN OdbcStatement::sqlColAttribute( int column, int fieldId, SQLPOINTER attributePtr, int bufferLength, SQLSMALLINT *strLengthPtr, SQLLEN *numericAttributePtr )
-#else
-SQLRETURN OdbcStatement::sqlColAttribute( int column, int fieldId, SQLPOINTER attributePtr, int bufferLength, SQLSMALLINT *strLengthPtr, SQLPOINTER numericAttributePtr )
-#endif
 {
 	clearErrors();
-	SQLLEN value;
+	SQLLEN value = 0;
 	const char *string = NULL;
 	int realSqlType;
 
@@ -3648,13 +3648,12 @@ SQLRETURN OdbcStatement::sqlColAttribute( int column, int fieldId, SQLPOINTER at
 		setString (string, (SQLCHAR*) attributePtr, bufferLength, strLengthPtr);
 	else if (numericAttributePtr)
 	{
-#ifdef _WIN64
-		*(SQLLEN*) numericAttributePtr = value;
+		*numericAttributePtr = value;
+		// According to ODBC specs strLengthPtr is ignored for numeric attributes.
+		// BUT THIS IS A BUG IN MICROSOFT DOCUMENTATION!!!
 		if ( strLengthPtr ) *strLengthPtr = sizeof ( SQLLEN );
-#else
-		*(SQLINTEGER*) numericAttributePtr = value;
-		if ( strLengthPtr ) *strLengthPtr = sizeof ( SQLINTEGER );
-#endif
+//		*(SQLINTEGER*) numericAttributePtr = value;
+//		if ( strLengthPtr ) *strLengthPtr = sizeof ( SQLINTEGER );
 	}
 
 	return sqlSuccess();
