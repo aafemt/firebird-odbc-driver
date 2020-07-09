@@ -63,7 +63,7 @@ Properties* CServiceManager::allocProperties()
 	return new Parameters;
 }
 
-void CServiceManager::startBackupDatabase( Properties *prop, ULONG options )
+void CServiceManager::startBackupDatabase( Properties *prop, unsigned options )
 {
 	ISC_STATUS status[20];
 	char svcName[RESPONSE_BUFFER/12];
@@ -136,7 +136,7 @@ void CServiceManager::startBackupDatabase( Properties *prop, ULONG options )
 		throw SQLEXCEPTION( GDS->_sqlcode( status ), status[1], getIscStatusText( status ) );
 }
 
-void CServiceManager::startRestoreDatabase( Properties *prop, ULONG options )
+void CServiceManager::startRestoreDatabase( Properties *prop, unsigned options )
 {
 	ISC_STATUS status[20];
 	char svcName[RESPONSE_BUFFER/12];
@@ -252,7 +252,7 @@ void CServiceManager::exitRestoreDatabase()
 	}
 }
 
-void CServiceManager::startStaticticsDatabase( Properties *prop, ULONG options )
+void CServiceManager::startStaticticsDatabase( Properties *prop, unsigned options )
 {
 	ISC_STATUS status[20];
 	char svcName[RESPONSE_BUFFER/12];
@@ -363,7 +363,7 @@ void CServiceManager::startShowDatabaseLog( Properties *prop )
 		throw SQLEXCEPTION( GDS->_sqlcode( status ), status[1], getIscStatusText( status ) );
 }
 
-void CServiceManager::startRepairDatabase( Properties *prop, ULONG options, ULONG optionsValidate )
+void CServiceManager::startRepairDatabase( Properties *prop, unsigned options, unsigned optionsValidate )
 {
 	ISC_STATUS status[20];
 	char svcName[RESPONSE_BUFFER/12];

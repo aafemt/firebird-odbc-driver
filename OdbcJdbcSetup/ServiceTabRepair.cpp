@@ -31,6 +31,7 @@
 #include "../SetupAttributes.h"
 #include "ServiceClient.h"
 #include "ServiceTabCtrl.h"
+#include "../IscDbc/SQLException.h"
 
 #undef _TR
 #define _TR( id, msg ) msg

@@ -11,7 +11,7 @@
 
 #include <exception>
 
-#ifdef _WIN32xxx
+#ifdef __WIN32__
 #define DllExport	__declspec( dllexport )
 #else
 #define DllExport

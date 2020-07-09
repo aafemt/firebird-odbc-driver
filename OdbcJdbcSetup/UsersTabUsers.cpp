@@ -31,6 +31,7 @@
 #include "../SetupAttributes.h"
 #include "ServiceClient.h"
 #include "ServiceTabCtrl.h"
+#include "../IscDbc/SQLException.h"
 
 #undef _TR
 #define _TR( id, msg ) msg
@@ -307,12 +308,11 @@ void CUsersTabUsers::onEditUser( enumEditUser enOption )
 
 		EnableWindow( GetDlgItem( hDlg, IDC_BUTTON_GET_INFO ), TRUE );
 	}
-	catch ( std::exception &ex )
+	catch (SQLException& exception)
 	{
 		EnableWindow( GetDlgItem( hDlg, IDC_BUTTON_GET_INFO ), TRUE );
 
 		char buffer[1024];
-		SQLException &exception = (SQLException&)ex;
 		JString text = exception.getText();
 		sprintf(buffer, "sqlcode %d, fbcode %d - %s", exception.getSqlcode(), exception.getFbcode(), (const char*)text );
 		MessageBox( NULL, buffer, TEXT( "Error!" ), MB_ICONERROR | MB_OK );

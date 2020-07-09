@@ -281,7 +281,7 @@ signed int OdbcDateTime::nday (struct tm	*times)
 	c = year / 100;
 	ya = year - 100 * c;
 
-	return (signed int) (((QUAD) 146097 * c) / 4 +
+	return (signed int) (((long long) 146097 * c) / 4 +
 		(1461 * ya) / 4 +
 		(153 * month + 2) / 5 +
 		day + 1721119 - 2400001);

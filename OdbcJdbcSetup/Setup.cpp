@@ -37,6 +37,7 @@
 #include "../SetupAttributes.h"
 #include "../SecurityPassword.h"
 #include "ServiceClient.h"
+#include "../IscDbc/SQLException.h"
 #ifdef _WINDOWS
 #include <regstr.h>
 #include <olectl.h>
@@ -1058,10 +1059,9 @@ bool Setup::addDsn()
 
 					return true;
 				}
-				catch ( std::exception &ex )
+				catch (SQLException& exception )
 				{
 					char buffer[1024];
-					SQLException &exception = (SQLException&)ex;
 					JString text = exception.getText();
 					sprintf( buffer, "sqlcode %d, fbcode %d - %s", exception.getSqlcode(), exception.getFbcode(), (const char*)text );
 					SQLPostInstallerError( ODBC_ERROR_CREATE_DSN_FAILED, buffer );

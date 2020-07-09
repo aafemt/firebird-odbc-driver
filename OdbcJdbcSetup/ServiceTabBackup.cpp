@@ -19,8 +19,7 @@
  */
 
 // ServiceTabBackup.cpp: Service Backup Manager class.
-//
-//////////////////////////////////////////////////////////////////////
+
 #include <windows.h>
 #include <commctrl.h>
 #include <stdio.h>
@@ -31,6 +30,7 @@
 #include "../SetupAttributes.h"
 #include "ServiceClient.h"
 #include "ServiceTabCtrl.h"
+#include "../IscDbc/SQLException.h"
 
 #undef _TR
 #define _TR( id, msg ) msg
@@ -234,17 +234,24 @@ void CServiceTabBackup::onStartBackup()
 		SendMessage( hWndBar, PBM_SETPOS, (WPARAM)100 , (LPARAM)NULL );
 		EnableWindow( GetDlgItem( hDlg, IDC_BUTTON_VIEW_LOG ), !logPathFile.IsEmpty() );
 	}
-	catch ( std::exception &ex )
+	catch (SQLException& exception)
 	{
 		writeFooterToLogFile();
 		EnableWindow( GetDlgItem( hDlg, IDOK ), TRUE );
 		EnableWindow( GetDlgItem( hDlg, IDC_BUTTON_VIEW_LOG ), !logPathFile.IsEmpty() );
 
 		char buffer[1024];
-		SQLException &exception = (SQLException&)ex;
 		JString text = exception.getText();
 		sprintf(buffer, "sqlcode %d, fbcode %d - %s", exception.getSqlcode(), exception.getFbcode(), (const char*)text );
 		MessageBox( NULL, buffer, TEXT( "Error!" ), MB_ICONERROR | MB_OK );
+	}
+	catch (const std::exception& exception )
+	{
+		writeFooterToLogFile();
+		EnableWindow( GetDlgItem( hDlg, IDOK ), TRUE );
+		EnableWindow( GetDlgItem( hDlg, IDC_BUTTON_VIEW_LOG ), !logPathFile.IsEmpty() );
+
+		MessageBox( NULL, exception.what(), TEXT( "Error!" ), MB_ICONERROR | MB_OK );
 	}
 
 	services.closeService();

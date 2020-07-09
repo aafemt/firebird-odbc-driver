@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -121,9 +121,9 @@ bool CUsersTabChild::validateAccountFields()
 
 bool CUsersTabChild::isAdmin( const char *userName )
 {
-	QUAD adm1 = (QUAD)71752869960019.0;
-	QUAD adm2 = (QUAD)107075219978611.0;
-	QUAD user = (QUAD)0;
+	long long adm1 = (long long)71752869960019.0;
+	long long adm2 = (long long)107075219978611.0;
+	long long user = 0LL;
 	memcpy( (void *)&user, userName, 6 );
 
 	return user == adm1 || user == adm2;
@@ -148,7 +148,7 @@ void CUsersTabChild::addColumnToListView( HWND hWnd, int i, char *name, int widt
     col.iSubItem = 0;
     ListView_InsertColumn( hWnd, i, &col );
 
-	SendMessage( hWnd, LVM_SETEXTENDEDLISTVIEWSTYLE, 
+	SendMessage( hWnd, LVM_SETEXTENDEDLISTVIEWSTYLE,
 					   LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES |
 					   LVS_EX_TWOCLICKACTIVATE | LVS_EX_SUBITEMIMAGES,
 					   LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES |

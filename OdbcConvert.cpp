@@ -35,6 +35,7 @@
 #include "OdbcStatement.h"
 #include "OdbcConnection.h"
 #include "OdbcError.h"
+#include "IscDbc/BinaryBlob.h"
 #include "IscDbc/Connection.h"
 #include "DescRecord.h"
 #include "IscDbc/SQLException.h"
@@ -53,13 +54,13 @@
 #endif
 
 #ifdef _BIG_ENDIAN // Big endian architectures (IBM PowerPC, Sun Sparc, HP PA-RISC, ... )
-#define MAKEQUAD(b, a)      ((QUAD)(((int)(a)) | ((UQUAD)((int)(b))) << 32))
+#define MAKEQUAD(b, a)      ((long long)(((int)(a)) | ((unsigned long long)((int)(b))) << 32))
 #define HI_LONG(l)			((int)(l))
-#define LO_LONG(l)          ((int)(((UQUAD)(l) >> 32) & 0xFFFFFFFF))
+#define LO_LONG(l)          ((int)(((unsigned long long)(l) >> 32) & 0xFFFFFFFF))
 #else
-#define MAKEQUAD(a, b)      ((QUAD)(((unsigned int)(a)) | ((UQUAD)((int)(b))) << 32))
+#define MAKEQUAD(a, b)      ((long long)(((unsigned int)(a)) | ((unsigned long long)((int)(b))) << 32))
 #define LO_LONG(l)          ((int)(l))
-#define HI_LONG(l)          ((int)(((UQUAD)(l) >> 32) & 0xFFFFFFFF))
+#define HI_LONG(l)          ((int)(((unsigned long long)(l) >> 32) & 0xFFFFFFFF))
 #endif
 
 size_t wcscch(const wchar_t* s, size_t len)
@@ -1124,7 +1125,7 @@ int OdbcConvert::convBigintTo##TYPE_TO(DescRecord * from, DescRecord * to)						
 																								\
 	ODBCCONVERT_CHECKNULL_COMMON(C_TYPE_TO);													\
 																								\
-	QUAD val = *(QUAD*)getAdressBindDataFrom( (char*)from->dataPtr );							\
+	long long val = *(long long*)getAdressBindDataFrom( (char*)from->dataPtr );							\
 																								\
 	if ( to->scale != from->scale )																\
 	{																							\
@@ -1134,7 +1135,7 @@ int OdbcConvert::convBigintTo##TYPE_TO(DescRecord * from, DescRecord * to)						
 		{																						\
 			if ( to->scale )																	\
 			{																					\
-				QUAD round = 5 * listScale[from->scale - to->scale - 1];						\
+				long long round = 5 * listScale[from->scale - to->scale - 1];						\
 																								\
 				if ( val < 0 )																	\
 					val -= round;																\
@@ -1162,10 +1163,10 @@ int OdbcConvert::conv##TYPE_FROM##To##TYPE_TO##WithScale(DescRecord * from, Desc
 	double val = (double)*(C_TYPE_FROM*)getAdressBindDataFrom( (char*)from->dataPtr);			\
 																								\
 	if ( to->scale )																			\
-		val *= (QUAD)listScale[to->scale];														\
+		val *= listScale[to->scale];														\
 																								\
 	if ( from->scale )																			\
-		val /= (QUAD)listScale[from->scale];													\
+		val /= listScale[from->scale];													\
 																								\
 	*(C_TYPE_TO*)pointer =	(C_TYPE_TO)val;														\
 																								\
@@ -1181,7 +1182,7 @@ int OdbcConvert::convTagNumericTo##TYPE_TO(DescRecord * from, DescRecord * to)		
 																								\
 	ODBCCONVERT_CHECKNULL_COMMON(C_TYPE_TO);													\
 																								\
-	QUAD val;																					\
+	long long val;																					\
 	tagSQL_NUMERIC_STRUCT * nm =																\
 					(tagSQL_NUMERIC_STRUCT *)getAdressBindDataFrom((char*)from->dataPtr);		\
 																								\
@@ -1207,7 +1208,7 @@ int OdbcConvert::convTagNumericTo##TYPE_TO(DescRecord * from, DescRecord * to)		
 																								\
 	ODBCCONVERT_CHECKNULL_COMMON(C_TYPE_TO);													\
 																								\
-	QUAD val;																					\
+	long long val;																					\
 	tagSQL_NUMERIC_STRUCT * nm =																\
 					(tagSQL_NUMERIC_STRUCT *)getAdressBindDataFrom((char*)from->dataPtr);		\
 																								\
@@ -1216,7 +1217,7 @@ int OdbcConvert::convTagNumericTo##TYPE_TO(DescRecord * from, DescRecord * to)		
 	if ( !nm->sign )																			\
 		val = -val;																				\
 																								\
-	*pointer = (C_TYPE_TO)val / (QUAD)listScale[nm->scale];										\
+	*pointer = (C_TYPE_TO)val / listScale[nm->scale];										\
 																								\
 	return SQL_SUCCESS;																			\
 }																								\
@@ -1230,8 +1231,8 @@ int OdbcConvert::conv##TYPE_FROM##ToTagNumeric(DescRecord * from, DescRecord * t
 																								\
 	ODBCCONVERT_CHECKNULL( pointer );															\
 																								\
-	QUAD * number = (QUAD*)( pointer + 3 );														\
-	*number = (QUAD)*(C_TYPE_FROM*)getAdressBindDataFrom( (char*)from->dataPtr );				\
+	long long * number = (long long*)( pointer + 3 );														\
+	*number = (long long)*(C_TYPE_FROM*)getAdressBindDataFrom( (char*)from->dataPtr );				\
 	*pointer++ = (char)from->precision;															\
 	*pointer++ = (char)from->scale;																\
 																								\
@@ -1260,7 +1261,7 @@ int OdbcConvert::conv##TYPE_FROM##To##TYPE_TO(DescRecord * from, DescRecord * to
 																								\
 	C_TYPE_FROM valFrom = *(C_TYPE_FROM*)getAdressBindDataFrom((char*)from->dataPtr);			\
 	if ( to->scale )																			\
-		valFrom *= (C_TYPE_FROM)(QUAD)listScale[to->scale];										\
+		valFrom *= (C_TYPE_FROM)listScale[to->scale];										\
 	if ( valFrom < 0 )valFrom -= 0.5;															\
 	else valFrom += 0.5;																		\
 																								\
@@ -1674,7 +1675,7 @@ ODBCCONVERT_CONV(TinyInt,unsigned char,Short,short);
 ODBCCONVERT_CONV(TinyInt,unsigned char,Long,int);
 ODBCCONVERT_CONV(TinyInt,unsigned char,Float,float);
 ODBCCONVERT_CONV(TinyInt,unsigned char,Double,double);
-ODBCCONVERT_CONV(TinyInt,unsigned char,Bigint,QUAD);
+ODBCCONVERT_CONV(TinyInt,unsigned char,Bigint,long long);
 ODBCCONVERT_CONV_TO_STRING(TinyInt,char,3);
 ODBCCONVERT_CONV_TO_STRINGW(TinyInt,char,3);
 ODBCCONVERT_CONVTAGNUMERIC(TinyInt,unsigned char);
@@ -1694,8 +1695,8 @@ ODBCCONVERT_WITH_SCALE_CONV(Short,short,Short,short);
 ODBCCONVERT_WITH_SCALE_CONV(Short,short,Long,int);
 ODBCCONVERT_WITH_SCALE_CONV(Short,short,Float,float);
 ODBCCONVERT_WITH_SCALE_CONV(Short,short,Double,double);
-ODBCCONVERT_WITH_SCALE_CONV(Short,short,Bigint,QUAD);
-ODBCCONVERT_CONV(Short,short,Bigint,QUAD);
+ODBCCONVERT_WITH_SCALE_CONV(Short,short,Bigint,long long);
+ODBCCONVERT_CONV(Short,short,Bigint,long long);
 ODBCCONVERT_CONV_TO_STRING(Short,short,5);
 ODBCCONVERT_CONV_TO_STRINGW(Short,short,5);
 ODBCCONVERT_CONVTAGNUMERIC(Short,short);
@@ -1710,13 +1711,13 @@ ODBCCONVERT_CONV(Long,int,Short,short);
 ODBCCONVERT_CONV(Long,int,Long,int);
 ODBCCONVERT_CONV(Long,int,Float,float);
 ODBCCONVERT_CONV(Long,int,Double,double);
-ODBCCONVERT_CONV(Long,int,Bigint,QUAD);
+ODBCCONVERT_CONV(Long,int,Bigint,long long);
 ODBCCONVERT_WITH_SCALE_CONV(Long,int,TinyInt,char);
 ODBCCONVERT_WITH_SCALE_CONV(Long,int,Short,short);
 ODBCCONVERT_WITH_SCALE_CONV(Long,int,Long,int);
 ODBCCONVERT_WITH_SCALE_CONV(Long,int,Float,float);
 ODBCCONVERT_WITH_SCALE_CONV(Long,int,Double,double);
-ODBCCONVERT_WITH_SCALE_CONV(Long,int,Bigint,QUAD);
+ODBCCONVERT_WITH_SCALE_CONV(Long,int,Bigint,long long);
 ODBCCONVERT_CONV_TO_STRING(Long,int,10);
 ODBCCONVERT_CONV_TO_STRINGW(Long,int,10);
 ODBCCONVERT_CONVTAGNUMERIC(Long,int);
@@ -1731,7 +1732,7 @@ ODBCCONVERT_CONVROUND(Float,float,Long,int);
 ODBCCONVERT_CONV(Float,float,Boolean,bool);
 ODBCCONVERT_CONV(Float,float,Float,float);
 ODBCCONVERT_CONV(Float,float,Double,double);
-ODBCCONVERT_CONVROUND(Float,float,Bigint,QUAD);
+ODBCCONVERT_CONVROUND(Float,float,Bigint,long long);
 
 int OdbcConvert::convFloatToString(DescRecord * from, DescRecord * to)
 {
@@ -1790,7 +1791,7 @@ ODBCCONVERT_CONVROUND(Double,double,Long,int);
 ODBCCONVERT_CONV(Double,double,Boolean,bool);
 ODBCCONVERT_CONV(Double,double,Float,float);
 ODBCCONVERT_CONV(Double,double,Double,double);
-ODBCCONVERT_CONVROUND(Double,double,Bigint,QUAD);
+ODBCCONVERT_CONVROUND(Double,double,Bigint,long long);
 
 int OdbcConvert::convDoubleToTagNumeric(DescRecord * from, DescRecord * to)
 {
@@ -1800,8 +1801,8 @@ int OdbcConvert::convDoubleToTagNumeric(DescRecord * from, DescRecord * to)
 
 	ODBCCONVERT_CHECKNULL( pointer );
 
-	QUAD *number = (QUAD*)( pointer + 3 );
-	*number = (QUAD)(*(double*)getAdressBindDataFrom( (char*)from->dataPtr ) * (QUAD)listScale[from->scale] );
+	long long *number = (long long*)( pointer + 3 );
+	*number = (long long)(*(double*)getAdressBindDataFrom( (char*)from->dataPtr ) * listScale[from->scale] );
 
 	if ( to->scale != from->scale )
 	{
@@ -1811,7 +1812,7 @@ int OdbcConvert::convDoubleToTagNumeric(DescRecord * from, DescRecord * to)
 		{
 			if ( to->scale )
 			{
-				QUAD round = 5 * listScale[from->scale - to->scale - 1];
+				long long round = 5 * listScale[from->scale - to->scale - 1];
 
 				if ( *number > 0 )
 					*number += round;
@@ -1896,25 +1897,25 @@ ODBCCONVERT_BIGINT_CONV(Short,short);
 ODBCCONVERT_BIGINT_CONV(Long,int);
 ODBCCONVERT_BIGINT_CONV(Float,float);
 ODBCCONVERT_BIGINT_CONV(Double,double);
-ODBCCONVERT_WITH_SCALE_CONV(Bigint,QUAD,Float,float);
-ODBCCONVERT_WITH_SCALE_CONV(Bigint,QUAD,Double,double);
-ODBCCONVERT_BIGINT_CONV(Bigint,QUAD);
-ODBCCONVERT_CONV_TO_BINARY(Bigint,QUAD,18);
-ODBCCONVERT_CONV_TO_STRING(Bigint,QUAD,18);
-ODBCCONVERT_CONV_TO_STRINGW(Bigint,QUAD,18);
-ODBCCONVERT_CONVTAGNUMERIC(Bigint,QUAD);
+ODBCCONVERT_WITH_SCALE_CONV(Bigint,long long,Float,float);
+ODBCCONVERT_WITH_SCALE_CONV(Bigint,long long,Double,double);
+ODBCCONVERT_BIGINT_CONV(Bigint,long long);
+ODBCCONVERT_CONV_TO_BINARY(Bigint,long long,18);
+ODBCCONVERT_CONV_TO_STRING(Bigint,long long,18);
+ODBCCONVERT_CONV_TO_STRINGW(Bigint,long long,18);
+ODBCCONVERT_CONVTAGNUMERIC(Bigint,long long);
 
 ////////////////////////////////////////////////////////////////////////
 // Numeric,Decimal
 ////////////////////////////////////////////////////////////////////////
 
-ODBCCONVERT_CONV(Numeric,QUAD,Boolean,bool);
-ODBCCONVERT_CONV(Numeric,QUAD,TinyInt,char);
-ODBCCONVERT_CONV(Numeric,QUAD,Short,short);
-ODBCCONVERT_CONV(Numeric,QUAD,Long,int);
-ODBCCONVERT_CONV(Numeric,QUAD,Float,float);
-ODBCCONVERT_CONV(Numeric,QUAD,Double,double);
-ODBCCONVERT_CONV(Numeric,QUAD,Bigint,QUAD);
+ODBCCONVERT_CONV(Numeric,long long,Boolean,bool);
+ODBCCONVERT_CONV(Numeric,long long,TinyInt,char);
+ODBCCONVERT_CONV(Numeric,long long,Short,short);
+ODBCCONVERT_CONV(Numeric,long long,Long,int);
+ODBCCONVERT_CONV(Numeric,long long,Float,float);
+ODBCCONVERT_CONV(Numeric,long long,Double,double);
+ODBCCONVERT_CONV(Numeric,long long,Bigint,long long);
 
 ////////////////////////////////////////////////////////////////////////
 // TagNumeric
@@ -1925,8 +1926,8 @@ ODBCCONVERTTAG_NUMERIC_CONV(Short,short);
 ODBCCONVERTTAG_NUMERIC_CONV(Long,int);
 ODBCCONVERTTAG_NUMERIC_CONV_FLOAT(Float,float);
 ODBCCONVERTTAG_NUMERIC_CONV_FLOAT(Double,double);
-ODBCCONVERTTAG_NUMERIC_CONV(Bigint,QUAD);
-ODBCCONVERT_CONVTAGNUMERIC(Numeric,QUAD);
+ODBCCONVERTTAG_NUMERIC_CONV(Bigint,long long);
+ODBCCONVERT_CONVTAGNUMERIC(Numeric,long long);
 
 ////////////////////////////////////////////////////////////////////////
 #define ODBCCONVERT_TEMP_CONV(TYPE_FROM,TYPE_TO,C_TYPE_TO)										\
@@ -1951,7 +1952,7 @@ int OdbcConvert::conv##TYPE_FROM##To##TYPE_TO(DescRecord * from, DescRecord * to
 ODBCCONVERT_CONV(Date,int,Long,int);
 ODBCCONVERT_CONV(Date,int,Float,float);
 ODBCCONVERT_CONV(Date,int,Double,double);
-ODBCCONVERT_CONV(Date,int,Bigint,QUAD);
+ODBCCONVERT_CONV(Date,int,Bigint,long long);
 
 int OdbcConvert::convDateToString(DescRecord * from, DescRecord * to)
 {
@@ -2097,7 +2098,7 @@ int OdbcConvert::transferTagDateToDateTime(DescRecord * from, DescRecord * to)
 
 	int nday = encode_sql_date ( tagDt->day, tagDt->month, tagDt->year );
 
-	*(QUAD*)pointer = MAKEQUAD( nday, 0 );
+	*(long long*)pointer = MAKEQUAD( nday, 0 );
 
 	return SQL_SUCCESS;
 }
@@ -2128,7 +2129,7 @@ int OdbcConvert::convDateToTagTimestamp(DescRecord * from, DescRecord * to)
 ODBCCONVERT_CONV(Time,int,Long,int);
 ODBCCONVERT_CONV(Time,int,Float,float);
 ODBCCONVERT_CONV(Time,int,Double,double);
-ODBCCONVERT_CONV(Time,int,Bigint,QUAD);
+ODBCCONVERT_CONV(Time,int,Bigint,long long);
 
 int OdbcConvert::convTimeToString(DescRecord * from, DescRecord * to)
 {
@@ -2290,7 +2291,7 @@ int OdbcConvert::transferTagTimeToDateTime(DescRecord * from, DescRecord * to)
 	int ntime = encode_sql_time ( tagTm->hour, tagTm->minute, tagTm->second );
 	int nday = encode_sql_date ( 1, 1, 100 ); // min validate date for server
 
-	*(QUAD*)pointer = MAKEQUAD( nday, ntime );
+	*(long long*)pointer = MAKEQUAD( nday, ntime );
 
 	return SQL_SUCCESS;
 }
@@ -2319,8 +2320,8 @@ int OdbcConvert::convTimeToTagTimestamp(DescRecord * from, DescRecord * to)
 // DateTime
 ////////////////////////////////////////////////////////////////////////
 
-ODBCCONVERT_CONV(DateTime,QUAD,Double,double);
-ODBCCONVERT_CONV(DateTime,QUAD,Bigint,QUAD);
+ODBCCONVERT_CONV(DateTime,long long,Double,double);
+ODBCCONVERT_CONV(DateTime,long long,Bigint,long long);
 
 int OdbcConvert::convDateTimeToString(DescRecord * from, DescRecord * to)
 {
@@ -2330,7 +2331,7 @@ int OdbcConvert::convDateTimeToString(DescRecord * from, DescRecord * to)
 
 	ODBCCONVERT_CHECKNULL( pointer );
 
-	QUAD pointerFrom = *(QUAD*)getAdressBindDataFrom((char*)from->dataPtr);
+	long long pointerFrom = *(long long*)getAdressBindDataFrom((char*)from->dataPtr);
 	int ndate = LO_LONG(pointerFrom);
 	int ntime = HI_LONG(pointerFrom);
 	int nnano = ntime % ISC_TIME_SECONDS_PRECISION;
@@ -2366,7 +2367,7 @@ int OdbcConvert::convDateTimeToStringW(DescRecord * from, DescRecord * to)
 
 	ODBCCONVERT_CHECKNULLW( pointer );
 
-	QUAD pointerFrom = *(QUAD*)getAdressBindDataFrom((char*)from->dataPtr);
+	long long pointerFrom = *(long long*)getAdressBindDataFrom((char*)from->dataPtr);
 	int ndate = LO_LONG(pointerFrom);
 	int ntime = HI_LONG(pointerFrom);
 	int nnano = ntime % ISC_TIME_SECONDS_PRECISION;
@@ -2402,7 +2403,7 @@ int OdbcConvert::convDateTimeToTagDate(DescRecord * from, DescRecord * to)
 
 	ODBCCONVERT_CHECKNULL( tagDt );
 
-	int nday = LO_LONG ( *(QUAD*)getAdressBindDataFrom((char*)from->dataPtr) );
+	int nday = LO_LONG ( *(long long*)getAdressBindDataFrom((char*)from->dataPtr) );
 
 	decode_sql_date(nday, tagDt->day, tagDt->month, tagDt->year);
 
@@ -2420,7 +2421,7 @@ int OdbcConvert::convDateTimeToTagTime(DescRecord * from, DescRecord * to)
 
 	ODBCCONVERT_CHECKNULL( tagTm );
 
-	int ntime = HI_LONG ( *(QUAD*)getAdressBindDataFrom((char*)from->dataPtr) );
+	int ntime = HI_LONG ( *(long long*)getAdressBindDataFrom((char*)from->dataPtr) );
 
 	decode_sql_time(ntime, tagTm->hour, tagTm->minute, tagTm->second);
 
@@ -2438,7 +2439,7 @@ int OdbcConvert::convDateTimeToTagDateTime(DescRecord * from, DescRecord * to)
 
 	ODBCCONVERT_CHECKNULL( tagTs );
 
-	QUAD &number = *(QUAD*)getAdressBindDataFrom((char*)from->dataPtr);
+	long long &number = *(long long*)getAdressBindDataFrom((char*)from->dataPtr);
 
 	int nday = LO_LONG(number);
 	int ntime = HI_LONG(number);
@@ -2464,7 +2465,7 @@ int OdbcConvert::convDateTimeToBinary(DescRecord * from, DescRecord * to)
 
 	ODBCCONVERT_CHECKNULL( pointer );
 
-	QUAD &number = *(QUAD*)getAdressBindDataFrom((char*)from->dataPtr);
+	long long &number = *(long long*)getAdressBindDataFrom((char*)from->dataPtr);
 
 	int nday = LO_LONG(number);
 	int ntime = HI_LONG(number);
@@ -2564,7 +2565,7 @@ int OdbcConvert::transferTagDateTimeToDateTime(DescRecord * from, DescRecord * t
 
 	ntime += tagTs->fraction / STD_TIME_SECONDS_PRECISION;
 
-	*(QUAD*)pointer = MAKEQUAD( nday, ntime );
+	*(long long*)pointer = MAKEQUAD( nday, ntime );
 
 	return SQL_SUCCESS;
 }
@@ -2578,7 +2579,7 @@ ODBCCONVERT_BLOB_CONV(Short,short);
 ODBCCONVERT_BLOB_CONV(Long,int);
 ODBCCONVERT_BLOB_CONV(Float,float);
 ODBCCONVERT_BLOB_CONV(Double,double);
-ODBCCONVERT_BLOB_CONV(Bigint,QUAD);
+ODBCCONVERT_BLOB_CONV(Bigint,long long);
 
 int OdbcConvert::convBlobToBlob(DescRecord * from, DescRecord * to)
 {
@@ -3067,7 +3068,7 @@ int OdbcConvert::conv##TYPE_FROM##To##TYPE_TO(DescRecord * from, DescRecord * to
 	ODBCCONVERT_CHECKNULL_COMMON(C_TYPE_TO);													\
 																								\
 	/* Original source from IscDbc/Value.cpp */													\
-	QUAD number = 0;																			\
+	long long number = 0;																			\
 	double divisor = 1;																			\
 	bool decimal = false;																		\
 	bool negative = false;																		\
@@ -3100,9 +3101,9 @@ int OdbcConvert::conv##TYPE_FROM##To##TYPE_TO(DescRecord * from, DescRecord * to
 	if ( scale )																				\
 	{																							\
 		if (scale < 0)																			\
-			divisor /= (QUAD)listScale[-scale];													\
+			divisor /= listScale[-scale];													\
 		else /* if (scale > 0)	*/																\
-			divisor *= (QUAD)listScale[scale];													\
+			divisor *= listScale[scale];													\
 	}																							\
 																								\
 	if (divisor == 1)																			\
@@ -3123,7 +3124,7 @@ int OdbcConvert::conv##TYPE_FROM##To##TYPE_TO(DescRecord * from, DescRecord * to
 	ODBCCONVERT_CHECKNULL_COMMON(C_TYPE_TO);													\
 																								\
 	/* Original source from IscDbc/Value.cpp */													\
-	QUAD number = 0;																			\
+	long long number = 0;																			\
 	double divisor = 1;																			\
 	bool decimal = false;																		\
 	bool negative = false;																		\
@@ -3156,9 +3157,9 @@ int OdbcConvert::conv##TYPE_FROM##To##TYPE_TO(DescRecord * from, DescRecord * to
 	if ( scale )																				\
 	{																							\
 		if (scale < 0)																			\
-			divisor /= (QUAD)listScale[-scale];													\
+			divisor /= listScale[-scale];													\
 		else /* if (scale > 0)	*/																\
-			divisor *= (QUAD)listScale[scale];													\
+			divisor *= listScale[scale];													\
 	}																							\
 																								\
 	if (divisor == 1)																			\
@@ -3174,13 +3175,13 @@ ODBCCONVERT_CONV_STRING_TO(String,Short,short);
 ODBCCONVERT_CONV_STRING_TO(String,Long,int);
 ODBCCONVERT_CONV_STRING_TO(String,Float,float);
 ODBCCONVERT_CONV_STRING_TO(String,Double,double);
-ODBCCONVERT_CONV_STRING_TO(String,Bigint,QUAD);
+ODBCCONVERT_CONV_STRING_TO(String,Bigint,long long);
 ODBCCONVERT_CONV_STRINGW_TO(StringW,TinyInt,char);
 ODBCCONVERT_CONV_STRINGW_TO(StringW,Short,short);
 ODBCCONVERT_CONV_STRINGW_TO(StringW,Long,int);
 ODBCCONVERT_CONV_STRINGW_TO(StringW,Float,float);
 ODBCCONVERT_CONV_STRINGW_TO(StringW,Double,double);
-ODBCCONVERT_CONV_STRINGW_TO(StringW,Bigint,QUAD);
+ODBCCONVERT_CONV_STRINGW_TO(StringW,Bigint,long long);
 
 int OdbcConvert::convStringToString(DescRecord * from, DescRecord * to)
 {
@@ -3854,13 +3855,13 @@ ODBCCONVERT_CONV_STRING_TO(VarString,Short,short);
 ODBCCONVERT_CONV_STRING_TO(VarString,Long,int);
 ODBCCONVERT_CONV_STRING_TO(VarString,Float,float);
 ODBCCONVERT_CONV_STRING_TO(VarString,Double,double);
-ODBCCONVERT_CONV_STRING_TO(VarString,Bigint,QUAD);
+ODBCCONVERT_CONV_STRING_TO(VarString,Bigint,long long);
 ODBCCONVERT_CONV_STRINGW_TO(VarStringW,TinyInt,char);
 ODBCCONVERT_CONV_STRINGW_TO(VarStringW,Short,short);
 ODBCCONVERT_CONV_STRINGW_TO(VarStringW,Long,int);
 ODBCCONVERT_CONV_STRINGW_TO(VarStringW,Float,float);
 ODBCCONVERT_CONV_STRINGW_TO(VarStringW,Double,double);
-ODBCCONVERT_CONV_STRINGW_TO(VarStringW,Bigint,QUAD);
+ODBCCONVERT_CONV_STRINGW_TO(VarStringW,Bigint,long long);
 
 int OdbcConvert::convVarStringToBinary(DescRecord * from, DescRecord * to)
 {
@@ -4174,7 +4175,7 @@ signed int OdbcConvert::encode_sql_date(SQLUSMALLINT day, SQLUSMALLINT month, SQ
 	c = year / 100;
 	ya = year - 100 * c;
 
-	return (signed int) (((QUAD) 146097 * c) / 4 +
+	return (signed int) (((long long) 146097 * c) / 4 +
 		(1461 * ya) / 4 +
 		(153 * month + 2) / 5 +
 		day - 678882); //	day + 1721119 - 2400001);

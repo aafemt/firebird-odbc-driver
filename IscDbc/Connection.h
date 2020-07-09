@@ -37,6 +37,7 @@
 #if !defined(_CONNECTION_H_)
 #define _CONNECTION_H_
 
+#include "Blob.h"
 #include "Properties.h"
 
 #ifndef __WIN32__
@@ -158,12 +159,12 @@ class ServiceManager
 {
 public:
 	virtual Properties  *allocProperties() = 0;
-	virtual void        startBackupDatabase( Properties *prop, ULONG options ) = 0;
-	virtual void        startRestoreDatabase( Properties *prop, ULONG options ) = 0;
+	virtual void        startBackupDatabase( Properties *prop, unsigned options ) = 0;
+	virtual void        startRestoreDatabase( Properties *prop, unsigned options ) = 0;
 	virtual void        exitRestoreDatabase() = 0;
-	virtual void        startStaticticsDatabase( Properties *prop, ULONG options ) = 0;
+	virtual void        startStaticticsDatabase( Properties *prop, unsigned options ) = 0;
 	virtual void        startShowDatabaseLog( Properties *prop ) = 0;
-	virtual void        startRepairDatabase( Properties *prop, ULONG options, ULONG optionsValidate ) = 0;
+	virtual void        startRepairDatabase( Properties *prop, unsigned options, unsigned optionsValidate ) = 0;
 	virtual void        startUsersQuery( Properties *prop ) = 0;
 	virtual bool        nextQuery( char *outBuffer, int length, int &lengthOut, int &countError ) = 0;
 	virtual bool        nextQueryLimboTransactionInfo( char *outBuffer, int length, int &lengthOut ) = 0;

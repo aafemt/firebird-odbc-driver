@@ -29,6 +29,7 @@
 #include "../SetupAttributes.h"
 #include "ServiceTabCtrl.h"
 #include "ServiceClient.h"
+#include "../IscDbc/SQLException.h"
 
 namespace OdbcJdbcSetupLibrary {
 
@@ -313,7 +314,7 @@ void CDsnDialog::CheckRemotehost(char * fullPathFileName)
 		while( *ptCh && *ptCh != '\\' )
 			*ptStr++ = *ptCh++;
 
-		*ptCh++; //		*ptCh == '\\' alwaus
+		ptCh++; //		*ptCh == '\\' alwaus
 		*ptStr++ = ':';
 
 		// name disk
@@ -326,7 +327,10 @@ void CDsnDialog::CheckRemotehost(char * fullPathFileName)
 		while( *ptCh )
 		{
 			if ( *ptCh == '\\' )
-				*ptStr++ = '/', *ptCh++;
+			{
+				*ptStr++ = '/';
+				ptCh++;
+			}
 			else
 				*ptStr++ = *ptCh++;
 		}
@@ -716,14 +720,22 @@ void CDsnDialog::OnTestConnection( HWND hDlg )
 
 		MessageBox( hDlg, _TR( IDS_MESSAGE_01, "Connection successful!" ), TEXT( strHeadDlg ), MB_ICONINFORMATION | MB_OK );
 	}
-	catch ( std::exception &ex )
+	catch ( SQLException &exception )
 	{
-		SQLException &exception = (SQLException&)ex;
 		char buffer[2048];
 		JString text = exception.getText();
 
 		sprintf( buffer, "%s\n%s", _TR( IDS_MESSAGE_02, "Connection failed!" ), (const char*)text );
 		removeNameFileDBfromMessage ( buffer );
+
+		MessageBox( hDlg, TEXT( buffer ), TEXT( strHeadDlg ), MB_ICONERROR | MB_OK );
+	}
+	catch (const std::exception &exception )
+	{
+		char buffer[2048];
+		JString text = exception.what();
+
+		sprintf( buffer, "%s\n%s", _TR( IDS_MESSAGE_02, "Connection failed!" ), (const char*)text );
 
 		MessageBox( hDlg, TEXT( buffer ), TEXT( strHeadDlg ), MB_ICONERROR | MB_OK );
 	}

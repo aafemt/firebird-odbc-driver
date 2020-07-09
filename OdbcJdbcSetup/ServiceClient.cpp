@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -33,6 +33,7 @@
 #include "../SetupAttributes.h"
 #include "../SecurityPassword.h"
 #include "ServiceClient.h"
+#include "../IscDbc/SQLException.h"
 
 namespace OdbcJdbcSetupLibrary {
 
@@ -72,6 +73,8 @@ CServiceClient::~CServiceClient()
 
 bool CServiceClient::initServices( const char *sharedLibrary )
 {
+	services = nullptr;
+
 	try
 	{
 		services = createServices();
@@ -84,17 +87,17 @@ bool CServiceClient::initServices( const char *sharedLibrary )
 		if ( !properties )
 			return false;
 	}
-	catch ( std::exception &ex )
+	catch (... /* std::exception &ex */)
 	{
-		SQLException &exception = (SQLException&)ex;
-		JString text = exception.getText();
+//		SQLException &exception = (SQLException&)ex;
+//		JString text = exception.getText();
 
 		if ( services )
 		{
 			services->release();
 			services = NULL;
-			return false;
 		}
+		return false;
 	}
 
 	return true;
@@ -261,7 +264,7 @@ void CServiceClient::openSemaphore( const char *nameSemaphore )
 {
 #ifdef _WINDOWS
 	hSemaphore = OpenSemaphore( SEMAPHORE_MODIFY_STATE | SYNCHRONIZE, FALSE, nameSemaphore );
-	if ( !hSemaphore ) 
+	if ( !hSemaphore )
 		hSemaphore = CreateSemaphore( NULL, 0, 1, nameSemaphore );
 #endif
 }
@@ -276,7 +279,7 @@ void CServiceClient::greenSemaphore()
 bool CServiceClient::checkIncrementForBackup( char *&pt )
 {
 	bool inc = false;
-	
+
 	pt += 6; // offset 'gbak: '
 
 	if ( *pt == 'w' && !strncasecmp ( pt, "writing ", sizeof ( "writing " ) - 1 ) )
@@ -330,7 +333,7 @@ bool CServiceClient::checkIncrementForBackup( char *&pt )
 bool CServiceClient::checkIncrementForRestore( char *&pt, char *outBufferHead )
 {
 	bool inc = false;
-	
+
 	pt += 6; // offset 'gbak: '
 	*outBufferHead = '\0';
 

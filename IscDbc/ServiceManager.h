@@ -54,12 +54,12 @@ class CServiceManager : public ServiceManager
 {
 public:
 	Properties*	allocProperties() override;
-	void startBackupDatabase( Properties *prop, ULONG options ) override;
-	void startRestoreDatabase( Properties *prop, ULONG options ) override;
+	void startBackupDatabase( Properties *prop, unsigned options ) override;
+	void startRestoreDatabase( Properties *prop, unsigned options ) override;
 	void exitRestoreDatabase( void ) override;
-	void startStaticticsDatabase( Properties *prop, ULONG options ) override;
+	void startStaticticsDatabase( Properties *prop, unsigned options ) override;
 	void startShowDatabaseLog( Properties *prop ) override;
-	void startRepairDatabase( Properties *prop, ULONG options, ULONG optionsValidate ) override;
+	void startRepairDatabase( Properties *prop, unsigned options, unsigned optionsValidate ) override;
 	void startUsersQuery( Properties *prop ) override;
 	bool nextQuery( char *outBuffer, int length, int &lengthOut, int &countError ) override;
 	bool nextQueryLimboTransactionInfo( char *outBuffer, int length, int &lengthOut ) override;
