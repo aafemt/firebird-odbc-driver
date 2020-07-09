@@ -19,8 +19,6 @@
  */
 
 // Parameters.h: interface for the Parameters class.
-//
-//////////////////////////////////////////////////////////////////////
 
 // copyright (c) 1999 - 2000 by James A. Starkey for IBPhoenix.
 

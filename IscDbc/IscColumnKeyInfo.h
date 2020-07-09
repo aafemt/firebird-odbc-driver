@@ -19,8 +19,6 @@
  */
 
 // IscColumnKeyInfo.h: interface for the IscColumnKeyInfo class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_IscColumnKeyInfo_h_)
 #define _IscColumnKeyInfo_h_

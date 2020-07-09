@@ -20,8 +20,6 @@
  */
 
 // IscTablePrivilegesResultSet.h: interface for the IscTablePrivilegesResultSet class.
-//
-/////////////////////////////////////////////////////////////////////////////////////////
 
 #if !defined(_ISCTABLEPRIVILEGESRESULTSET_H_)
 #define _ISCTABLEPRIVILEGESRESULTSET_H_

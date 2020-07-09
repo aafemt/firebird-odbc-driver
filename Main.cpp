@@ -1012,11 +1012,7 @@ SQLRETURN SQL_API SQLCloseCursor  (SQLHSTMT arg0)
 SQLRETURN SQL_API SQLColAttribute( SQLHSTMT hStmt, SQLUSMALLINT columnNumber,
 									SQLUSMALLINT fieldIdentifier, SQLPOINTER characterAttribute,
 									SQLSMALLINT bufferLength, SQLSMALLINT *stringLength,
-#ifdef _WIN64
 									SQLLEN *numericAttribute )
-#else
-									SQLPOINTER numericAttribute )
-#endif
 {
 	TRACE ("SQLColAttribute");
 	GUARD_HSTMT( hStmt );

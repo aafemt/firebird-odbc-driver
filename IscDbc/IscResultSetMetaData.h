@@ -19,8 +19,6 @@
  */
 
 // IscResultSetMetaData.h: interface for the IscResultSetMetaData class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ISCRESULTSETMETADATA_H_)
 #define _ISCRESULTSETMETADATA_H_

@@ -18,9 +18,7 @@
  *  All Rights Reserved.
  */
 
-// IscColumnsMetaData.h: interface for the IscColumnsMetaData class.
-//
-//////////////////////////////////////////////////////////////////////
+// IscColumnsResultSet.h: interface for the IscColumnsResultSet class.
 
 #if !defined(_ISCCOLUMNSMETADATA_H_)
 #define _ISCCOLUMNSMETADATA_H_

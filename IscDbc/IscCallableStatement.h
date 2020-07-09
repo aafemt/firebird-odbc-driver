@@ -23,8 +23,6 @@
 
 
 // IscCallableStatement.h: interface for the IscCallableStatement class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ISCCALLABLESTATEMENT_H_)
 #define _ISCCALLABLESTATEMENT_H_

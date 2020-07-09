@@ -21,7 +21,6 @@
 //  
 // EnvShare.h: interface for the EnvShare class.
 //
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_EnvShare_H_)
 #define _EnvShare_H_

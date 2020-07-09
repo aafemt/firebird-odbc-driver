@@ -19,8 +19,6 @@
  */
 
 // ParametersEvents.h: interface for the ParametersEvents class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ParametersEvents_H_)
 #define _ParametersEvents_H_

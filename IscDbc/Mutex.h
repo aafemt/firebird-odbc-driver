@@ -19,8 +19,6 @@
  */
 
 // Mutex.h: interface for the Mutex class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_MUTEX_H_INCLUDED_)
 #define _MUTEX_H_INCLUDED_

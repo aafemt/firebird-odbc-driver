@@ -20,8 +20,6 @@
  */
 
 // TypesResultSet.h: interface for the TypesResultSet class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_TYPESRESULTSET_H_)
 #define _TYPESRESULTSET_H_

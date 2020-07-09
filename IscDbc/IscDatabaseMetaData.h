@@ -19,9 +19,6 @@
  */
 
 // IscDatabaseMetaData.h: interface for the IscDatabaseMetaData class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #if !defined(_ISCDATABASEMETADATA_H_)
 #define _ISCDATABASEMETADATA_H_
 

@@ -20,7 +20,6 @@
 
 // Attachment.h: interface for the Attachment class.
 //
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ATTACHMENT_H_)
 #define _ATTACHMENT_H_

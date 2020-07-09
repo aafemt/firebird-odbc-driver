@@ -19,8 +19,6 @@
  */
 
 // IscUserEvents.h interface for the user events class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_UserEvents_H_)
 #define _UserEvents_H_

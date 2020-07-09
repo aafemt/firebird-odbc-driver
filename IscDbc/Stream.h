@@ -19,8 +19,6 @@
  */
 
 // Stream.h: interface for the Stream class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_STREAM_H_INCLUDED_)
 #define _STREAM_H_INCLUDED_

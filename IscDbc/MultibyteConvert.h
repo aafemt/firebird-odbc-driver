@@ -19,8 +19,6 @@
  */
 
 // MultibyteConvert.h
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_MultibyteConvert_H_)
 #define _MultibyteConvert_H_

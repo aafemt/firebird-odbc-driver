@@ -19,8 +19,6 @@
  */
  
 // SqlTime.h: interface for the SqlTime class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_TIME_H_INCLUDED_)
 #define _TIME_H_INCLUDED_

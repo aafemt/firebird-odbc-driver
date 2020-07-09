@@ -19,8 +19,6 @@
  */
 
 // IscIndexInfoResultSet.h: interface for the IscIndexInfoResultSet class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ISCINDEXINFORESULTSET_H_)
 #define _ISCINDEXINFORESULTSET_H_

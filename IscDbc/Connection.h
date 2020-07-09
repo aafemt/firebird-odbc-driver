@@ -33,27 +33,14 @@
 
 
 // Connection.h: interface for the Connection class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_CONNECTION_H_)
 #define _CONNECTION_H_
 
-#include "BinaryBlob.h"
 #include "Properties.h"
-#include "SQLException.h"
 
-#ifndef QUAD
-
-#ifndef _WINDOWS
-#define __int64			long long
+#ifndef __WIN32__
 #define _stdcall
-#endif
-
-typedef unsigned char	UCHAR;
-typedef unsigned long	ULONG;
-typedef __int64			QUAD;
-typedef unsigned __int64			UQUAD;
 #endif
 
 #ifdef __BORLANDC__
@@ -590,12 +577,12 @@ public:
 //	virtual void		setBinaryStream( int parameterIndex, InputStream x, int length ) = 0;
 	virtual void		setBoolean( int parameterIndex, bool x ) = 0;
 	virtual void		setByte (int index, char value) = 0;
-	virtual void		setBytes (int index, const void *bytes) = 0;
-	virtual void		setDate (int index, DateTime value) = 0;
-	virtual void		setDouble (int index, double value) = 0;
-	virtual void		setFloat (int index, float value) = 0;
-	virtual void		setInt (int index, int value) = 0;
-	virtual void		setLong (int index, QUAD value) = 0;
+	virtual void		setBytes(int index, const void *bytes) = 0;
+	virtual void		setDate(int index, DateTime value) = 0;
+	virtual void		setDouble(int index, double value) = 0;
+	virtual void		setFloat(int index, float value) = 0;
+	virtual void		setInt(int index, int value) = 0;
+	virtual void		setLong(int index, long long value) = 0;
 	virtual void		setNull (int index, int type) = 0;
 //	virtual void		setObject( int parameterIndex, Object x ) = 0;
 //	virtual void		setObject( int parameterIndex, Object x, int targetSqlType ) = 0;
@@ -631,7 +618,7 @@ public:
 //{{{ specification jdbc
 //	virtual void		clearWarnings() = 0;
 	virtual void		close() = 0;
-	virtual int			findColumn (const char *columName) = 0;
+	virtual int			findColumn(const char *columName) = 0;
 //	virtual	InputStream* getAsciiStream( int columnIndex ) = 0;
 //	virtual	InputStream* getAsciiStream( const char *columnName ) = 0;
 //	virtual	BigDecimal	getBigDecimal( int columnIndex, int scale ) = 0;
@@ -640,8 +627,8 @@ public:
 //	virtual	InputStream getBinaryStream( const char *columnName ) = 0;
 	virtual	bool		getBoolean( int columnIndex ) = 0;
 	virtual	bool		getBoolean( const char *columnName ) = 0;
-	virtual char		getByte (int columnIndex) = 0;
-	virtual char		getByte (const char *columnName) = 0;
+	virtual char		getByte(int columnIndex) = 0;
+	virtual char		getByte(const char *columnName) = 0;
 //	virtual byte[]		getBytes( int columnIndex ) = 0;
 //	virtual byte[]		getBytes( int columnIndex ) = 0;
 //	virtual byte[]		getBytes( const char *columnName ) = 0;
@@ -654,8 +641,8 @@ public:
 	virtual float		getFloat (const char *columnName) = 0;
 	virtual int			getInt (int columnIndex) = 0;
 	virtual int			getInt (const char *columnName) = 0;
-	virtual QUAD		getLong (int columnIndex) = 0;
-	virtual QUAD		getLong (const char *columnName) = 0;
+	virtual long long	getLong(int columnIndex) = 0;
+	virtual long long	getLong(const char *columnName) = 0;
 	virtual StatementMetaData* getMetaData() = 0;
 //	virtual Object		getObject( int columnIndex ) = 0;
 	virtual short		getShort (int columnIndex) = 0;
@@ -702,23 +689,23 @@ public:
 	virtual bool		first() = 0;
 	virtual bool		last() = 0;
 	virtual int			getRow() = 0;
-	virtual bool		absolute (int row) = 0;
-	virtual bool		relative (int rows) = 0;
+	virtual bool		absolute(int row) = 0;
+	virtual bool		relative(int rows) = 0;
 	virtual bool		previous() = 0;
-	virtual void		setFetchDirection (int direction) = 0;
-	virtual int			getFetchDirection () = 0;
+	virtual void		setFetchDirection(int direction) = 0;
+	virtual int			getFetchDirection() = 0;
 	virtual int			getFetchSize() = 0;
 	virtual int			getType() = 0;
 	virtual bool		rowUpdated() = 0;
 	virtual bool		rowInserted() = 0;
 	virtual bool		rowDeleted() = 0;
-	virtual void		updateNull (int columnIndex) = 0;
-	virtual void		updateBoolean (int columnIndex, bool value) = 0;
-	virtual void		updateByte (int columnIndex, char value) = 0;
-	virtual void		updateShort (int columnIndex, short value) = 0;
-	virtual void		updateInt (int columnIndex, int value) = 0;
-	virtual void		updateLong (int columnIndex, QUAD value) = 0;
-	virtual void		updateFloat (int columnIndex, float value) = 0;
+	virtual void		updateNull(int columnIndex) = 0;
+	virtual void		updateBoolean(int columnIndex, bool value) = 0;
+	virtual void		updateByte(int columnIndex, char value) = 0;
+	virtual void		updateShort(int columnIndex, short value) = 0;
+	virtual void		updateInt(int columnIndex, int value) = 0;
+	virtual void		updateLong(int columnIndex, long long value) = 0;
+	virtual void		updateFloat(int columnIndex, float value) = 0;
 	virtual void		updateDouble (int columnIndex, double value) = 0;
 	virtual void		updateString (int columnIndex, const char* value) = 0;
 	virtual void		updateBytes (int columnIndex, int length, const void *bytes) = 0;
@@ -731,7 +718,7 @@ public:
 	virtual void		updateByte (const char *columnName, char value) = 0;
 	virtual void		updateShort (const char *columnName, short value) = 0;
 	virtual void		updateInt (const char *columnName, int value) = 0;
-	virtual void		updateLong (const char *columnName, QUAD value) = 0;
+	virtual void		updateLong(const char *columnName, long long value) = 0;
 	virtual void		updateFloat (const char *columnName, float value) = 0;
 	virtual void		updateDouble (const char *columnName, double value) = 0;
 	virtual void		updateString (const char *columnName, const char* value) = 0;
@@ -811,7 +798,7 @@ public:
 	virtual double		getDouble(int parameterIndex) = 0;
 	virtual float		getFloat(int parameterIndex) = 0;
 	virtual int			getInt(int parameterIndex) = 0;
-	virtual QUAD		getLong(int parameterIndex) = 0;
+	virtual long long	getLong(int parameterIndex) = 0;
 //	virtual Object		getObject( int parameterIndex ) = 0;
 	virtual short		getShort(int parameterIndex) = 0;
 	virtual const char* getString(int parameterIndex) = 0;

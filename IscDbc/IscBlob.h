@@ -19,8 +19,6 @@
  */
 
 // IscBlob.h: interface for the IscBlob class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ISCBLOB_H_)
 #define _ISCBLOB_H_

@@ -19,8 +19,6 @@
  */
 
 // IscResultSet.h: interface for the IscResultSet class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ISCRESULTSET_H_)
 #define _ISCRESULTSET_H_

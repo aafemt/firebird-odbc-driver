@@ -19,8 +19,6 @@
  */
 
 // IscProcedureColumnsResultSet.h: interface for the IscProcedureColumnsResultSet class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ISCPROCEDURECOLUMNSRESULTSET_H_)
 #define _ISCPROCEDURECOLUMNSRESULTSET_H_

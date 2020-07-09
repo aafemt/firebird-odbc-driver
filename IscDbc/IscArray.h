@@ -21,7 +21,6 @@
 //  
 // IscArray.h: interface for the IscArray class.
 //
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_IscArray_H_)
 #define _IscArray_H_

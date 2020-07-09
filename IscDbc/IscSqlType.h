@@ -19,8 +19,6 @@
  */
 
 // IscSqlType.h: interface for the IscSqlType class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ISCSQLTYPE_H_)
 #define _ISCSQLTYPE_H_

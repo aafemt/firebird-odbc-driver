@@ -51,28 +51,28 @@ class OdbcConnection;
 class OdbcObject
 {
 public:
-	void setCursorRowCount (int count);
+	void setCursorRowCount(int count);
 	virtual SQLRETURN sqlGetDiagField (int recNumber, int diagId, SQLPOINTER ptr, int bufferLength, SQLSMALLINT *stringLength);
 	SQLRETURN returnStringInfo(SQLPOINTER ptr, SQLSMALLINT maxLength, SQLINTEGER* returnLength, const char * value);
-	SQLRETURN sqlGetDiagRec (int handleType, int recNumber, SQLCHAR*sqlState,SQLINTEGER*nativeErrorPtr,SQLCHAR*messageText,int bufferLength,SQLSMALLINT*textLengthPtr);
-	OdbcError* postError (const char *state, JString msg);
-	const char * getString (char **temp, const UCHAR *string, int length, const char *defaultValue);
-	OdbcError* postError (const char *sqlState, SQLException &exception);
+	SQLRETURN sqlGetDiagRec(int handleType, int recNumber, SQLCHAR*sqlState,SQLINTEGER*nativeErrorPtr,SQLCHAR*messageText,int bufferLength,SQLSMALLINT*textLengthPtr);
+	OdbcError* postError(const char *state, JString msg);
+	const char * getString(char **temp, const UCHAR *string, int length, const char *defaultValue);
+	OdbcError* postError(const char *sqlState, SQLException &exception);
 	void operator <<(OdbcObject * obj);
 	void clearErrors();
-	OdbcError* postError (OdbcError *error);
-	virtual SQLRETURN sqlError (UCHAR *stateBuffer, SQLINTEGER *nativeCode, UCHAR *msgBuffer, int msgBufferLength, SWORD *msgLength);
+	OdbcError* postError(OdbcError *error);
+	virtual SQLRETURN sqlError(UCHAR *stateBuffer, SQLINTEGER *nativeCode, UCHAR *msgBuffer, int msgBufferLength, SWORD *msgLength);
 	bool appendString(const char * string, int stringLength, SQLCHAR * target, int targetSize, SQLSMALLINT * targetLength);
 	bool setString(const char * string, SQLCHAR * target, int targetSize, SQLSMALLINT * targetLength);
-	bool setString (const SQLCHAR *string, int stringLength, SQLCHAR *target, int targetSize, SQLSMALLINT *targetLength);
-	int stringLength (const SQLCHAR *string, int givenLength);
-	void notYetImplemented (const char *msg);
-	virtual SQLRETURN allocHandle (int handleType, SQLHANDLE *outputHandle);
+	bool setString(const SQLCHAR *string, int stringLength, SQLCHAR *target, int targetSize, SQLSMALLINT *targetLength);
+	int stringLength(const SQLCHAR *string, int givenLength);
+	void notYetImplemented(const char *msg);
+	virtual SQLRETURN allocHandle(int handleType, SQLHANDLE *outputHandle);
 	int sqlSuccess();
 	virtual OdbcConnection* getConnection() = 0;
 	virtual OdbcObjectType getType() = 0;
-	int sqlReturn (int code, const char *state, const char *text, int nativeCode = 0);
-	SQLRETURN returnStringInfo (SQLPOINTER ptr, SQLSMALLINT maxLength, SQLSMALLINT* returnLength, const char * value);
+	int sqlReturn(int code, const char *state, const char *text, int nativeCode = 0);
+	SQLRETURN returnStringInfo(SQLPOINTER ptr, SQLSMALLINT maxLength, SQLSMALLINT* returnLength, const char * value);
 	OdbcObject();
 	virtual ~OdbcObject();
 

@@ -19,8 +19,6 @@
  */
 
 // IscSpecialColumnsResultSet.h: interface for the IscSpecialColumnsResultSet class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ISCSPECIALCOLUMNSRESULTSET_H_)
 #define _ISCSPECIALCOLUMNSRESULTSET_H_

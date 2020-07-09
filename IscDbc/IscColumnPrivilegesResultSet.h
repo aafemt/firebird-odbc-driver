@@ -19,8 +19,6 @@
  */
 
 // IscColumnPrivilegesResultSet.h: interface for the IscColumnPrivilegesResultSet class.
-//
-/////////////////////////////////////////////////////////////////////////////////////////
 
 #if !defined(_IscColumnPrivilegesResultSet_H_)
 #define _IscColumnPrivilegesResultSet_H_

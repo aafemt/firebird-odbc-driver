@@ -19,8 +19,6 @@
  */
 
 // ServiceManager.h: interface for the ServiceManager class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ServiceManager_H_)
 #define _ServiceManager_H_

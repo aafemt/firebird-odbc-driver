@@ -21,7 +21,6 @@
 //  
 // IscOdbcStatement.h: interface for the IscArray class.
 //
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_IscOdbcStatement_H_)
 #define _IscOdbcStatement_H_

@@ -19,8 +19,6 @@
  */
 
 // Timestamp.h: interface for the Timestamp class.
-//
-//////////////////////////////////////////////////////////////////////
 
 
 #if !defined(_TIMESTAMP_H_INCLUDED_)

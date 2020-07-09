@@ -19,8 +19,6 @@
  */
 
 // Lock.h: interface for the Lock class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_LOCK_H_INCLUDED_)
 #define _LOCK_H_INCLUDED_

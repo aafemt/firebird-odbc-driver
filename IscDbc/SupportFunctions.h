@@ -19,8 +19,6 @@
  */
 
 // SupportFunctions.h
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_SUPPORTFUNCTIONS_H_)
 #define _SUPPORTFUNCTIONS_H_

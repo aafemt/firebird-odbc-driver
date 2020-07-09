@@ -19,8 +19,6 @@
  */
 
 // IscCrossReferenceResultSet.h: interface for the IscCrossReferenceResultSet class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ISCCROSSREFERENCERESULTSET_H_)
 #define _ISCCROSSREFERENCERESULTSET_H_

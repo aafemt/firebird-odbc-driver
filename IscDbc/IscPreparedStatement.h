@@ -23,8 +23,6 @@
  */
 
 // IscPreparedStatement.h: interface for the IscPreparedStatement class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ISCPREPAREDSTATEMENT_H_)
 #define _ISCPREPAREDSTATEMENT_H_

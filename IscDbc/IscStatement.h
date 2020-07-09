@@ -19,8 +19,6 @@
  */
 
 // IscStatement.h: interface for the IscStatement class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ISCSTATEMENT_H_)
 #define _ISCSTATEMENT_H_

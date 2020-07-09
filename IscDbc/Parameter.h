@@ -19,8 +19,6 @@
  */
 
 // Parameter.h: interface for the Parameter class.
-//
-//////////////////////////////////////////////////////////////////////
 
 
 #if !defined(_PARAMETER_H_)

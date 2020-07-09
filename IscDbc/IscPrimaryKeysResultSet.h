@@ -19,8 +19,6 @@
  */
 
 // IscPrimaryKeysResultSet.h: interface for the IscPrimaryKeysResultSet class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ISCPRIMARYKEYSRESULTSET_H_)
 #define _ISCPRIMARYKEYSRESULTSET_H_

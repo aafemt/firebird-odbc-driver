@@ -19,8 +19,6 @@
  */
 
 // IscProceduresResultSet.h: interface for the IscProceduresResultSet class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ISCPROCEDURESRESULTSET_H_)
 #define _ISCPROCEDURESRESULTSET_H_

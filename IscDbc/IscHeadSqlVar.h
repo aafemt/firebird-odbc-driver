@@ -19,8 +19,6 @@
  */
 
 // IscHeadSqlVar.h: interface for the IscHeadSqlVar class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ISCHEADSQLVAR_H_)
 #define _ISCHEADSQLVAR_H_

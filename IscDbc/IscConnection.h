@@ -19,8 +19,6 @@
  */
 
 // IscConnection.h: interface for the IscConnection class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ISCCONNECTION_H_)
 #define _ISCCONNECTION_H_

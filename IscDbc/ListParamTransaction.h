@@ -20,8 +20,6 @@
 
 //  
 // ListParamTransaction.h: interface for the ListParamTransaction class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #if !defined(_ListParamTransaction_H_)
 #define _ListParamTransaction_H_
