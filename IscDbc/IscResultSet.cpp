@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -20,7 +20,7 @@
  *
  *	2003-03-24	IscResultSet.cpp
  *				Contributed by Andrew Gough
- *				In IscResultSet::reset() delete the 'conversions' 
+ *				In IscResultSet::reset() delete the 'conversions'
  *				array itself as well as the array elements.
  *
  */
@@ -60,7 +60,7 @@ IscResultSet::~IscResultSet()
 	}
 	catch ( std::exception &ex )
 	{
-		fprintf (stdout, "Failed while deleting IscResultSet (exception: \"%s\")\n", ex.what()); 
+		fprintf (stdout, "Failed while deleting IscResultSet (exception: \"%s\")\n", ex.what());
 	}
 }
 
@@ -160,7 +160,7 @@ bool IscResultSet::readFromSystemCatalog()
 		throw SQLEXCEPTION (RUNTIME_ERROR, "resultset is not active");
 
 	sqlda->initStaticCursor ( statement );
-	
+
 	while( nextFetch() )
 		sqlda->addRowSqldaInBufferStaticCursor();
 
@@ -184,7 +184,7 @@ bool IscResultSet::readStaticCursor()
 	ISC_STATUS ret;
 
 	sqlda->initStaticCursor ( statement );
-	
+
 	while(!(ret = GDS->_dsql_fetch (statusVector, &statement->statementHandle, dialect, *sqlda)))
 		sqlda->addRowSqldaInBufferStaticCursor();
 
@@ -504,17 +504,17 @@ int IscResultSet::objectVersion()
 void IscResultSet::setPosRowInSet(int posRow)
 {
 	activePosRowInSet = posRow;
-}	
+}
 
 int IscResultSet::getPosRowInSet()
 {
 	return activePosRowInSet;
-}	
+}
 
 size_t* IscResultSet::getSqlDataOffsetPtr()
 {
 	return &sqldataOffsetPtr;
-}	
+}
 
 bool IscResultSet::isBeforeFirst()
 {
@@ -815,10 +815,12 @@ void IscResultSet::moveToCurrentRow()
 	NOT_YET_IMPLEMENTED;
 }
 
+/*
 Statement *IscResultSet::getStatement()
 {
 	NOT_YET_IMPLEMENTED;
 	return 0;
 }
+*/
 
 }; // end namespace IscDbcLibrary

@@ -126,8 +126,6 @@
 		<Unit filename="../../IscDbc/IscProceduresResultSet.h" />
 		<Unit filename="../../IscDbc/IscResultSet.cpp" />
 		<Unit filename="../../IscDbc/IscResultSet.h" />
-		<Unit filename="../../IscDbc/IscResultSetMetaData.cpp" />
-		<Unit filename="../../IscDbc/IscResultSetMetaData.h" />
 		<Unit filename="../../IscDbc/IscSpecialColumnsResultSet.cpp" />
 		<Unit filename="../../IscDbc/IscSpecialColumnsResultSet.h" />
 		<Unit filename="../../IscDbc/IscSqlType.cpp" />

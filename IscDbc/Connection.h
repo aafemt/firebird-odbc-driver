@@ -735,28 +735,29 @@ public:
 	virtual void		cancelRowUpdates() = 0;
 	virtual void		moveToInsertRow() = 0;
 	virtual void		moveToCurrentRow() = 0;
-	virtual Statement	*getStatement() = 0;
+//	virtual Statement	*getStatement() = 0;
 
 	virtual int			objectVersion() = 0;
 };
 
+/* Neither implemented nor used
 #define RESULTSETMETADATA_VERSION	1
 
 class ResultSetMetaData
 {
 public:
-	virtual const char*	getTableName (int index) = 0;
-	virtual const char*	getColumnName (int index) = 0;
-	virtual int			getColumnDisplaySize (int index) = 0;
-	virtual int			getColumnType (int index) = 0;
-	virtual const char*	getColumnTypeName (int index) = 0;
 	virtual int			getColumnCount() = 0;
+	virtual int			getColumnType (int index) = 0;
 	virtual int			getPrecision(int index) = 0;
 	virtual int			getNumPrecRadix(int index) = 0;
 	virtual int			getScale(int index) = 0;
 	virtual bool		isNullable (int index) = 0;
-	virtual int			objectVersion() = 0;
+	virtual int			getColumnDisplaySize (int index) = 0;
 	virtual const char*	getColumnLabel (int index) = 0;
+
+	virtual const char*	getColumnName (int index) = 0;
+	virtual const char*	getTableName (int index) = 0;
+	virtual const char*	getColumnTypeName (int index) = 0;
 	virtual bool		isSigned (int index) = 0;
 	virtual bool		isReadOnly (int index) = 0;
 	virtual bool		isWritable (int index) = 0;
@@ -765,9 +766,13 @@ public:
 	virtual bool		isCaseSensitive (int index) = 0;
 	virtual bool		isAutoIncrement (int index) = 0;
 	virtual bool		isSearchable (int index) = 0;
+
 	virtual const char*	getSchemaName (int index) = 0;
 	virtual const char*	getCatalogName (int index) = 0;
+
+	virtual int			objectVersion() = 0;
 };
+*/
 
 #define RESULTLIST_VERSION		1
 
