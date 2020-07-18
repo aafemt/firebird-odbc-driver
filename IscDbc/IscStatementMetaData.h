@@ -20,12 +20,13 @@
 
 // IscStatementMetaData.h: interface for the IscStatementMetaData class.
 
-#if !defined(_ISCSTATEMENTMETADATA_H_)
+#ifndef _ISCSTATEMENTMETADATA_H_
 #define _ISCSTATEMENTMETADATA_H_
 
 #include "Connection.h"
 
-namespace IscDbcLibrary {
+namespace IscDbcLibrary
+{
 
 class Sqlda;
 class IscConnection;

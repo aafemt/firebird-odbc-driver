@@ -1,7 +1,7 @@
 // Blob.h: interface for the Blob class.
 //
 
-#if !defined(_BLOB_H_)
+#ifndef _BLOB_H_
 #define _BLOB_H_
 
 namespace IscDbcLibrary {

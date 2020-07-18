@@ -32,11 +32,10 @@
 #include "Sqlda.h"
 #include "MultibyteConvert.h"
 
-namespace IscDbcLibrary {
+namespace IscDbcLibrary
+{
 
-//////////////////////////////////////////////////////////////////////
 // Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 
 IscStatementMetaData::IscStatementMetaData(IscStatement *stmt, Sqlda *ptSqlda)
 {
@@ -51,7 +50,7 @@ int IscStatementMetaData::getColumnCount()
 
 int IscStatementMetaData::getColumnType(int index, int &realSqlType)
 {
-	return sqlda->getColumnType (index, realSqlType);
+	return sqlda->getColumnType(index, realSqlType);
 }
 
 int IscStatementMetaData::getPrecision(int index)

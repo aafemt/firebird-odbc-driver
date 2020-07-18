@@ -44,7 +44,9 @@ struct IntlCharsets
 	short	code;
 	short	size;
 
-} const listCharsets[] = {
+};
+
+IntlCharsets const listCharsets[] = {
 
 	CODE_CHARSETS( NONE			,  0, 1 )
 	CODE_CHARSETS( OCTETS		,  1, 1 )
@@ -143,10 +145,12 @@ WCSTOMBS adressWcsToMbs( int charsetCode )
 {
 	switch ( charsetCode )
 	{
+	case 2: // ASCII
+		return ascii_wcstombs;
 	case 3: // UNICODE_FSS
-		return (WCSTOMBS)fss_wcstombs;
+		return fss_wcstombs;
 	case 4: // UTF8
-		return (WCSTOMBS)utf8_wcstombs;
+		return utf8_wcstombs;
 	case 0: // NONE
 	default:
 		break;
@@ -163,10 +167,12 @@ MBSTOWCS adressMbsToWcs( int charsetCode )
 {
 	switch ( charsetCode )
 	{
+	case 2: // ASCII
+		return ascii_mbstowcs;
 	case 3: // UNICODE_FSS
-		return (MBSTOWCS)fss_mbstowcs;
+		return fss_mbstowcs;
 	case 4: // UTF8
-		return (MBSTOWCS)utf8_mbstowcs;
+		return utf8_mbstowcs;
 	case 0: // NONE
 	default:
 		break;
@@ -200,7 +206,7 @@ static Tab tab[] =
 	0,
 };
 
-unsigned int fss_mbstowcs( wchar_t *wcs, const char *mbs, unsigned int lengthForMBS )
+size_t fss_mbstowcs( wchar_t *wcs, const char *mbs, size_t lengthForMBS )
 {
 	int l, c0, c;
 	bool bContinue = true;
@@ -317,7 +323,7 @@ unsigned int fss_mbstowcs( wchar_t *wcs, const char *mbs, unsigned int lengthFor
 	return length;
 }
 
-unsigned int fss_wcstombs( char *mbs, const wchar_t *wcs, unsigned int lengthForMBS )
+size_t fss_wcstombs( char *mbs, const wchar_t *wcs, size_t lengthForMBS )
 {
 	int l;
 	int c;
@@ -500,7 +506,7 @@ static const UChar32 utf8_errorValue[6] =
 	0x7fffffff
 };
 
-unsigned int utf8_mbstowcs( wchar_t *wcs, const char *mbs, unsigned int lengthForMBS )
+size_t utf8_mbstowcs( wchar_t *wcs, const char *mbs, size_t lengthForMBS )
 {
 	if ( !wcs )
 		return lengthForMBS * sizeof( *wcs );
@@ -544,7 +550,7 @@ unsigned int utf8_mbstowcs( wchar_t *wcs, const char *mbs, unsigned int lengthFo
 	return wcs - wcsStart;
 }
 
-unsigned int utf8_wcstombs( char *mbs, const wchar_t *wcs, unsigned int lengthForMBS )
+size_t utf8_wcstombs( char *mbs, const wchar_t *wcs, size_t lengthForMBS )
 {
 	ULONG wcsLen = (ULONG)wcslen( wcs );
 
@@ -734,6 +740,32 @@ UChar32  utf8_nextCharSafeBody( const uint8_t *s,
 
     *pi = i;
     return c;
+}
+
+size_t ascii_mbstowcs(wchar_t* wcs, const char* mbs, size_t length)
+{
+	if (wcs == nullptr)
+		return strlen(mbs); // Conform mbstowcs() specs
+
+	for (size_t i = 0; i < length; i++)
+	{
+		if((*wcs++ = *mbs++) == '\0')
+			return i;
+	}
+	return length;
+}
+
+size_t ascii_wcstombs(char* mbs, const wchar_t* wcs, size_t length)
+{
+	if (mbs == nullptr)
+		return wcslen(wcs); // Conform wcstombs specs
+
+	for (size_t i = 0; i < length; i++)
+	{
+		if((*mbs++ = *wcs++) == L'\0')
+			return i;
+	}
+	return length;
 }
 
 }; // end namespace IscDbcLibrary

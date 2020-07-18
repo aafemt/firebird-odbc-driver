@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -20,7 +20,7 @@
 
 // IscStatement.h: interface for the IscStatement class.
 
-#if !defined(_ISCSTATEMENT_H_)
+#ifndef _ISCSTATEMENT_H_
 #define _ISCSTATEMENT_H_
 
 #include "Connection.h"
@@ -32,16 +32,16 @@ namespace IscDbcLibrary {
 class IscConnection;
 class IscResultSet;
 
-class IscStatement : public Statement  
+class IscStatement : public Statement
 {
 public:
-	enum TypeStatement {	stmtNone		= 0, 
-							stmtDDL			= 1, 
+	enum TypeStatement {	stmtNone		= 0,
+							stmtDDL			= 1,
 							stmtSelect		= 2,
 							stmtSelectForUpdate = 4,
-							stmtInsert		= 8, 
-							stmtUpdate		= 16, 
-							stmtDelete		= 32, 
+							stmtInsert		= 8,
+							stmtUpdate		= 16,
+							stmtDelete		= 32,
 							stmtProcedure	= 64,
 							stmtModify		= 128,
 							stmtPrepare		= 256
@@ -95,11 +95,11 @@ public:
 	virtual ~IscStatement();
 
 	virtual int getStmtPlan(const void * value, int bufferLength,int *lengthPtr)
-	{ return getPlanStatement(connection, statementHandle,value,bufferLength,lengthPtr); }  
+	{ return getPlanStatement(connection, statementHandle,value,bufferLength,lengthPtr); }
 	virtual int			getStmtType(const void * value, int bufferLength,int *lengthPtr)
-	{ return getTypeStatement(connection, statementHandle,value,bufferLength,lengthPtr); }  
+	{ return getTypeStatement(connection, statementHandle,value,bufferLength,lengthPtr); }
 	virtual int			getStmtInfoCountRecords(const void * value, int bufferLength,int *lengthPtr)
-	{ return getInfoCountRecordsStatement(connection, statementHandle, value,bufferLength,lengthPtr); }  
+	{ return getInfoCountRecordsStatement(connection, statementHandle, value,bufferLength,lengthPtr); }
 	virtual bool		isActiveLocalTransaction(){ return transactionLocal; }
 	virtual void		setActiveLocalParamTransaction();
 	virtual void		delActiveLocalParamTransaction();

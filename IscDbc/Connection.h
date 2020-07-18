@@ -34,7 +34,7 @@
 
 // Connection.h: interface for the Connection class.
 
-#if !defined(_CONNECTION_H_)
+#ifndef _CONNECTION_H_
 #define _CONNECTION_H_
 
 #include "Blob.h"
@@ -44,6 +44,7 @@
 #define _stdcall
 #endif
 
+/*
 #ifdef __BORLANDC__
 #define ENTRY_DLL_CREATE_CONNECTION         "_createConnection"
 #define ENTRY_DLL_CREATE_SERVICES           "_createServices"
@@ -51,8 +52,9 @@
 #define ENTRY_DLL_CREATE_CONNECTION         "createConnection"
 #define ENTRY_DLL_CREATE_SERVICES           "createServices"
 #endif
+*/
 
-#if defined ( _WINDOWS)
+#if defined (__WIN32__)
 
 #define NAME_CLIENT_SHARE_LIBRARY					"gds32.dll"
 #define NAME_DEFAULT_CLIENT_SHARE_LIBRARY			"fbclient.dll"
@@ -400,7 +402,7 @@ public:
     virtual const char* getDatabaseServerName() = 0;
 	virtual const char* getUserAccess() = 0;
 	virtual int getDatabasePageSize() = 0;
-	virtual StatementMetaData* getMetaDataTypeInfo(ResultSet* setTypeInfo) = 0;
+//	virtual StatementMetaData* getMetaDataTypeInfo(ResultSet* setTypeInfo) = 0;
 	virtual bool supportsResultSetConcurrency(int type, int concurrency) = 0;
 	virtual bool ownUpdatesAreVisible(int type) = 0;
 	virtual bool ownDeletesAreVisible(int type) = 0;
@@ -536,7 +538,7 @@ public:
 	virtual bool		isNullable (int index) = 0;
 	virtual int			getColumnDisplaySize(int index) = 0;
 	virtual const char* getColumnLabel(int index) = 0;
-	virtual const char* getSqlTypeName(int index) = 0;
+	virtual const char* getSqlTypeName(int index) = 0; // Really must be getLocalTypeName()
 	virtual const char* getColumnName(int index) = 0;
 	virtual const char* getTableName(int index) = 0;
 	virtual const char* getColumnTypeName(int index) = 0;
@@ -626,55 +628,55 @@ public:
 //	virtual	BigDecimal	getBigDecimal( const char *columnName, int scale ) = 0;
 //	virtual	InputStream getBinaryStream( int columnIndex ) = 0;
 //	virtual	InputStream getBinaryStream( const char *columnName ) = 0;
-	virtual	bool		getBoolean( int columnIndex ) = 0;
-	virtual	bool		getBoolean( const char *columnName ) = 0;
-	virtual char		getByte(int columnIndex) = 0;
-	virtual char		getByte(const char *columnName) = 0;
+//	virtual	bool		getBoolean( int columnIndex ) = 0;
+//	virtual	bool		getBoolean( const char *columnName ) = 0;
+//	virtual char		getByte(int columnIndex) = 0;
+//	virtual char		getByte(const char *columnName) = 0;
 //	virtual byte[]		getBytes( int columnIndex ) = 0;
 //	virtual byte[]		getBytes( int columnIndex ) = 0;
 //	virtual byte[]		getBytes( const char *columnName ) = 0;
-	virtual const char* getCursorName() = 0;
-	virtual DateTime	getDate (int columnIndex) = 0;
-	virtual DateTime	getDate (const char *columnName) = 0;
-	virtual double		getDouble (int columnIndex) = 0;
-	virtual double		getDouble (const char *columnName) = 0;
-	virtual float		getFloat (int columnIndex) = 0;
-	virtual float		getFloat (const char *columnName) = 0;
-	virtual int			getInt (int columnIndex) = 0;
-	virtual int			getInt (const char *columnName) = 0;
-	virtual long long	getLong(int columnIndex) = 0;
-	virtual long long	getLong(const char *columnName) = 0;
+//	virtual const char* getCursorName() = 0;
+//	virtual DateTime	getDate (int columnIndex) = 0;
+//	virtual DateTime	getDate (const char *columnName) = 0;
+//	virtual double		getDouble (int columnIndex) = 0;
+//	virtual double		getDouble (const char *columnName) = 0;
+//	virtual float		getFloat (int columnIndex) = 0;
+//	virtual float		getFloat (const char *columnName) = 0;
+//	virtual int			getInt (int columnIndex) = 0;
+//	virtual int			getInt (const char *columnName) = 0;
+//	virtual long long	getLong(int columnIndex) = 0;
+//	virtual long long	getLong(const char *columnName) = 0;
 	virtual StatementMetaData* getMetaData() = 0;
 //	virtual Object		getObject( int columnIndex ) = 0;
-	virtual short		getShort (int columnIndex) = 0;
-	virtual short		getShort (const char *columnName) = 0;
-	virtual const char* getString (int columnIndex) = 0;
-	virtual const char* getString (const char *columnName) = 0;
-	virtual SqlTime		getTime (int columnIndex) = 0;
-	virtual SqlTime		getTime (const char *columnName) = 0;
-	virtual TimeStamp	getTimestamp (int columnIndex) = 0;
-	virtual TimeStamp	getTimestamp (const char *columnName) = 0;
+//	virtual short		getShort (int columnIndex) = 0;
+//	virtual short		getShort (const char *columnName) = 0;
+//	virtual const char* getString (int columnIndex) = 0;
+//	virtual const char* getString (const char *columnName) = 0;
+//	virtual SqlTime		getTime (int columnIndex) = 0;
+//	virtual SqlTime		getTime (const char *columnName) = 0;
+//	virtual TimeStamp	getTimestamp (int columnIndex) = 0;
+//	virtual TimeStamp	getTimestamp (const char *columnName) = 0;
 //	virtual InputStream getUnicodeStream( int columnIndex ) = 0;
 //	virtual InputStream getUnicodeStream( const char *columnName ) = 0;
 //	virtual void		getWarnings() = 0;
-	virtual bool		next() = 0;
-	virtual bool		wasNull() = 0;
+//	virtual bool		next() = 0;
+//	virtual bool		wasNull() = 0;
 //}}} end specification jdbc
 
 public:
-	virtual Blob*		getBlob (int index) = 0;
-	virtual Blob*		getBlob (const char *columnName) = 0;
+//	virtual Blob*		getBlob (int index) = 0;
+//	virtual Blob*		getBlob (const char *columnName) = 0;
 
 	virtual void		setPosRowInSet(int posRow) = 0;
 	virtual int			getPosRowInSet() = 0;
 	virtual size_t*		getSqlDataOffsetPtr() = 0;
-	virtual bool		readStaticCursor() = 0;
+	virtual bool		readStaticCursor() = 0; // Returned value is never used
 	virtual bool		nextFetch() = 0;
-	virtual bool		setCurrentRowInBufferStaticCursor(int nRow) = 0;
-	virtual void		copyNextSqldaInBufferStaticCursor() = 0;
+	virtual bool		setCurrentRowInBufferStaticCursor(int nRow) = 0; // Returned value never used
+//	virtual void		copyNextSqldaInBufferStaticCursor() = 0;
 	virtual void		copyNextSqldaFromBufferStaticCursor() = 0;
 	virtual int			getCountRowsStaticCursor() = 0;
-	virtual bool		getDataFromStaticCursor (int column/*, Blob * pointerBlobData*/) = 0;
+	virtual bool		getDataFromStaticCursor (int column/*, Blob * pointerBlobData*/) = 0; // Returned value is never used
 	virtual bool		nextFromProcedure() = 0;
 	virtual int			release() = 0;
 	virtual void		addRef() = 0;
@@ -682,62 +684,62 @@ public:
 	virtual bool		isBeforeFirst() = 0;
 	virtual bool		isAfterLast() = 0;
 	virtual bool		isCurrRowsetStart() = 0;
-	virtual bool		isFirst() = 0;
-	virtual bool		isLast() = 0;
+//	virtual bool		isFirst() = 0;
+//	virtual bool		isLast() = 0;
 	virtual void		beforeFirst() = 0;
 	virtual void		afterLast() = 0;
 	virtual void		currRowsetStart() = 0;
-	virtual bool		first() = 0;
-	virtual bool		last() = 0;
-	virtual int			getRow() = 0;
-	virtual bool		absolute(int row) = 0;
-	virtual bool		relative(int rows) = 0;
-	virtual bool		previous() = 0;
-	virtual void		setFetchDirection(int direction) = 0;
-	virtual int			getFetchDirection() = 0;
-	virtual int			getFetchSize() = 0;
-	virtual int			getType() = 0;
-	virtual bool		rowUpdated() = 0;
-	virtual bool		rowInserted() = 0;
-	virtual bool		rowDeleted() = 0;
-	virtual void		updateNull(int columnIndex) = 0;
-	virtual void		updateBoolean(int columnIndex, bool value) = 0;
-	virtual void		updateByte(int columnIndex, char value) = 0;
-	virtual void		updateShort(int columnIndex, short value) = 0;
-	virtual void		updateInt(int columnIndex, int value) = 0;
-	virtual void		updateLong(int columnIndex, long long value) = 0;
-	virtual void		updateFloat(int columnIndex, float value) = 0;
-	virtual void		updateDouble (int columnIndex, double value) = 0;
-	virtual void		updateString (int columnIndex, const char* value) = 0;
-	virtual void		updateBytes (int columnIndex, int length, const void *bytes) = 0;
-	virtual void		updateDate (int columnIndex, DateTime value) = 0;
-	virtual void		updateTime (int columnIndex, SqlTime value) = 0;
-	virtual void		updateTimeStamp (int columnIndex, TimeStamp value) = 0;
-	virtual void		updateBlob (int columnIndex, Blob* value) = 0;
-	virtual void		updateNull (const char *columnName) = 0;
-	virtual void		updateBoolean (const char *columnName, bool value) = 0;
-	virtual void		updateByte (const char *columnName, char value) = 0;
-	virtual void		updateShort (const char *columnName, short value) = 0;
-	virtual void		updateInt (const char *columnName, int value) = 0;
-	virtual void		updateLong(const char *columnName, long long value) = 0;
-	virtual void		updateFloat (const char *columnName, float value) = 0;
-	virtual void		updateDouble (const char *columnName, double value) = 0;
-	virtual void		updateString (const char *columnName, const char* value) = 0;
-	virtual void		updateBytes (const char *columnName, int length, const void *bytes) = 0;
-	virtual void		updateDate (const char *columnName, DateTime value) = 0;
-	virtual void		updateTime (const char *columnName, SqlTime value) = 0;
-	virtual void		updateTimeStamp (const char *columnName, TimeStamp value) = 0;
-	virtual void		updateBlob (const char *columnName, Blob* value) = 0;
-	virtual void		insertRow() = 0;
-	virtual void		updateRow() = 0;
-	virtual void		deleteRow() = 0;
-	virtual void		refreshRow() = 0;
-	virtual void		cancelRowUpdates() = 0;
-	virtual void		moveToInsertRow() = 0;
-	virtual void		moveToCurrentRow() = 0;
+//	virtual bool		first() = 0;
+//	virtual bool		last() = 0;
+//	virtual int			getRow() = 0;
+//	virtual bool		absolute(int row) = 0;
+//	virtual bool		relative(int rows) = 0;
+//	virtual bool		previous() = 0;
+//	virtual void		setFetchDirection(int direction) = 0;
+//	virtual int			getFetchDirection() = 0;
+//	virtual int			getFetchSize() = 0;
+//	virtual int			getType() = 0;
+//	virtual bool		rowUpdated() = 0;
+//	virtual bool		rowInserted() = 0;
+//	virtual bool		rowDeleted() = 0;
+//	virtual void		updateNull(int columnIndex) = 0;
+//	virtual void		updateBoolean(int columnIndex, bool value) = 0;
+//	virtual void		updateByte(int columnIndex, char value) = 0;
+//	virtual void		updateShort(int columnIndex, short value) = 0;
+//	virtual void		updateInt(int columnIndex, int value) = 0;
+//	virtual void		updateLong(int columnIndex, long long value) = 0;
+//	virtual void		updateFloat(int columnIndex, float value) = 0;
+//	virtual void		updateDouble (int columnIndex, double value) = 0;
+//	virtual void		updateString (int columnIndex, const char* value) = 0;
+//	virtual void		updateBytes (int columnIndex, int length, const void *bytes) = 0;
+//	virtual void		updateDate (int columnIndex, DateTime value) = 0;
+//	virtual void		updateTime (int columnIndex, SqlTime value) = 0;
+//	virtual void		updateTimeStamp (int columnIndex, TimeStamp value) = 0;
+//	virtual void		updateBlob (int columnIndex, Blob* value) = 0;
+//	virtual void		updateNull (const char *columnName) = 0;
+//	virtual void		updateBoolean (const char *columnName, bool value) = 0;
+//	virtual void		updateByte (const char *columnName, char value) = 0;
+//	virtual void		updateShort (const char *columnName, short value) = 0;
+//	virtual void		updateInt (const char *columnName, int value) = 0;
+//	virtual void		updateLong(const char *columnName, long long value) = 0;
+//	virtual void		updateFloat (const char *columnName, float value) = 0;
+//	virtual void		updateDouble (const char *columnName, double value) = 0;
+//	virtual void		updateString (const char *columnName, const char* value) = 0;
+//	virtual void		updateBytes (const char *columnName, int length, const void *bytes) = 0;
+//	virtual void		updateDate (const char *columnName, DateTime value) = 0;
+//	virtual void		updateTime (const char *columnName, SqlTime value) = 0;
+//	virtual void		updateTimeStamp (const char *columnName, TimeStamp value) = 0;
+//	virtual void		updateBlob (const char *columnName, Blob* value) = 0;
+//	virtual void		insertRow() = 0;
+//	virtual void		updateRow() = 0;
+//	virtual void		deleteRow() = 0;
+//	virtual void		refreshRow() = 0;
+//	virtual void		cancelRowUpdates() = 0;
+//	virtual void		moveToInsertRow() = 0;
+//	virtual void		moveToCurrentRow() = 0;
 //	virtual Statement	*getStatement() = 0;
 
-	virtual int			objectVersion() = 0;
+//	virtual int			objectVersion() = 0;
 };
 
 /* Neither implemented nor used
@@ -870,6 +872,7 @@ public:
 	virtual int			objectVersion() = 0;
 };
 
+/*
 #ifdef __BORLANDC__
 extern "C" __declspec( dllexport ) Connection*	createConnection();
 extern "C" __declspec( dllexport ) ServiceManager* createServices();
@@ -877,6 +880,7 @@ extern "C" __declspec( dllexport ) ServiceManager* createServices();
 extern "C" Connection*	createConnection();
 extern "C" ServiceManager* createServices();
 #endif
+*/
 
 }; // end namespace IscDbcLibrary
 

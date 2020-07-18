@@ -66,6 +66,7 @@ void IscMetaDataResultSet::prepareStatement(const char * sql)
 	statement = saveStatement;
 }
 
+/*
 bool IscMetaDataResultSet::next()
 {
 	deleteBlobs();
@@ -107,6 +108,7 @@ bool IscMetaDataResultSet::next()
 
 	return true;
 }
+*/
 
 bool IscMetaDataResultSet::isWildcarded(const char * pattern)
 {

@@ -20,7 +20,7 @@
 
 // Sqlda.h: interface for the Sqlda class.
 
-#if !defined(_SQLDA_H_INCLUDED_)
+#ifndef _SQLDA_H_INCLUDED_
 #define _SQLDA_H_INCLUDED_
 
 #include "IscArray.h"

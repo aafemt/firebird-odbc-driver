@@ -25,8 +25,6 @@
  *
  */
 // IscResultSet.cpp: implementation of the IscResultSet class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #include <memory.h>
 #include <string.h>
@@ -43,9 +41,7 @@
 
 namespace IscDbcLibrary {
 
-//////////////////////////////////////////////////////////////////////
 // Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 
 IscResultSet::IscResultSet( IscStatement *iscStatement ) : IscStatementMetaData( NULL , NULL )
 {
@@ -117,6 +113,7 @@ bool IscResultSet::nextFetch()
 	return true;
 }
 
+/*
 bool IscResultSet::next()
 {
 	if (!statement)
@@ -148,6 +145,7 @@ bool IscResultSet::next()
 
 	return true;
 }
+*/
 
 bool IscResultSet::setCurrentRowInBufferStaticCursor(int nRow)
 {
@@ -199,10 +197,12 @@ bool IscResultSet::readStaticCursor()
 	return true;
 }
 
+/*
 void IscResultSet::copyNextSqldaInBufferStaticCursor()
 {
 	sqlda->copyNextSqldaInBufferStaticCursor();
 }
+*/
 
 void IscResultSet::copyNextSqldaFromBufferStaticCursor()
 {
@@ -313,11 +313,13 @@ void IscResultSet::reset()
 	}
 }
 
+/*
 const char* IscResultSet::getCursorName()
 {
 	NOT_YET_IMPLEMENTED;
 	return "";
 }
+*/
 
 int IscResultSet::findColumn(const char * columnName)
 {
@@ -331,10 +333,12 @@ int IscResultSet::findColumn(const char * columnName)
 	return -1;
 }
 
+/*
 bool IscResultSet::wasNull()
 {
 	return valueWasNull;
 }
+*/
 
 int IscResultSet::getColumnCount()
 {
@@ -369,6 +373,7 @@ void IscResultSet::setNull(int index)
 	values.values [index - 1].setNull();
 }
 
+/*
 const char* IscResultSet::getString(int id)
 {
 	return getValue (id)->getString(conversions + id - 1);
@@ -500,6 +505,7 @@ int IscResultSet::objectVersion()
 {
 	return RESULTSET_VERSION;
 }
+*/
 
 void IscResultSet::setPosRowInSet(int posRow)
 {
@@ -531,6 +537,7 @@ bool IscResultSet::isCurrRowsetStart()
 	return statysPositionRow == enSUCCESS;
 }
 
+/*
 bool IscResultSet::isFirst()
 {
 	NOT_YET_IMPLEMENTED;
@@ -542,6 +549,7 @@ bool IscResultSet::isLast()
 	NOT_YET_IMPLEMENTED;
 	return 0;
 }
+*/
 
 void IscResultSet::beforeFirst()
 {
@@ -558,6 +566,7 @@ void IscResultSet::currRowsetStart()
 	statysPositionRow = enSUCCESS;
 }
 
+/*
 bool IscResultSet::first()
 {
 	NOT_YET_IMPLEMENTED;
@@ -815,7 +824,6 @@ void IscResultSet::moveToCurrentRow()
 	NOT_YET_IMPLEMENTED;
 }
 
-/*
 Statement *IscResultSet::getStatement()
 {
 	NOT_YET_IMPLEMENTED;

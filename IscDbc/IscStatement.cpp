@@ -77,7 +77,6 @@
 
 // IscStatement.cpp: implementation of the IscStatement class.
 //
-//////////////////////////////////////////////////////////////////////
 
 #include <stdlib.h>
 #include <time.h>
@@ -97,11 +96,10 @@ static char requestInfo [] = { isc_info_sql_records,
 							   isc_info_sql_stmt_type,
 							   isc_info_end };
 
-namespace IscDbcLibrary {
+namespace IscDbcLibrary
+{
 
-//////////////////////////////////////////////////////////////////////
 // Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 
 IscStatement::IscStatement(IscConnection *connect)
 {

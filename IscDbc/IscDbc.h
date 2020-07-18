@@ -47,7 +47,7 @@
 #endif
 
 #define SQLEXCEPTION		SQLError
-#define NOT_YET_IMPLEMENTED	throw SQLEXCEPTION (FEATURE_NOT_YET_IMPLEMENTED, "not yet implemented")
+#define NOT_YET_IMPLEMENTED throw SQLEXCEPTION (FEATURE_NOT_YET_IMPLEMENTED, "not yet implemented")
 #define NOT_SUPPORTED(type,rellen,rel,collen,col) throw SQLEXCEPTION (UNSUPPORTED_DATATYPE, "datatype is not supported in ODBC: %s column %*s.%*s", type,rellen,rel,collen,col)
 #define THROW_ISC_EXCEPTION(connection, statusVector) throw SQLEXCEPTION ( connection->GDS->_sqlcode( statusVector ), statusVector [1], connection->getIscStatusText (statusVector))
 #define OFFSET(type,fld)	(size_t)&(((type*)0)->fld)
@@ -108,19 +108,19 @@
 #define snprintf		_snprintf
 #define fcvt			_fcvt
 #define gcvt			_gcvt
-#endif
+#endif // _MSC_VER
 
 #else
 
 #define __int64			long long
 #define _stdcall
 #define OutputDebugString(string)	fputs (string, stdout)
-#endif
+#endif // __WIN32__
 
 typedef unsigned char	UCHAR;
 typedef unsigned long	ULONG;
-typedef __int64			QUAD;
-typedef unsigned __int64			UQUAD;
+typedef long long		QUAD;
+typedef unsigned long long UQUAD;
 
 #include "JavaType.h"
 #include "Connection.h"

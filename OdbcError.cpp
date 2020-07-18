@@ -55,7 +55,9 @@ struct ListErrorLinks
 	int				codeError;
 	ListErrorLinks	*collision;
 
-} listSqlErrorLink[] = {
+};
+
+ListErrorLinks listSqlErrorLink[] = {
 
 	CODE_ERR( 53,    -1 ) // 42000 :: Syntax error
 	CODE_ERR(  0,   -84 ) //

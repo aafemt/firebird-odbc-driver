@@ -40,7 +40,7 @@ public:
 	void convertBlobToString( int indSrc, int indDst );
 	bool isWildcarded (const char *pattern);
 	virtual void prepareStatement(const char *sql);
-	virtual bool next();
+//	virtual bool next();
 
 	IscMetaDataResultSet(IscDatabaseMetaData *meta);
 

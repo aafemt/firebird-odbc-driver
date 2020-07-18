@@ -19,7 +19,7 @@
  */
 
 // IscDatabaseMetaData.h: interface for the IscDatabaseMetaData class.
-#if !defined(_ISCDATABASEMETADATA_H_)
+#ifndef _ISCDATABASEMETADATA_H_
 #define _ISCDATABASEMETADATA_H_
 
 #include "Connection.h"
@@ -209,7 +209,7 @@ public:
 	virtual const int getUseLockTimeoutWaitTransactions();
 	virtual bool supportsStatementMetaData();
 	virtual ResultSet* getUDTs(const char* catalog, const char* schemaPattern, const char* typeNamePattern, int* types);
-	virtual StatementMetaData* getMetaDataTypeInfo(ResultSet* setTypeInfo);
+//	virtual StatementMetaData* getMetaDataTypeInfo(ResultSet* setTypeInfo);
 	virtual bool supportsResultSetConcurrency(int type, int concurrency);
 	virtual bool ownUpdatesAreVisible(int type);
 	virtual bool ownDeletesAreVisible(int type);
