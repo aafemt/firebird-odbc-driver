@@ -77,7 +77,7 @@ extern char charTable [];
 
 extern EnvShare environmentShare;
 
-extern "C" Connection* createConnection()
+Connection* createConnection()
 {
 	setlocale( LC_ALL, ".ACP" );
 	return new IscConnection;

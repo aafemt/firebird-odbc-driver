@@ -39,7 +39,7 @@ namespace IscDbcLibrary {
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-extern "C" ServiceManager* createServices()
+ServiceManager* createServices()
 {
 	return new CServiceManager;
 }

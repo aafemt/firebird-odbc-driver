@@ -872,15 +872,8 @@ public:
 	virtual int			objectVersion() = 0;
 };
 
-/*
-#ifdef __BORLANDC__
-extern "C" __declspec( dllexport ) Connection*	createConnection();
-extern "C" __declspec( dllexport ) ServiceManager* createServices();
-#else
-extern "C" Connection*	createConnection();
-extern "C" ServiceManager* createServices();
-#endif
-*/
+Connection*	createConnection();
+ServiceManager* createServices();
 
 }; // end namespace IscDbcLibrary
 

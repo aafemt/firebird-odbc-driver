@@ -42,10 +42,6 @@
 #define blr_bool		(unsigned char)23
 #endif
 
-#ifndef NULL
-#define NULL			0
-#endif
-
 #define SQLEXCEPTION		SQLError
 #define NOT_YET_IMPLEMENTED throw SQLEXCEPTION (FEATURE_NOT_YET_IMPLEMENTED, "not yet implemented")
 #define NOT_SUPPORTED(type,rellen,rel,collen,col) throw SQLEXCEPTION (UNSUPPORTED_DATATYPE, "datatype is not supported in ODBC: %s column %*s.%*s", type,rellen,rel,collen,col)
