@@ -268,12 +268,24 @@ SQLRETURN OdbcStatement::sqlTables(SQLCHAR * catalog, int catLength,
 {
 	clearErrors();
 	releaseStatement();
+
 	char temp [1024], *p = temp;
 
-	const char *cat = getString (&p, catalog, catLength, NULL);
-	const char *scheme = getString (&p, schema, schemaLength, NULL);
+	const char *cat = getString (&p, catalog, catLength, SQL_ALL_CATALOGS);
+	const char *scheme = getString (&p, schema, schemaLength, SQL_ALL_SCHEMAS);
 	const char *tbl = getString (&p, table, tableLength, NULL);
-	const char *typeString = getString (&p, type, typeLength, "");
+	// According to ODBC specs NULL does not filter data types but empty string should.
+	const char *typeString = getString (&p, type, typeLength, SQL_ALL_TABLE_TYPES);
+
+	if ((catalog != nullptr && *cat != '\0') // Let empty strings pass
+	 || (schema != nullptr && *scheme != '\0'))
+	{
+		// A string search pattern was specified for the catalog name, table schema,
+		// or table name, and the data source does not support search patterns for one
+		// or more of those arguments.
+
+		return sqlReturn (SQL_ERROR, "HYC00", "Optional feature not implemented");
+	}
 
 	const char *typeVector [16];
 	int numberTypes = 0;

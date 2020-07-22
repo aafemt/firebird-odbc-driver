@@ -1137,10 +1137,12 @@ ResultSet* IscDatabaseMetaData::getTypeInfo(int dataType)
 	}
 }
 
+/*
 StatementMetaData* IscDatabaseMetaData::getMetaDataTypeInfo(ResultSet* setTypeInfo)
 	{
 	return (StatementMetaData*)(TypesResultSet*)setTypeInfo;
 	}
+*/
 
 bool IscDatabaseMetaData::supportsResultSetConcurrency(int type, int concurrency)
 	{
