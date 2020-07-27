@@ -192,7 +192,10 @@ bool IscTablesResultSet::nextFetch()
 				break;
 			}
 		default:
+			{
+				IscResultSet::close();
 				return false;
+			}
 		}
 
 		return true;
