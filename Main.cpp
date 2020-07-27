@@ -108,7 +108,7 @@ UINT codePage = CP_ACP;
 
 namespace OdbcJdbcLibrary {
 
-#if _MSC_VER > 1000
+#if defined(_MSC_VER) && _MSC_VER > 1000
 void clearAtlResource();
 #endif // _MSC_VER > 1000
 //void initCodePageTranslate(  int userLCID );
@@ -129,7 +129,7 @@ BOOL APIENTRY DllMain(  HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved 
 	}
 	else if ( fdwReason == DLL_PROCESS_DETACH )
 	{
-#if _MSC_VER > 1000
+#if defined(_MSC_VER) && _MSC_VER > 1000
 		clearAtlResource();
 #endif // _MSC_VER > 1000
 	}
@@ -1009,17 +1009,26 @@ SQLRETURN SQL_API SQLCloseCursor  (SQLHSTMT arg0)
 
 ///// SQLColAttribute ///// ODBC 3.0 ///// ISO 92
 
+//extern "C"
 SQLRETURN SQL_API SQLColAttribute( SQLHSTMT hStmt, SQLUSMALLINT columnNumber,
 									SQLUSMALLINT fieldIdentifier, SQLPOINTER characterAttribute,
 									SQLSMALLINT bufferLength, SQLSMALLINT *stringLength,
-									SQLLEN *numericAttribute )
+#ifdef _WIN64
+									SQLLEN *numericAttribute)
+#else
+									SQLPOINTER numericAttribute)
+#endif
 {
 	TRACE ("SQLColAttribute");
 	GUARD_HSTMT( hStmt );
 
 	return ((OdbcStatement*)hStmt)->sqlColAttribute( columnNumber, fieldIdentifier,
 													characterAttribute, bufferLength,
-													stringLength, numericAttribute );
+													stringLength,
+#ifndef _WIN64
+		(SQLLEN*)
+#endif // _WIN64
+													numericAttribute );
 }
 
 ///// SQLCopyDesc ///// ODBC 3.0 /////

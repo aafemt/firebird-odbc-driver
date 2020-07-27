@@ -92,7 +92,7 @@ public:
 	void Lock();
 	void UnLock();
 
-#ifdef _WINDOWS
+#if defined(__WIN32__) && defined(_MSC_VER)
 #if _MSC_VER > 1000
 
 public:
@@ -147,7 +147,7 @@ public:
 
 	PODBC_USER_EVENTS_INTERFASE userEventsInterfase;
 
-#ifdef _WINDOWS
+#if defined(__WIN32__) && defined(_MSC_VER)
 #if _MSC_VER > 1000
 
 	bool		enlistConnect;

@@ -91,7 +91,6 @@
 #include <sql.h>
 #include <sqlext.h>
 #include <sqlucode.h>
-#include "SetupAttributes.h"
 #include "IscDbc/JavaType.h"
 
 #ifndef _WINDOWS

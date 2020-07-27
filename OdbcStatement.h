@@ -26,9 +26,8 @@
 
 // OdbcStatement.h: interface for the OdbcStatement class.
 //
-//////////////////////////////////////////////////////////////////////
 
-#if !defined(_ODBCSTATEMENT_H_)
+#ifndef _ODBCSTATEMENT_H_
 #define _ODBCSTATEMENT_H_
 
 #include "OdbcObject.h"

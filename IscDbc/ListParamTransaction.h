@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -18,7 +18,7 @@
  *  All Rights Reserved.
  */
 
-//  
+//
 // ListParamTransaction.h: interface for the ListParamTransaction class.
 
 #if !defined(_ListParamTransaction_H_)
@@ -26,20 +26,6 @@
 
 #include <string.h>
 #include "Mlist.h"
-
-#ifdef _WINDOWS
-#ifndef strcasecmp
-
-#if _MSC_VER >= 1400 // VC80 and later
-#define strcasecmp		_stricmp
-#define strncasecmp		_strnicmp
-#else
-#define strcasecmp		stricmp
-#define strncasecmp		strnicmp
-#endif // _MSC_VER >= 1400
-
-#endif // strcasecmp
-#endif
 
 namespace IscDbcLibrary {
 
@@ -71,7 +57,7 @@ public:
 		lengthTpbBuffer = lenTpbBuffer;
 	}
 	void remove()
-	{ 
+	{
 		lengthNameUnique = 0;
 		lengthNameTransaction = 0;
 		delete[] tpbBuffer;
@@ -81,7 +67,7 @@ public:
 		lockTimeout = 0;
 	}
 	CNodeParamTransaction & operator =(const CNodeParamTransaction & src)
-	{ 
+	{
 		memcpy( nameUnique, src.nameUnique, src.lengthNameUnique );
 		lengthNameUnique = src.lengthNameUnique;
 
@@ -103,7 +89,7 @@ public:
 class CParamTransactionComparator
 {
 public:
-	static int compare(const CNodeParamTransaction *a, const CNodeParamTransaction *b) 
+	static int compare(const CNodeParamTransaction *a, const CNodeParamTransaction *b)
 	{
 		if ( a->lengthNameUnique )
 		{

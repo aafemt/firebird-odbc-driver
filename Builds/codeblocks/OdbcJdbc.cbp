@@ -52,6 +52,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-mthreads" />
+			<Add option="-Wundef" />
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-DNDEBUG" />
@@ -264,6 +265,7 @@
 		<Unit filename="../../SafeEnvThread.cpp" />
 		<Unit filename="../../SafeEnvThread.h" />
 		<Unit filename="../../SetupAttributes.h" />
+		<Unit filename="../../Version.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

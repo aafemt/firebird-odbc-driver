@@ -1,5 +1,5 @@
-Firebird ODBC Driver v2.0 Readme
-==========================================
+Firebird ODBC Driver v2.2 Readme (SD Edition)
+=============================================
 
 o What's new
 o Installation
@@ -12,22 +12,16 @@ What's New
 ----------
 
 Welcome to the latest release of the Firebird ODBC driver. This release
-sees many significant advances in the driver. Notable changes are:
+sees some advances in the driver. Notable changes are:
 
 o Increased conformance to the different ODBC specifications.
-o Better documentation.
-o Improved installation (and uninstallation) routines for Win32 and Linux.
-
-
-All the new features and fixes are documented in the release notes.
+o Improved installation (and uninstallation) routines for Win32.
 
 
 o Installation
 --------------
 
-Just click through the binary executable for a default install. More information
-is available in the Installation Readme, which viewable within the installation
-process.
+Just click through the binary executable for install.
 
 
 o Configuration
@@ -51,20 +45,7 @@ There are no other known issues at this time.
 Feedback
 --------
 
-If you have feedback (good or bad) please email the Firebird
-OBDC driver development list at sourceforge. You can subscribe
-by visiting:
-
-  http://firebird.sourceforge.net/index.php?op=lists
-
-There is also information on how to access this list via a
-newsgroup mirror.
-
-NOTE: This is not a support forum! It is for development issues only.
-This means that general questions about ODBC, SQL, or database access
-will probably be ignored.
-
-
-
-
-
+If you found an issue with this fork add it to 
+https://github.com/aafemt/firebird-odbc-driver/issues
+preferable with testcase and/or ODBC trace file
+demonstrating what's wrong.

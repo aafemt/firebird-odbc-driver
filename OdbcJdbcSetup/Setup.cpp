@@ -52,18 +52,6 @@ extern TranslateString translate[];
 using namespace IscDbcLibrary;
 using namespace classSecurityPassword;
 
-#ifdef _WINDOWS
-#ifndef strncasecmp
-
-#if _MSC_VER >= 1400 // VC80 and later
-#define strncasecmp		_strnicmp
-#else
-#define strncasecmp		strnicmp
-#endif // _MSC_VER >= 1400
-
-#endif // strncasecmp
-#endif
-
 static const char *fileNames [] = {
 	DRIVER_NAME DRIVER_EXT,
 	NULL
@@ -76,14 +64,6 @@ static const char *charsets []=
 	"DOS861", "DOS863", "DOS865", "DOS866", "EUCJ_0208", "GB_2312", "ISO8859_1",
 	"ISO8859_2", "KSC_5601", "OCTETS", "SJIS_0208", "UNICODE_FSS", "UTF8",
 	"WIN1250", "WIN1251", "WIN1252", "WIN1253", "WIN1254", NULL
-};
-
-static const char *useshemas []=
-{
-	"Set null field SCHEMA",
-	"Remove SCHEMA from SQL query",
-	"Use full SCHEMA",
-	NULL
 };
 
 void MessageBoxError(const char * stageExecuted, char * pathFile);

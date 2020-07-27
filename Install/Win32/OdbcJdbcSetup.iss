@@ -27,160 +27,54 @@
 ;
 ;
 
-#define MSVC_VERSION 9
-#define BUILDCONFIG "release"
-
-#if MSVC_VERSION==7
-#define BUILD_ENV "MsVc70.win"
-#elif MSVC_VERSION==8
-#define BUILD_ENV "MsVc80.win"
-#elif MSVC_VERSION==9
-#define BUILD_ENV "MsVc90.win"
-#else
-BUILD_ENV undefined
-#endif
-
-#if BUILDCONFIG=="debug"
-#define debug_str "_debug"
-#else
-#define debug_str ""
-#endif
-
 #define FIREBIRD_URL "http://www.firebirdsql.org"
-
-;---- If we haven't already set PlatformTarget then pick it up from the environment.
-#ifndef PlatformTarget
-#define PlatformTarget GetEnv("FB_TARGET_PLATFORM")
-#endif
-#if PlatformTarget == ""
-#define PlatformTarget "win32"
-#endif
-
-;---- If we haven't already set ProductVersion then pick it up from the environment.
-#ifndef ProductVersion
-#define ProductVersion GetEnv("PRODUCT_VERSION")
-#endif
-
-#define BUILD_ROOT="..\..\"
-#define SOURCE_LIBS "Builds\"+AddBackslash(BUILD_ENV)+AddBackslash(PlatformTarget)+AddBackslash(BUILDCONFIG)
-#define SOURCE_DOCS="Install\"
-
-#if PlatformTarget == "x64"
-#define SOURCE_LIBS32="Builds\"+AddBackslash(BUILD_ENV)+AddBackslash("Win32")+AddBackslash(BUILDCONFIG)
-#endif
-
-; Check if HTML help is available
-#ifndef HtmlHelp
-#define HtmlHelp GetEnv("HTMLHELP")
-#endif
-#if HtmlHelp == ""
-#undef HtmlHelp
+#define BUILD_ROOT "..\..\"
+#define SOURCE_DOCS "Install"
+#define SOURCE_LIBS "Builds\output"
+#include BUILD_ROOT + "Version.h"
+#define ProductVersion Str(MAJOR_VERSION) + "." + Str(MINOR_VERSION) + "." + Str(REVNO_VERSION)
+#define FileVersion GetFileVersion(BUILD_ROOT + "Builds\output\Win64\Release\OdbcFb.dll")
+#if FileVersion != GetFileVersion(BUILD_ROOT + "Builds\output\Win32\Release\OdbcFb.dll")
+#error "Versions of libraries don't match"
 #endif
 
 [Setup]
 AppName=Firebird ODBC Driver
-AppVerName=Firebird ODBC driver {#ProductVersion}
+AppVerName=Firebird ODBC driver {#ProductVersion} (SD edition)
 AppVersion={#ProductVersion}
 AppMutex=InnoSetupExtensionsCompilerAppMutex
-AppPublisher=Firebird Project
-AppPublisherURL={#FIREBIRD_URL}
-AppSupportURL={#FIREBIRD_URL}
-AppUpdatesURL={#FIREBIRD_URL}
+AppPublisher=SD
+DefaultDirName={commonappdata}\OdbcFb
+DisableDirPage=true
 
-DefaultDirName={pf}\Firebird\Firebird_ODBC
-DefaultGroupName=Firebird\Firebird ODBC Driver
 UninstallDisplayIcon={sys}\OdbcFb.dll
-UninstallFilesDir={localappdata}\OdbcFb
 
 PrivilegesRequired=admin
 
 SourceDir={#BUILD_ROOT}
-OutputDir={#SOURCE_DOCS}\Win32\install_image
-OutputBaseFilename=Firebird_ODBC_{#ProductVersion}_{#PlatformTarget}{#debug_str}
-DiskSpanning=no
+OutputDir=Builds\output
+OutputBaseFilename=OdbcFb-{#ProductVersion}-{#BUILDTYPE_VERSION}
+VersionInfoVersion={#FileVersion}
 
 LicenseFile={#SOURCE_DOCS}\IDPLicense.txt
-InfoBeforeFile={#SOURCE_DOCS}\Win32\installation_readme.txt
-InfoAfterFile={#SOURCE_DOCS}\Win32\readme.txt
+DisableReadyPage=yes
 Compression=lzma
 SolidCompression=true
 
 WizardImageFile={#SOURCE_DOCS}\Win32\firebird-logo1.bmp
-WizardImageBackColor=clWhite
 WizardSmallImageFile={#SOURCE_DOCS}\Win32\firebird-logo2.bmp
-
-#if PlatformTarget == "x64"
-ArchitecturesAllowed=x64
-ArchitecturesInstallIn64BitMode=x64
-#endif
 
 [Languages]
 Name: en; MessagesFile: compiler:Default.isl
 Name: ru; MessagesFile: compiler:Default.isl,compiler:Languages\Russian.isl
 
 
-[Types]
-Name: DeveloperInstall; Description: {cm:DeveloperInstall}
-Name: DeploymentInstall; Description: {cm:DeploymentInstall}
-Name: DocumentationInstall; Description: {cm:DocumentationInstall}
-
-
-[Components]
-Name: DeveloperComponent; Description: {cm:DeveloperComponent} {sys}; Types: DeveloperInstall; Flags: exclusive
-Name: DeploymentComponent; Description: {cm:DeploymentComponent}; Types: DeploymentInstall; Flags: exclusive disablenouninstallwarning
-Name: DocumentationComponent; Description: {cm:DocumentationComponent}; Types: DeveloperInstall DocumentationInstall
-
-
 [Files]
-Source: {#SOURCE_LIBS}OdbcFb.dll; DestDir: {sys}; Components: DeveloperComponent DeploymentComponent; Flags: regserver restartreplace sharedfile
-Source: {#SOURCE_LIBS}\OdbcFb.lib; DestDir: {sys}; Components: DeveloperComponent DeploymentComponent
-Source: {#SOURCE_LIBS}\OdbcFb.pdb; DestDir: {sys}; Components: DeveloperComponent DeploymentComponent
-#ifdef HtmlHelp
-Source: {#SOURCE_DOCS}\HtmlHelp\OdbcFb.chm; DestDir: {app}; Components: DeveloperComponent DeploymentComponent
-Source: {#SOURCE_DOCS}\HtmlHelp\OdbcFb.chm; DestDir: {sys}; Components: DeveloperComponent DeploymentComponent
-Source: {#SOURCE_DOCS}\HtmlHelp\OdbcFb.chm; DestDir: {app}; Components: DocumentationComponent
-Source: {#SOURCE_DOCS}\HtmlHelp\OdbcFb.chm; DestDir: {sys}; Components: DocumentationComponent
-Source: {#SOURCE_DOCS}\HtmlHelp\html\*.*; DestDir: {app}\html; Components: DocumentationComponent
-Source: {#SOURCE_DOCS}\HtmlHelp\images\*.*; DestDir: {app}\images; Components: DocumentationComponent
-#endif
-Source: {#SOURCE_DOCS}\Win32\Readme.txt; DestDir: {app}; Components: DocumentationComponent; Flags: isreadme
-Source: {#SOURCE_DOCS}\IDPLicense.txt; DestDir: {app}; Components: DocumentationComponent
-;Source: {#SOURCE_DOCS}\ReleaseNotes_v2.0.html; DestDir: {app}; Components: DocumentationComponent
-
-#if PlatformTarget == "x64"
-Source: {#SOURCE_LIBS32}OdbcFb.dll; DestDir: {sys}; Components: DeveloperComponent DeploymentComponent; Flags: regserver restartreplace 32bit
-Source: {#SOURCE_LIBS32}\OdbcFb.lib; DestDir: {syswow64}; Components: DeveloperComponent DeploymentComponent
-Source: {#SOURCE_LIBS32}\OdbcFb.pdb; DestDir: {syswow64}; Components: DeveloperComponent DeploymentComponent
-#ifdef HtmlHelp
-Source: {#SOURCE_DOCS}\HtmlHelp\OdbcFb.chm; DestDir: {syswow64}; Components: DeveloperComponent DeploymentComponent
-Source: {#SOURCE_DOCS}\HtmlHelp\OdbcFb.chm; DestDir: {syswow64}; Components: DocumentationComponent
-#endif
-#endif
-
-[Icons]
-Name: {group}\Uninstall Firebird ODBC driver; Filename: {uninstallexe}; Components: DocumentationComponent; Comment: Remove Firebird ODBC Driver Documentation
-Name: {group}\Uninstall Firebird ODBC driver; Filename: {uninstallexe}; Components: DeveloperComponent; Comment: Remove Firebird ODBC Driver Library and Documentation
-#ifdef HtmlHelp
-Name: {group}\Firebird ODBC Help; Filename: {app}\OdbcFb.chm; Components: DocumentationComponent
-Name: {group}\Firebird ODBC Help; Filename: {sys}\OdbcFb.chm; Components: DeveloperComponent
-Name: {app}\Firebird ODBC Help; Filename: {sys}\OdbcFb.chm; Components: DeveloperComponent
-#endif
-;Name: {group}\Firebird ODBC v2.0 Release Notes; Filename: {app}\ReleaseNotes_v2.0.html; Components: DocumentationComponent
-Name: {group}\Firebird ODBC readme.txt; Filename: {app}\Readme.txt; Components: DocumentationComponent
-Name: {group}\Firebird ODBC license.txt; Filename: {app}\IDPLicense.txt; Components: DocumentationComponent
-
-
-[Run]
-;Filename: {sys}\regsvr32.exe; Parameters: "/s ""{app}""\OdbcFb.dll"; Components: DeveloperComponent DeploymentComponent
-
-
-[UninstallRun]
-;Filename: {sys}\regsvr32.exe; Parameters: "/u /s ""{app}""\OdbcFb.dll"; Components: DeveloperComponent DeploymentComponent
-
-
-[UninstallDelete]
-Type: Files; Name: {sys}\OdbcFb.dll; Components: DeveloperComponent DeploymentComponent
-
+Source: {#SOURCE_LIBS}\Win32\Release\OdbcFb.dll; DestDir: {sys}; Flags: 32bit regserver restartreplace
+Source: {#SOURCE_LIBS}\Win64\Release\OdbcFb.dll; DestDir: {sys}; Flags: 64bit regserver restartreplace; Check: IsWin64
+Source: {#SOURCE_LIBS}\OdbcFb.chm; DestDir: {app}
+Source: {#SOURCE_DOCS}\Win32\Readme.txt; DestDir: {app}; Flags: isreadme
+Source: {#SOURCE_DOCS}\IDPLicense.txt; DestDir: {app};
 
 [CustomMessages]
 en.DeveloperInstall=Developer install - register driver in System Dir. Install documentation to program group.
@@ -196,19 +90,3 @@ ru.DocumentationInstall=Только документацию.
 ru.DeveloperComponent=Установка драйвера в
 ru.DeploymentComponent=Установка только драйвера, без документации и деинсталяции.
 ru.DocumentationComponent=Документация в формате CHM и HTML
-
-
-[Code]
-procedure CurStepChanged(CurStep: TSetupStep);
-var
-  astring: string;
-begin
-  case CurStep of
-    ssDone: begin
-      astring := WizardSetupType(false)
-      //Force deletion of install directory IF we do a deployment install
-      if LowerCase(astring) = LowerCase('DeploymentInstall') then
-        DelTree(ExpandConstant('{app}'), true,true,true)
-    end;
-  end;
-end;

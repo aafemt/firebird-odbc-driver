@@ -21,59 +21,12 @@
 @echo off
 
 
-::Check if on-line help is required
-@for /F "usebackq tokens=1,2 delims==-/ " %%i in ('%*') do @(
-@if /I "%%i"=="h" (goto :HELP & goto :EOF)
-@if /I "%%i"=="?" (goto :HELP & goto :EOF)
-@if /I "%%i"=="HELP" (goto :HELP & goto :EOF)
-)
-
-
-@goto :MAIN
-@goto :EOF
-
-
-
 :SET_ENVIRONMENT
-::Assume we are preparing a production build
-if not defined BUILDCONFIG (set BUILDCONFIG=release)
-
-:: See what we have on the command line
-for %%v in ( %* )  do (
-  ( if /I "%%v"=="DEBUG" (set BUILDCONFIG=debug) )
-)
-
-@cd ..\..
-@for /f "delims=" %%a in ('@cd') do (set ROOT_PATH=%%a)
-@cd %~dp0
-
-if not defined FB_TARGET_PLATFORM (
-  @if "%PROCESSOR_ARCHITECTURE%"=="x86" (set FB_TARGET_PLATFORM=Win32)
-  @if "%PROCESSOR_ARCHITECTURE%"=="AMD64" (set FB_TARGET_PLATFORM=x64)
-)
-
-@goto :EOF
-
-
-:SED_MAGIC
-:: Do some sed magic to make sure that the final product
-:: includes the version string in the filename.
-:: If the Firebird Unix tools for Win32 aren't on
-:: the path this will fail! Use of the cygwin tools has not
-:: been tested and may produce unexpected results.
-::========================================================
-sed /"#define BUILDNUM_VERSION"/!d %ROOT_PATH%\WriteBuildNo.h > %temp%.\b$1.bat
-sed -n -e s/\"//g -e s/"#define BUILDNUM_VERSION"//w%temp%.\b$2.bat %temp%.\b$1.bat
-for /f "tokens=*" %%a in ('type %temp%.\b$2.bat') do set PRODUCT_VER_STRING=2.1.0.%%a
-@echo s/1.2.0/%PRODUCT_VER_STRING%/ > %temp%.\b$3.bat
-@echo s/define MSVC_VERSION 6/define MSVC_VERSION %MSVC_VERSION%/ >> %temp%.\b$3.bat
-@echo s/define BUILDCONFIG release/define BUILDCONFIG %BUILDCONFIG%/ >> %temp%.\b$3.bat
-@echo s/PRODUCT_VER_STRING/%PRODUCT_VER_STRING%/ >> %temp%.\b$3.bat
-@set PRODUCT_VERSION=%PRODUCT_VER_STRING%
-sed -f  %temp%.\b$3.bat %~dp0\OdbcJdbcSetup.iss > %~dp0\OdbcJdbcSetup_%PRODUCT_VER_STRING%.iss
-del %temp%.\b$?.bat
-@goto :EOF
-
+::==============
+setlocal
+set ROOT_PATH=..\..
+for /F "tokens=2*" %%a in ('findstr /C:\^#define %ROOT_PATH%\Version.h') do SET ODBC_%%a=%%~b
+set PRODUCT_VER_STRING=%ODBC_MAJOR_VERSION%.%ODBC_MINOR_VERSION%.%ODBC_REVNO_VERSION%-%ODBC_BUILDTYPE_VERSION%
 
 :BUILD_HELP
 ::=========
@@ -88,61 +41,37 @@ set HTMLHELP="%ProgramFiles%\HTML Help Workshop\hhc.exe"
   )
 )
 %HTMLHELP% %ROOT_PATH%\Install\HtmlHelp\OdbcJdbc.hhp
-::echo ERRORLEVEL is %ERRORLEVEL%
+if not ERRORLEVEL 1 echo Help build error & goto :EOF
 
-goto :EOF
-
+:ZIP
+::========
+del /q %ROOT_PATH%\Builds\output\OdbcFb-%PRODUCT_VER_STRING%* >nul
+%SEVENZIP%7z -bso0 a %ROOT_PATH%\Builds\output\OdbcFb-%PRODUCT_VER_STRING%-Win32.7z %ROOT_PATH%\Builds\output\OdbcFb.chm %ROOT_PATH%\Builds\output\Win32\Release\OdbcFb.dll || goto :ERR
+%SEVENZIP%7z -bso0 a %ROOT_PATH%\Builds\output\OdbcFb-%PRODUCT_VER_STRING%-Win64.7z %ROOT_PATH%\Builds\output\OdbcFb.chm %ROOT_PATH%\Builds\output\Win64\Release\OdbcFb.dll || goto :ERR
 
 :ISX
 ::========
-if NOT DEFINED INNO5_SETUP_PATH (set INNO5_SETUP_PATH="%PROGRAMFILES%\Inno Setup")
+if defined INNO6_SETUP_PATH (
+  set ISCC_COMMAND=%INNO6_SETUP_PATH%\iscc.exe
+)
+if not defined ISCC_COMMAND (
+if defined INNO5_SETUP_PATH (
+  set ISCC_COMMAND=%INNO5_SETUP_PATH%\iscc.exe
+)
+)
+:: If the environment variable is not set let's search in PATH
+if not defined ISCC_COMMAND (
+  @for /f "usebackq tokens=*" %%c in (`where /f iscc 2^>nul`) do set ISCC_COMMAND=%%c
+)
+if not defined ISCC_COMMAND (
+  @echo  Required Inno Setup compiler not found
+  @exit /b 1
+)
 @Echo Now let's compile the InnoSetup scripts
 @Echo.
-%INNO5_SETUP_PATH%\iscc "%ROOT_PATH%\Install\Win32\OdbcJdbcSetup_%PRODUCT_VER_STRING%.iss"
+call %ISCC_COMMAND% "%ROOT_PATH%\Install\Win32\OdbcJdbcSetup.iss" || goto :ERR
 goto :EOF
 
-
-:HELP
-::==========
-@echo.
-@echo.
-@echo   Parameters can be passed in any order.
-@echo   Parameters are NOT case-sensitive.
-@echo   Currently the recognised params are:
-@echo.
-@echo       DEBUG  Create a DEBUG build.
-@echo.
-@echo       HELP   This help screen
-@echo              This option excludes all others.
-@echo.
-goto :EOF
-
-
-:MAKE_PACKAGE
-::============
-@Echo.
-@Echo Setting environment...
-@(@call :SET_ENVIRONMENT %* )|| (@echo Error calling SET_ENVIRONMENT & @goto :EOF)
-@Echo.
-@Echo Setting version number...
-@(@call :SED_MAGIC ) || (@echo Error calling SED_MAGIC & @goto :EOF)
-@Echo.
-@Echo Building help file...
-::Note errorlevel seems to be set to 1, even if compiler completes successfully
-::So testing for an error seems pointless.
-@(@call :BUILD_HELP ) & (@if ERRORLEVEL 2 (@echo Error %ERRORLEVEL% calling BUILD_HELP & @goto :EOF))
-@Echo.
-@Echo Building Installable Binary...
-@(@call :ISX ) || (@echo Error calling Inno Setup Extensions & @goto :EOF)
-@Echo.
-
-goto :EOF
-
-
-:MAIN
-::====
-call :MAKE_PACKAGE %*
-goto :EOF
-
-
-:EOF
+:ERR
+::=======
+@echo Some error happen during build, inspect messages above

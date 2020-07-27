@@ -89,6 +89,7 @@
 #include "OdbcDesc.h"
 #include "ConnectDialog.h"
 #include "SecurityPassword.h"
+#include "SetupAttributes.h"
 
 // These items conflicted with items introduced in ODBC 4.0
 //#define SQL_FBGETPAGEDB			180
@@ -97,9 +98,6 @@
 
 #define BUILD_ODBC_VER(zero1,major,zero2,minor,zero3,build) zero1 #major "." zero2 #minor "." zero3 #build
 #define STR_BUILD_ODBC_VER(zero1,major,zero2,minor,zero3,build) BUILD_ODBC_VER( zero1, major, zero2, minor, zero3, build )
-
-#define ODBC_DRIVER_VERSION	"03.51"
-#define ODBC_VERSION_NUMBER	STR_BUILD_ODBC_VER( ZERO_MAJOR, MAJOR_VERSION, ZERO_MINOR, MINOR_VERSION, ZERO_BUILDNUM, BUILDNUM_VERSION )
 
 namespace OdbcJdbcLibrary {
 
@@ -324,7 +322,7 @@ OdbcConnection::OdbcConnection(OdbcEnv *parent)
 	userEventsInterfase	= NULL;
 	charsetCode			= 0; // NONE
 
-#ifdef _WINDOWS
+#if defined(__WIN32__) && defined(_MSC_VER)
 #if _MSC_VER > 1000
 	enlistConnect = false;
 #endif // _MSC_VER > 1000
@@ -387,7 +385,7 @@ SQLRETURN OdbcConnection::sqlSetConnectAttr( SQLINTEGER attribute, SQLPOINTER va
 
 	switch ( attribute )
 	{
-#ifdef _WINDOWS
+#if defined(__WIN32__) && defined(_MSC_VER)
 #if _MSC_VER > 1000
 
 	case 1207: // SQL_ENLIST_IN_DTC Enlist connection in the DTC transaction

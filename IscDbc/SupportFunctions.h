@@ -1,14 +1,14 @@
 /*
- *  
- *     The contents of this file are subject to the Initial 
- *     Developer's Public License Version 1.0 (the "License"); 
- *     you may not use this file except in compliance with the 
- *     License. You may obtain a copy of the License at 
+ *
+ *     The contents of this file are subject to the Initial
+ *     Developer's Public License Version 1.0 (the "License");
+ *     you may not use this file except in compliance with the
+ *     License. You may obtain a copy of the License at
  *     http://www.ibphoenix.com/main.nfs?a=ibphoenix&page=ibp_idpl.
  *
- *     Software distributed under the License is distributed on 
- *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
- *     express or implied.  See the License for the specific 
+ *     Software distributed under the License is distributed on
+ *     an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+ *     express or implied.  See the License for the specific
  *     language governing rights and limitations under the License.
  *
  *
@@ -26,20 +26,6 @@
 #include <stdlib.h>
 
 namespace IscDbcLibrary {
-
-#ifdef _WINDOWS
-#ifndef strcasecmp
-
-#if _MSC_VER >= 1400 // VC80 and later
-#define strcasecmp		_stricmp
-#define strncasecmp		_strnicmp
-#else
-#define strcasecmp		stricmp
-#define strncasecmp		strnicmp
-#endif // _MSC_VER >= 1400
-
-#endif // strcasecmp
-#endif
 
 class SupportFunctions;
 typedef void (SupportFunctions::*ADRESS_FUNCTION)( char *&ptIn, char *&ptOut );
@@ -70,7 +56,7 @@ public:
 		translate = transl;
 	}
 	void remove()
-	{ 
+	{
 		typeFn = 0;
 		keySqlFn = 0;
 		nameSqlFn = NULL;
@@ -80,7 +66,7 @@ public:
 		translate = NULL;
 	}
 	CSupportFunction & operator =(const CSupportFunction & src)
-	{ 
+	{
 		typeFn = src.typeFn;
 		keySqlFn = src.keySqlFn;
 		nameSqlFn = src.nameSqlFn;
@@ -95,7 +81,7 @@ public:
 class CSupportFunctionComparator
 {
 public:
-	static int compare(const CSupportFunction *a, const CSupportFunction *b) 
+	static int compare(const CSupportFunction *a, const CSupportFunction *b)
 	{
 	    if ( a->lenSqlFn < b->lenSqlFn ) return -1;
 	    else if ( a->lenSqlFn > b->lenSqlFn ) return 1;

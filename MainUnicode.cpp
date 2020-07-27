@@ -887,7 +887,11 @@ SQLRETURN SQL_API SQLDriversW( SQLHENV hEnv, SQLUSMALLINT fDirection,
 SQLRETURN SQL_API SQLColAttributeW( SQLHSTMT hStmt, SQLUSMALLINT columnNumber,
 								   SQLUSMALLINT fieldIdentifier, SQLPOINTER characterAttribute,
 								   SQLSMALLINT bufferLength, SQLSMALLINT *stringLength,
-								   SQLLEN *numericAttribute )
+#ifdef _WIN64
+									SQLLEN *numericAttribute)
+#else
+									SQLPOINTER numericAttribute)
+#endif
 {
 	TRACE ("SQLColAttributeW");
 	GUARD_HSTMT( hStmt );
@@ -912,13 +916,21 @@ SQLRETURN SQL_API SQLColAttributeW( SQLHSTMT hStmt, SQLUSMALLINT columnNumber,
 
 			return ((OdbcStatement*)hStmt)->sqlColAttribute( columnNumber, fieldIdentifier,
 								(SQLPOINTER)(SQLCHAR*)CharacterAttribute, CharacterAttribute.getLength(),
-								stringLength, numericAttribute );
+								stringLength,
+#ifndef _WIN64
+		(SQLLEN*)
+#endif // _WIN64
+								numericAttribute );
 		}
 	}
 
 	return ((OdbcStatement*)hStmt)->sqlColAttribute( columnNumber, fieldIdentifier,
 													characterAttribute, bufferLength,
-													stringLength, numericAttribute );
+													stringLength,
+#ifndef _WIN64
+		(SQLLEN*)
+#endif // _WIN64
+													numericAttribute );
 }
 
 ///// SQLGetConnectAttrW /////
