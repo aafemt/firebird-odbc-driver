@@ -2599,7 +2599,7 @@ int OdbcConvert::convBlobToBlob(DescRecord * from, DescRecord * to)
 		bool directOpen = false;
 		bool fetched = from->currentFetched == parentStmt->getCurrentFetched();
 
-		if ( !fetched || !from->dataOffset )
+		if (!fetched)
 		{ // attach new blob
 			from->dataOffset = 0;
 			from->startedReturnSQLData = false;
@@ -2687,7 +2687,7 @@ int OdbcConvert::convBlobToBinary(DescRecord * from, DescRecord * to)
 		bool directOpen = false;
 		bool fetched = from->currentFetched == parentStmt->getCurrentFetched();
 
-		if ( !fetched || !from->dataOffset )
+		if (!fetched)
 		{ // attach new blob
 			from->dataOffset = 0;
 			from->startedReturnSQLData = false;
@@ -2770,7 +2770,7 @@ int OdbcConvert::convBlobToString(DescRecord * from, DescRecord * to)
 		bool directOpen = false;
 		bool fetched = from->currentFetched == parentStmt->getCurrentFetched();
 
-		if ( !fetched || !from->dataOffset )
+		if (!fetched)
 		{ // attach new blob
 			from->dataOffset = 0;
 			from->startedReturnSQLData = false;
@@ -2879,7 +2879,7 @@ int OdbcConvert::convBlobToStringW( DescRecord * from, DescRecord * to )
 		bool directOpen = false;
 		bool fetched = from->currentFetched == parentStmt->getCurrentFetched();
 
-		if ( !fetched || !from->dataOffset )
+		if (!fetched)
 		{ // attach new blob
 			from->dataOffset = 0;
 			from->startedReturnSQLData = false;
@@ -2917,23 +2917,27 @@ int OdbcConvert::convBlobToStringW( DescRecord * from, DescRecord * to )
 
 			from->allocateLocalDataPtr((length + 1) * sizeof(wchar_t));
 			wchar_t *wcs = (wchar_t*) from->localDataPtr;
-			char *tmp = new char[length];
 
-			if ( !directOpen )
+			if (length != 0)
 			{
-				blob->getBytes (0, length, tmp);
-			}
-			else
-			{
-				int lenRead = 0;
-				blob->directFetchBlob(tmp, length, lenRead);
-				length = lenRead;
-			}
+				char *tmp = new char[length];
 
-			length = from->MbsToWcs(wcs, tmp, length);
+				if ( !directOpen )
+				{
+					blob->getBytes (0, length, tmp);
+				}
+				else
+				{
+					int lenRead = 0;
+					blob->directFetchBlob(tmp, length, lenRead);
+					length = lenRead;
+				}
+
+				length = from->MbsToWcs(wcs, tmp, length);
+
+				delete [] tmp;
+			}
 			wcs[length] = L'\0';
-
-			delete [] tmp;
 		}
 		else
 		{

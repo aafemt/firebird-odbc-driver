@@ -26,6 +26,9 @@ extern UINT codePage; // from Main.cpp
 
 size_t _MbsToWcs( wchar_t *wcstr, const char *mbstr, size_t count )
 {
+	if (count == 0)
+		return 0;
+
 	size_t len = MultiByteToWideChar( codePage,
 									  0,
 									  mbstr,
@@ -42,6 +45,9 @@ size_t _MbsToWcs( wchar_t *wcstr, const char *mbstr, size_t count )
 
 size_t _WcsToMbs( char *mbstr,  const wchar_t *wcstr, size_t count )
 {
+	if (count == 0)
+		return 0;
+
 	size_t len = WideCharToMultiByte( codePage,
 									  0,
 									  wcstr,
