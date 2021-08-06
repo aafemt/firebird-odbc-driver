@@ -128,7 +128,6 @@ BOOL INSTAPI ConfigDSN( HWND        hWnd,
 		SQLPostInstallerError( ODBC_ERROR_INVALID_NAME, _TR( IDS_ERROR_MESSAGE_04, "Invalid driver name" ) );
 		return false;
 	}
-
 	Setup setup( hWnd, lpszDriver, lpszAttributes );
 	switch ( fRequest )
 	{

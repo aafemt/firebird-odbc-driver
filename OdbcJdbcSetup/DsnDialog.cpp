@@ -22,6 +22,8 @@
 //
 #include <stdio.h>
 #include <string.h>
+#include <stdexcept>
+
 #include "OdbcJdbcSetup.h"
 #include "../IscDbc/Connection.h"
 #include "CommonUtil.h"
@@ -738,6 +740,10 @@ void CDsnDialog::OnTestConnection( HWND hDlg )
 		sprintf( buffer, "%s\n%s", _TR( IDS_MESSAGE_02, "Connection failed!" ), (const char*)text );
 
 		MessageBox( hDlg, TEXT( buffer ), TEXT( strHeadDlg ), MB_ICONERROR | MB_OK );
+	}
+	catch (...)
+	{
+		MessageBox( hDlg, "Connection failed.", TEXT( strHeadDlg ), MB_ICONERROR | MB_OK );
 	}
 }
 #endif

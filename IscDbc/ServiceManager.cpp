@@ -900,7 +900,10 @@ void CServiceManager::addRef()
 int CServiceManager::release()
 {
 	if ( !--useCount )
+	{
 		delete this;
+		return 0;
+	}
 
 	return useCount;
 }
