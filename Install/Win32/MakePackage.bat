@@ -46,8 +46,8 @@ if not ERRORLEVEL 1 echo Help build error & goto :EOF
 :ZIP
 ::========
 del /q %ROOT_PATH%\Builds\output\OdbcFb-%PRODUCT_VER_STRING%* >nul
-%SEVENZIP%7z -bso0 a %ROOT_PATH%\Builds\output\OdbcFb-%PRODUCT_VER_STRING%-Win32.7z %ROOT_PATH%\Builds\output\OdbcFb.chm %ROOT_PATH%\Builds\output\Win32\Release\OdbcFb.dll || goto :ERR
-%SEVENZIP%7z -bso0 a %ROOT_PATH%\Builds\output\OdbcFb-%PRODUCT_VER_STRING%-Win64.7z %ROOT_PATH%\Builds\output\OdbcFb.chm %ROOT_PATH%\Builds\output\Win64\Release\OdbcFb.dll || goto :ERR
+"%SEVENZIP%"\7z -bso0 a %ROOT_PATH%\Builds\output\OdbcFb-%PRODUCT_VER_STRING%-Win32.7z %ROOT_PATH%\Builds\output\OdbcFb.chm %ROOT_PATH%\Builds\output\Win32\Release\OdbcFb.dll || goto :ERR
+"%SEVENZIP%"\7z -bso0 a %ROOT_PATH%\Builds\output\OdbcFb-%PRODUCT_VER_STRING%-Win64.7z %ROOT_PATH%\Builds\output\OdbcFb.chm %ROOT_PATH%\Builds\output\Win64\Release\OdbcFb.dll || goto :ERR
 
 :ISX
 ::========

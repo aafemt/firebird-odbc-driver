@@ -1,6 +1,6 @@
 #define MAJOR_VERSION 		2
 #define MINOR_VERSION 		2
-#define REVNO_VERSION 		1
+#define REVNO_VERSION 		2
 #define BUILDNUM_VERSION		0
 #define BUILDTYPE_VERSION 	"SD"
 

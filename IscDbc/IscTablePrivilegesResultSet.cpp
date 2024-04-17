@@ -52,7 +52,7 @@ void IscTablePrivilegesResultSet::getTablePrivileges(const char * catalog, const
 {
 	char sql[2048] =  "select cast (NULL as varchar(7)) as table_cat,"					//1
 				          "cast (NULL as varchar(7)) as table_schem,"					//2
-						  "cast (tbl.rdb$relation_name as varchar(31)) as table_name,"	//3
+						  "cast (priv.rdb$relation_name as varchar(31)) as table_name,"	//3
 						  "cast (priv.rdb$grantor as varchar(31)) as grantor,"			//4
 						  "cast (priv.rdb$user as varchar(31)) as grantee,"				//5
 						  "cast (priv.rdb$privilege as varchar(11)) as privilege,"		//6

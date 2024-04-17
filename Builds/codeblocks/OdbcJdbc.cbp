@@ -88,6 +88,9 @@
 				</Linker>
 			</Target>
 		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="Win64 Release;Win32 Release;Win64 Debug;Win32 Debug;" />
+		</VirtualTargets>
 		<Compiler>
 			<Add option="-mthreads" />
 			<Add option="-Wundef" />
